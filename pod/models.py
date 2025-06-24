@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models # type: ignore
 
 class Podryad(models.Model):
     org_name = models.CharField("Название организации", max_length=255, help_text="Например: ООО Компания или ИП Иванов Иван Иванович (ФИО Полностью)")

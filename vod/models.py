@@ -1,5 +1,6 @@
 from django.db import models # type: ignore
 from car.models import Car
+from pod.models import Podryad
 
 class Driver(models.Model):
     is_approved = models.BooleanField("Статус согласования", default=False)
@@ -10,8 +11,12 @@ class Driver(models.Model):
         verbose_name='Закрепленные ТС',
         related_name='drivers',
     )
-
-    full_name = models.CharField("ФИО", max_length=255, help_text="ФИО Полностью", blank=True, null=True)
+    
+    contractor = models.ForeignKey(
+        Podryad, on_delete=models.SET_NULL, null=True, blank=True, related_name='drivers',
+        verbose_name='Подрядчик'
+    )
+    full_name = models.CharField("ФИО", max_length=255, help_text="ФИО Полностью")
     birth_date = models.DateField("Дата рождения", blank=True, null=True)
     driver_license = models.CharField("Номер водительского удостоверения (ВУ)", max_length=50, blank=True, null=True)
     vy_date = models.DateField("Дата выдачи ВУ", blank=True, null=True)

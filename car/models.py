@@ -21,15 +21,13 @@ class CarMarka(models.Model):
 
 class Car(models.Model):
     is_approved = models.BooleanField("Статус согласования", default=False)
-    organization = models.ForeignKey(
-        Podryad,
-        blank=True,
-        null=True,
-        default=195,
-        on_delete=models.CASCADE,
-        related_name='cars',
-        verbose_name='Организация',
+    contractor = models.ForeignKey(
+        Podryad, on_delete=models.SET_NULL, null=True, blank=True, related_name='cars',
+        verbose_name='Подрядчик'
     )
+    # drivers = models.ManyToManyField(
+    #     'vod.Driver', blank=True, related_name='cars', verbose_name='Водители'
+    # )
     model = models.ForeignKey(
         CarModel,
         on_delete=models.CASCADE,
@@ -44,8 +42,7 @@ class Car(models.Model):
         help_text="Если нету в списке, то добавьте в разделе Марка ТС",
         related_name='marka'
     )
-
-    number = models.CharField("Номер ТС", max_length=20)
+    number = models.CharField("Номер ТС", max_length=20, unique=True)
     sorka = models.CharField("Номер СОРКИ", max_length=20, blank=True, null=True)
     
     number_pr = models.CharField("Номер прицепа", max_length=20, blank=True, null=True)

@@ -2,6 +2,7 @@ from django.contrib import admin # type: ignore
 from django.db.models import Count, Q # type: ignore
 from import_export.admin import ImportExportModelAdmin # type: ignore
 from django.utils.html import format_html # type: ignore
+from django.urls import reverse # type: ignore
 from .models import Driver
 from car.models import Car
 from reestr.models import Registry, Marsh
@@ -119,13 +120,30 @@ class JointRegistry2Inline(ReadOnlyRegistryInline):
         if hasattr(self, 'parent_object') and self.parent_object:
             return qs.filter(driver2=self.parent_object)
         return qs.none()
-    
+
+class CarInline(admin.TabularInline):
+    model = Driver.cars.through
+    extra = 0
+    verbose_name = "Машина"
+    verbose_name_plural = "Машины"
+    readonly_fields = ('car_link',)
+
+    def delete_model(self, request, obj):
+        # Вместо удаления — просто отвязываем от подрядчика
+        obj.car.pk = None
+        obj.save()
+
+    def car_link(self, obj):
+        url = reverse('admin:car_car_change', args=[obj.car.pk])
+        return format_html('<a href="{}" target="_blank">{}</a>', url, obj.car.number)
+    car_link.short_description = "Карточка ТС"
+   
 class DriverModelAdmin(ImportExportModelAdmin):
     resource_class = DriverResource
-    list_display = ("full_name", "solo_trips", "joint_trips", 'cars_count', "birth_date", "phone_1", "driver_license", "snils", "is_approved")
-    search_fields = ("full_name", "phone_1", "is_approved")
-    list_filter = (MarshFilter, SeasonFilter,  'is_approved')
-    inlines = [SoloRegistryInline, JointRegistryInline, JointRegistry2Inline]
+    list_display = ("full_name", 'contractor', "solo_trips", "joint_trips", 'cars_count', "birth_date", "phone_1", "driver_license", "snils", "is_approved")
+    search_fields = ("full_name", "phone_1", 'contractor__org_name')
+    list_filter = (MarshFilter, SeasonFilter,  'is_approved', 'contractor')
+    inlines = [CarInline,SoloRegistryInline, JointRegistryInline, JointRegistry2Inline]
     filter_horizontal = ("cars",)
 
     readonly_fields = ('contractors_stats', 'cars_stats')
