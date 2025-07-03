@@ -81,7 +81,8 @@ class ReadOnlyRegistryInline(admin.TabularInline):
 
     def view_link(self, obj):
         if obj.pk:
-            return format_html('<a href="/admin/reestr/registry/{}/change/" target="_blank">Открыть</a>', obj.pk)
+            url = reverse('admin:reestr_registry_change', args=[obj.pk])
+            return format_html('<a href="{}" target="_blank">Открыть</a>', url)
         return ""
     view_link.short_description = "Реестр"
     

@@ -46,7 +46,7 @@ class Registry(models.Model):
     gsmVO = models.DecimalField("ГСМ ВО", max_digits=10, decimal_places=2, blank=True, null=True)
     gsmRS = models.DecimalField("ГСМ РС", max_digits=10, decimal_places=2, blank=True, null=True)
     comment = models.TextField("Примечание",blank=True, null=True)
-    status = models.CharField("Статус",max_length=50, blank=True, null=True)
+    status = models.CharField("Статус",max_length=500, blank=True, null=True)
 
     def __str__(self):
         return f"Путевой лист {self.numberPL} - {self.driver.full_name}"

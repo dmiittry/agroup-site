@@ -56,7 +56,7 @@ class PodryadAdmin(ImportExportActionModelAdmin):
     # Дополнительные настройки админки
     list_display = ('org_name', 'full_name', 'cars_count')  # Замените на ваши поля
     list_filter = ('org_name',)
-    search_fields = ('org_name',"drivers", "cars")    
+    search_fields = ('org_name',"drivers__full_name", "cars__number")    
     inlines = [CarInline, DriverInline]
     # filter_horizontal = ("drivers", "cars")
     def get_queryset(self, request):

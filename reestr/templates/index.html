@@ -1,0 +1,1181 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}A-Group{% endblock title %}
+
+{% block logo %}href={% static '/img/ag/logo.png' %}{% endblock logo %}
+
+{% block main %}
+
+{% include 'partials/preloader.html' %}
+
+<style>
+   #st-01 {
+      overflow: hidden;
+      background-image: url("{% static '/img/ag/1-1.jpg' %}");
+      width: 100%;  /* Изменено с 1440px */
+      height: 926px;
+      background-size: cover;  /* Добавьте это для корректного отображения фона */
+   }
+   #st-02 {
+      overflow: hidden;
+      background-image: url("{% static '/img/ag/1-2.jpg' %}");
+      width: 100%;  /* Изменено с 1440px */
+      height: 926px;
+      background-size: cover;  /* Добавьте это для корректного отображения фона */
+   }
+   #st-03 {
+      overflow: hidden;
+      background-image: url("{% static '/img/ag/1-3.jpg' %}");
+      width: 100%;  /* Изменено с 1440px */
+      height: 926px;
+      background-size: cover;  /* Добавьте это для корректного отображения фона */
+   }
+
+   #TODO-img-2-1 {
+      width: 370px;
+      height: 480px;
+   }
+   #TODO-img-2-2 {
+      width: 350px;
+      height: 340px;
+   }
+</style>
+<!-- Header Area Start-->
+<header class="header-2 stiky">
+   <div class="container ca-header-bg-2">
+      <div class="row align-items-center">
+         <div class="col-lg-3 col-md-6 col-6">
+            <!-- ca-logo -->
+            <div class="ca-logo">
+               <a href=""><img src="{% static '/img/ag/logo.png' %}" alt=""></a>
+            </div>
+         </div>
+         <div class="col-lg-6 d-none d-lg-block">
+            <!-- ca-main-menu -->
+            <div class="ca-main-menu-2">
+               <nav class="ca-mobile-menu-active-2">
+                  <ul>
+                     <li>
+                        <a href="#">Главная<span></a>
+                     </li>
+                     <li><a href="#uslugi">Услуги</a></li>
+                     <li>
+                        <a href="#">Как мы работаем</a>
+                     </li>
+                     <li>
+                        <a href="#">Партнеры<span></a>
+                     </li>
+                     <li>
+                        <a href="#">Контакты</a>
+                     </li>
+                  </ul>
+               </nav>
+            </div>
+         </div>
+         <div class="col-lg-3 col-md-6 col-6">
+            <!-- ca-btn -->
+            <div class="ca-btn-header text-end d-none d-lg-block">
+               <a href="#" class="ca-btn-primary-22">Оставить заявку<span><i
+                        class="fa-solid fa-arrow-right"></i></span></a>
+            </div>
+
+            <div class="ca-header-action-item d-lg-none text-end">
+               <button type="button" class="ca-offcanvas-toogle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="16" viewBox="0 0 30 16">
+                     <rect x="10" width="20" height="2" fill="currentColor"></rect>
+                     <rect x="5" y="7" width="25" height="2" fill="currentColor"></rect>
+                     <rect x="10" y="14" width="20" height="2" fill="currentColor"></rect>
+                  </svg>
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</header>
+<!-- Header Area End-->
+<!-- offcanvas start -->
+<div class="ca-offcanvas w-bg">
+   <div class="ca-offcanvas-wrapper">
+      <div class="ca-offcanvas-header d-flex justify-content-between align-items-center mb-40">
+         <div class="ca-offcanvas-logo">
+            <a href="#"><img src="{% static '/img/logo/ca-logo2.2.png' %}" alt=""></a>
+         </div>
+         <div class="ca-offcanvas-close">
+            <button class="ca-offcanvas-close-toggle"><i class="fal fa-times"></i></button>
+         </div>
+      </div>
+      <div class="ca-offcanvas-menu-2 mb-40">
+         <nav>
+         </nav>
+      </div>
+      <div class="ca-offcanvas-contact mb-40">
+         <a href="#" class="ca-btn-primary ca-btn-primary-2 theme-bg-2 text-white">Get A Quote<span><i
+                  class="fa-solid fa-arrow-right"></i></span></a>
+      </div>
+      <div class="ca-offcanvas-contact-info mb-40">
+         <h3 class="ca-offcanvas-sm-title">Contact Info</h3>
+         <!-- single item -->
+         <div class="ca-sm-single-item-4 mb-20">
+            <div class="icon">
+               <span>
+                  <i class="fa-solid fa-location-dot"></i>
+               </span>
+            </div>
+            <div class="ca-sm-single-item-4-content">
+               <p><a href="#">55 Street, 2nd block, 3rd Floor
+                     Melbourne, Australia</a></p>
+            </div>
+         </div>
+
+         <!-- single item -->
+         <div class="ca-sm-single-item-4 mb-20">
+            <div class="icon">
+               <span>
+                  <i class="fa-solid fa-phone"></i>
+               </span>
+            </div>
+            <div class="ca-sm-single-item-4-content">
+               <p><a href="tel:+0221234568806">+022 (123) 456 88 06</a></p>
+            </div>
+         </div>
+
+         <!-- single item -->
+         <div class="ca-sm-single-item-4 mb-20">
+            <div class="icon">
+               <span>
+                  <i class="fa-solid fa-envelope"></i>
+               </span>
+            </div>
+            <div class="ca-sm-single-item-4-content">
+               <p><a href="mailto:infocargon@gmail.com">infocargon@gmail.com</a></p>
+            </div>
+         </div>
+      </div>
+      <div class="ca-offcanvas-social mb-40">
+         <h3 class="ca-offcanvas-sm-title">Follow Us</h3>
+         <div class="ca-footer-social ca-footer-social-2">
+            <ul>
+               <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+               <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+               <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+               <li><a href="#"><i class="fa-brands fa-x-twitter"></i></a></li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="ca-offcanvas-overlay"></div>
+<!-- offcanvas end -->
+<!-- main -->
+<main>
+   <!-- slider section start -->
+   <div class="slider-for slider-2-img">
+      <!-- single slider item -->
+      <div class="slider-text slider-2 p-relative z-index-1 pt-208 pb-70 fix"
+         style="background-image: url(/static/img/ag/1-1.jpg);">
+         <div class="ca-slider-2-shape p-absolute shape-2-slider"><img
+               src="{% static '/img/shape/slider-shape-2.1.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-1-slider"><img
+               src="{% static '/img/shape/slider-shape-2.2.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-3-slider"><img
+               src="{% static '/img/shape/ca-black-shpae-2.png' %}" alt=""></div>
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-6 col-md-8 mb-30">
+                  <div class="ca-slider-content-2 p-relative">
+                     <h5 class="ca-section-subtitle subtitle-bg-5 text-white theme-color-2">А-Групп: Логистика без границ
+                     </h5>
+                     <h1 class="ca-slider-heading text-white pt-20 pb-20 ca-text-cap">Проект «Зимник 2025»:<br>Покоряя ледяные трассы
+                        </h1>
+                     <p class="pb-32 slider-sub-content">Миссия выполнена: 200 000 тонн руды доставлены за 100 дней в экстремальных условиях Севера. Посмотрите, как это было, в нашем видеоотчете.</p>
+                     <div class="ca-slider-2-btn d-flex mb-60">
+                        <div class="ca-slider-btn-2">
+                           <a href="#" class="ca-btn-primary-22 mr-16">Подать заявку<span><i
+                                    class="fa-solid fa-arrow-right"></i></span></a>
+                        </div>
+                        <div class="ca-slider-2-video">
+                           <a href="https://www.youtube.com/watch?v=x-RUZeNbqL4"
+                              class="video-play-button-2 popup-video"> <span></span></a>
+                           <div class="ca-slider-video-text-2">
+                              <a href="https://www.youtube.com/watch?v=x-RUZeNbqL4" class="popup-video">Посмотреть видео</a>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="ca-slider-team">
+                        <h3 class="slider-team-title text-white mb-20">Команда, которой доверяют в самых сложных проектах.</h3>
+                        <div class="ca-slider-2-team">
+                           <div class="ca-slider-team-img">
+                              <img src="{% static '/img/ag/team-shape-2.1.png' %}" alt="">
+                           </div>
+                           <div class="ca-slider-team-review">
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span class="re-heading">5.0</span>
+                              <p class="review-text">Наша команда</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- single slider item -->
+      <div class="slider-text slider-2 p-relative z-index-1 pt-208 pb-70 fix"
+         style="background-image: url(/static/img/ag/1-2.jpg);">
+         <div class="ca-slider-2-shape p-absolute shape-2-slider"><img
+               src="{% static '/img/shape/slider-shape-2.1.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-1-slider"><img
+               src="{% static '/img/shape/slider-shape-2.2.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-3-slider"><img
+               src="{% static '/img/shape/ca-black-shpae-2.png' %}" alt=""></div>
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-6 col-md-8 mb-30">
+                  <div class="ca-slider-content-2 p-relative">
+                     <h5 class="ca-section-subtitle subtitle-bg-5 text-white theme-color-2">А-Групп: Логистика без границ
+                     </h5>
+                     <h1 class="ca-slider-heading text-white pt-20 pb-20 ca-text-cap">VOLVO: Характер, закалённый Полярным кругом</h1>
+                     <p class="pb-32 slider-sub-content">Что происходит, когда шведские технологии встречаются с арктической стихией? Реальные истории водителей, которые каждый день проверяют Volvo на прочность. Смотрите наш репортаж с ледяных трасс.</p>
+                     <div class="ca-slider-2-btn d-flex mb-60">
+                        <div class="ca-slider-btn-2">
+                           <a href="#" class="ca-btn-primary-22 mr-16">Подать заявку<span><i
+                                    class="fa-solid fa-arrow-right"></i></span></a>
+                        </div>
+                        <div class="ca-slider-2-video">
+                           <a href="https://www.youtube.com/watch?v=x-RUZeNbqL4"
+                              class="video-play-button-2 popup-video"> <span></span></a>
+                           <div class="ca-slider-video-text-2">
+                              <span> Посмотреть видео</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="ca-slider-team">
+                        <h3 class="slider-team-title text-white mb-20">Команда, которой доверяют в самых сложных проектах.</h3>
+                        <div class="ca-slider-2-team">
+                           <div class="ca-slider-team-img">
+                              <img src="{% static '/img/ag/team-shape-2.1.png' %}" alt="">
+                           </div>
+                           <div class="ca-slider-team-review">
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span class="re-heading">5.0</span>
+                              <p class="review-text">Наша команда</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- single slider item -->
+      <div class="slider-text slider-2 p-relative z-index-1 pt-208 pb-70 fix"
+         style="background-image: url(/static/img/ag/1-3.jpg);">
+         <div class="ca-slider-2-shape p-absolute shape-2-slider"><img
+               src="{% static '/img/shape/slider-shape-2.1.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-1-slider"><img
+               src="{% static '/img/shape/slider-shape-2.2.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-3-slider"><img
+               src="{% static '/img/shape/ca-black-shpae-2.png' %}" alt=""></div>
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-6 col-md-8 mb-30">
+                  <div class="ca-slider-content-2 p-relative">
+                     <h5 class="ca-section-subtitle subtitle-bg-5 text-white theme-color-2">А-Групп: Логистика без границ
+                     </h5>
+                     <h1 class="ca-slider-heading text-white pt-20 pb-20 ca-text-cap">Доставляя тепло.<br>
+                        В любых условиях.</h1>
+                     <p class="pb-32 slider-sub-content">Мы обеспечиваем бесперебойное движение «черного золота».
+                        Узнайте, как наши логистические решения поддерживают энергетическую безопасность и промышленный рост страны.</p>
+                     <div class="ca-slider-2-btn d-flex mb-60">
+                        <div class="ca-slider-btn-2">
+                           <a href="#" class="ca-btn-primary-22 mr-16">Подать заявку<span><i
+                                    class="fa-solid fa-arrow-right"></i></span></a>
+                        </div>
+                        <div class="ca-slider-2-video">
+                           <a href="https://www.youtube.com/watch?v=x-RUZeNbqL4"
+                              class="video-play-button-2 popup-video"> <span></span></a>
+                           <div class="ca-slider-video-text-2">
+                              <span> Посмотреть видео</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="ca-slider-team">
+                        <h3 class="slider-team-title text-white mb-20">Команда, которой доверяют в самых сложных проектах.</h3>
+                        <div class="ca-slider-2-team">
+                           <div class="ca-slider-team-img">
+                              <img src="{% static '/img/ag/team-shape-2.1.png' %}" alt="">
+                           </div>
+                           <div class="ca-slider-team-review">
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span class="re-heading">5.0</span>
+                              <p class="review-text">Наша команда</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- single slider item -->
+      <div class="slider-text slider-2 p-relative z-index-1 pt-208 pb-70 fix"
+         style="background-image: url(/static/img/ag/1-4.jpg);">
+         <div class="ca-slider-2-shape p-absolute shape-2-slider"><img
+               src="{% static '/img/shape/slider-shape-2.1.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-1-slider"><img
+               src="{% static '/img/shape/slider-shape-2.2.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-3-slider"><img
+               src="{% static '/img/shape/ca-black-shpae-2.png' %}" alt=""></div>
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-6 col-md-8 mb-30">
+                  <div class="ca-slider-content-2 p-relative">
+                     <h5 class="ca-section-subtitle subtitle-bg-5 text-white theme-color-2">А-Групп: Логистика без границ
+                     </h5>
+                     <h1 class="ca-slider-heading text-white pt-20 pb-20 ca-text-cap">Опыт, проверенный Арктикой</h1>
+                     <p class="pb-32 slider-sub-content">С 2015 года «А-Групп» прокладывает маршруты там, где другие видят лишь преграды. 
+                        Мы — ваш эксперт по логистике в экстремальных условиях Крайнего Севера.</p>
+                     <div class="ca-slider-2-btn d-flex mb-60">
+                        <div class="ca-slider-btn-2">
+                           <a href="#" class="ca-btn-primary-22 mr-16">Подать заявку<span><i
+                                    class="fa-solid fa-arrow-right"></i></span></a>
+                        </div>
+                        <div class="ca-slider-2-video">
+                           <a href="https://www.youtube.com/watch?v=x-RUZeNbqL4"
+                              class="video-play-button-2 popup-video"> <span></span></a>
+                           <div class="ca-slider-video-text-2">
+                              <span> Посмотреть видео</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="ca-slider-team">
+                        <h3 class="slider-team-title text-white mb-20">Команда, которой доверяют в самых сложных проектах.</h3>
+                        <div class="ca-slider-2-team">
+                           <div class="ca-slider-team-img">
+                              <img src="{% static '/img/ag/team-shape-2.1.png' %}" alt="">
+                           </div>
+                           <div class="ca-slider-team-review">
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span><i class="fa fa-star"></i></span>
+                              <span class="re-heading">5.0</span>
+                              <p class="review-text">Наша команда</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="slider-nav sm-slider-img d-none d-md-block">
+      <div><img src="{% static '/img/ag/1-1-1.jpg' %}" alt="Фотография 1"></div>
+      <div><img src="{% static '/img/ag/1-2-1.jpg' %}" alt="Фотография 2"></div>
+      <div><img src="{% static '/img/ag/1-3-1.jpg' %}" alt="Фотография 3"></div>
+      <div><img src="{% static '/img/ag/1-4-1.jpg' %}" alt="Фотография 4"></div>
+      <!-- More thumbnails -->
+   </div>
+   <!-- slider section end -->
+   <!-- about section start -->
+   <section class="ca-about-2 pt-100 pb-70">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-6 mb-30">
+               <div class="ca-about-content-2 ca-sec-content-2 mb-40 aos-init aos-animate" data-aos="fade-down"
+                  data-aos-duration="800">
+                  <h5 class="ca-section-subtitle subtitle-bg-4 p-relative theme-color-2">Почему выбирают лидеры отрасли</h5>
+                  <h2 class="ca-about-title theme-black-2 fnw-600 pt-16">А-ГРУПП — движущая сила логистики Арктики и Севера</h2>
+                  <p class="pt-16">Мы открываем новые маршруты там, где другие видят лишь преграды. 
+                     Ваш груз — под нашей защитой, в любых условиях и на любых расстояниях. Надёжность, инновации и лидерство для самых смелых проектов.
+               </div>
+               <div class="row">
+                  <div class="col-lg-6 col-md-6">
+                     <div class="ca-choose-item p-relative aos-init aos-animate" data-aos="fade-up"
+                        data-aos-duration="1000">
+                        <h4 class="ca-title fnw-600 theme-black-2 pb-16">Команда, которая меняет правила игры</h4>
+                        <p>Наши профессионалы — источник энергии, идей и побед. Вместе мы не просто преодолеваем вызовы — мы задаём стандарты отрасли и достигаем невозможного.</p>
+                     </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6">
+                     <div class="ca-choose-item p-relative aos-init aos-animate" data-aos="fade-up"
+                        data-aos-duration="1200">
+                        <h4 class="ca-title fnw-600 theme-black-2 pb-16">Доверие, заслуженное делом и временем</h4>
+                        <p>Выбор лидеров рынка, признание партнёров и гордость коллектива — вот наш главный капитал. С нами работают те, кто ценит ответственность и безупречный результат.</p>
+                     </div>
+                  </div>
+               </div>
+               {% comment %} <div class="ca-about-2-btn d-flex align-items-center aos-init aos-animate" data-aos="fade-right"
+                  data-aos-duration="1400">
+                  <a href="#" class="ca-btn-primary-22">Learn More<span><i
+                           class="fa-solid fa-arrow-right"></i></span></a>
+                  <div class="ca-about-2-contact d-flex align-items-center">
+                     <div class="ca-about-2-icon">
+                        <img src="{% static '/img/icon/about-2.svg' %}" alt="">
+                     </div>
+                     <div class="ca-about-2-content">
+                        <p>Call Us Now</p>
+                        <a href="tel:1234567890" class="ca-about-2-num">123-456-7890</a>
+                     </div>
+                  </div>
+               </div> {% endcomment %}
+            </div>
+            <div class="col-lg-6 mb-30">
+               <div class="ca-about-2-img p-relative z-index-1">
+                  <img id="TODO-img-2-1" class="aos-init aos-animate" data-aos="fade-left" data-aos-duration="800"
+                     src="{% static '/img/ag/2-1.jpg' %}" alt="">
+                  <div class="ca-about-2-overlay p-absolute aos-init aos-animate" data-aos="fade-left"
+                     data-aos-duration="1000">
+                     <img id="TODO-img-2-2" src="{% static '/img/ag/2-2.jpg' %}" alt="">
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- about section end -->
+   <!-- service  section start -->
+   {% comment %} Удалил сервис {% endcomment %}
+   <!-- service  section end -->
+   <!-- portfolio section start -->
+   <section id="uslugi" class="ca-portfilo-2 pt-100 pb-70">
+      <div class="container">
+         <div class="ca-portfolio-content-3 ca-sec-content-3 text-center mb-60 aos-init aos-animate" data-aos="fade-up"
+            data-aos-duration="800">
+            <h5 class="ca-section-subtitle subtitle-bg-6 p-relative theme-color-3 br-50">Что мы предлагаем</h5>
+            <h2 class="ca-section-title theme-black-3 fnw-600 pt-16">Преодолевая границы и расстояния</h2>
+            <p class="pt-16"> Северные маршруты и региональные перевозки — мы надёжно доставляем грузы любой сложности и всегда держим слово</p>
+         </div>
+
+         <div class="row">
+
+            <!-- single project item -->
+            <div class="col-lg-4 col-md-6">
+               <div class="ca-single-pro-img-3 mb-30">
+                  <img class="w-100" src="{% static '/img/ag/u1.jpeg' %}" alt="">
+                  <div class="ca-project-hover-item1">
+                     <a href="#"
+                        class="ca-project-hover-item1-icon">
+                        <span><img src="{% static '/img/icon/ca-arow-3.1.svg' %}" alt=""></span>
+                     </a>
+                     <div class="ca-project-hover-item-content">
+                        <h4 class="ca-project-hov-sub-title">Грузовые перевозки</h4>
+                        <h3 class="ca-project-hov-title"><a
+                              href="#">Транспортировка сыпучих грузов</a>
+                        </h3>
+                        <p>Осуществляем перевозку песка, щебня, угля, руды и других сыпучих материалов по сложным маршрутам Арктики и Крайнего Севера. 
+                           Гарантируем сохранность, точные сроки и индивидуальный подход к каждому проекту.</p>
+                     </div>
+                  </div>
+               </div>
+            </div> 
+
+            <!-- single project item -->
+            <div class="col-lg-4 col-md-6">
+               <div class="ca-single-pro-img-3 mb-30">
+                  <img class="w-100" src="{% static '/img/ag/u2.jpg' %}" alt="">
+                  <div class="ca-project-hover-item1">
+                     <a href="#"
+                        class="ca-project-hover-item1-icon">
+                        <span><img src="{% static '/img/icon/ca-arow-3.1.svg' %}" alt=""></span>
+                     </a>
+                     <div class="ca-project-hover-item-content">
+                        <h4 class="ca-project-hov-sub-title">Энергетические грузы</h4>
+                        <h3 class="ca-project-hov-title"><a
+                              href="#">Доставка ГСМ и топлива</a>
+                        </h3>
+                        <p>Надёжно и безопасно доставляем горюче-смазочные материалы, дизельное топливо и бензин в отдалённые регионы. 
+                           Используем специализированный автопарк и строго соблюдаем все требования по транспортировке опасных грузов.</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <!-- single project item -->
+            <div class="col-lg-4 col-md-6">
+               <div class="ca-single-pro-img-3 mb-30">
+                  <img class="w-100" src="{% static '/img/ag/u3.jpg' %}" alt="">
+                  <div class="ca-project-hover-item1">
+                     <a href="#"
+                        class="ca-project-hover-item1-icon">
+                        <span><img src="{% static '/img/icon/ca-arow-3.1.svg' %}" alt=""></span>
+                     </a>
+                     <div class="ca-project-hover-item-content">
+                        <h4 class="ca-project-hov-sub-title">Спецперевозки</h4>
+                        <h3 class="ca-project-hov-title"><a
+                              href="#">Траловые перевозки и доставка крупногабаритных грузов</a>
+                        </h3>
+                        <p>Перевозим тяжёлую технику, негабаритное оборудование, строительные конструкции и ТМЦ 
+                           (товарно-материальные ценности) по сложным маршрутам. Оформляем все разрешения и обеспечиваем сопровождение на каждом этапе.</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <!-- single project item -->
+            <div class="col-lg-6 col-md-6">
+               <div class="ca-single-pro-img-3 mb-30">
+                  <img class="w-100 pro-lar-img-1" src="{% static '/img/ag/u4.jpg' %}" alt="">
+                  <div class="ca-project-hover-item1">
+                     <a href="#"
+                        class="ca-project-hover-item1-icon">
+                        <span><img src="{% static '/img/icon/ca-arow-3.1.svg' %}" alt=""></span>
+                     </a>
+                     <div class="ca-project-hover-item-content">
+                        <h4 class="ca-project-hov-sub-title">Спецтехника</h4>
+                        <h3 class="ca-project-hov-title"><a
+                              href="#">Услуги спецтехники</a>
+                        </h3>
+                        <p>Предоставляем широкий спектр специализированной техники: автокраны, экскаваторы, бульдозеры, погрузчики и 
+                           другую технику для строительства, добычи и логистики. Оперативно подбираем решения под задачи любого масштаба.</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <!-- single project item -->
+            <div class="col-lg-6 col-md-6">
+               <div class="ca-single-pro-img-3 mb-30">
+                  <img class="w-100 pro-lar-img-1" src="{% static '/img/ag/u5.jpg' %}" alt="">
+                  <div class="ca-project-hover-item1">
+                     <a href="#"
+                        class="ca-project-hover-item1-icon">
+                        <span><img src="{% static '/img/icon/ca-arow-3.1.svg' %}" alt=""></span>
+                     </a>
+                     <div class="ca-project-hover-item-content">
+                        <h4 class="ca-project-hov-sub-title">Хранение грузов</h4>
+                        <h3 class="ca-project-hov-title"><a
+                              href="#">Аренда складских помещений</a>
+                        </h3>
+                        <p>Предлагаем в аренду современные складские помещения различной площади для хранения любых видов грузов. 
+                           Обеспечиваем безопасность, оперативный доступ и полный комплекс складских услуг. Гибкие условия размещения — для вашего бизнеса и логистики любого масштаба.</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   {% comment %} </section>
+   <!-- portfolio section end -->
+   <!-- testimonial section start -->
+   <section class="ca-testimonial2 theme-black-bg-2 pt-100 pb-70">
+      <div class="container">
+         <div class="row align-items-center">
+            <div class="col-lg-6">
+               <div class="ca-testimonial-content ca-sec-content-2 mb-60 aos-init aos-animate" data-aos="fade-right"
+                  data-aos-duration="800">
+                  <h5 class="ca-section-subtitle subtitle-bg-5 text-white p-relative theme-color-2">Our Testimonial</h5>
+                  <h2 class="ca-about-title text-white fnw-600 pt-16 ca-text-cap">Testimonials from Our<br> Valued
+                     Customers</h2>
+               </div>
+            </div>
+            <div class="col-lg-6">
+               <div class="ca-about-desc mb-60 aos-init aos-animate" data-aos="fade-left" data-aos-duration="1000">
+                  <p class="text-white">Our clients satisfaction is the cornerstone of our success at Cargon<br> We take
+                     immense pride in the positive feedback we receive from<br> businesses worldwide who rely on our
+                     expertise for their.</p>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="ca-testimonials">
+               <div class="ca-testimonial-2">
+                  <!-- testimonial-item -->
+                  <div class="ca-testimonial-card">
+                     <div class="ca-test-2-icon">
+                        <span><img src="{% static '/img/icon/ca-test-2-qu.svg' %}" alt=""></span>
+                     </div>
+                     <div class="ca-test-2-rating">
+                        <div class="ca-ratings">
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                        </div>
+                        <div class="ca-rating-num">
+                           <h4 class="ca-rating-title-2">(5) <span>Rating</span></h4>
+                        </div>
+                     </div>
+                     <div class="ca-test-2-content">
+                        <p>“Our clients' satisfaction is the cornerstone of our success. We take immense pride in the
+                           positive feedback we receive from businesses across various industries.”</p>
+                     </div>
+                     <div class="ca-test-2-user">
+                        <div class="ca-test-2-user-img">
+                           <span><img src="{% static '/img/testimonial/testimonial-2.1.png' %}" alt=""></span>
+                        </div>
+                        <div class="ca-test-2-user-name">
+                           <h4 class="test-2-title">Sunil Narine</h4>
+                           <span>Happy Client</span>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- testimonial-item -->
+                  <div class="ca-testimonial-card">
+                     <div class="ca-test-2-icon">
+                        <span><img src="{% static '/img/icon/ca-test-2-qu.svg' %}" alt=""></span>
+                     </div>
+                     <div class="ca-test-2-rating">
+                        <div class="ca-ratings">
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                        </div>
+                        <div class="ca-rating-num">
+                           <h4 class="ca-rating-title-2">(5) <span>Rating</span></h4>
+                        </div>
+                     </div>
+                     <div class="ca-test-2-content">
+                        <p>“Our clients' satisfaction is the cornerstone of our success. We take immense pride in the
+                           positive feedback we receive from businesses across various industries.”</p>
+                     </div>
+                     <div class="ca-test-2-user">
+                        <div class="ca-test-2-user-img">
+                           <span><img src="{% static '/img/testimonial/testimonial-2.1.png' %}" alt=""></span>
+                        </div>
+                        <div class="ca-test-2-user-name">
+                           <h4 class="test-2-title">Sunil Narine</h4>
+                           <span>Happy Client</span>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- testimonial-item -->
+                  <div class="ca-testimonial-card">
+                     <div class="ca-test-2-icon">
+                        <span><img src="{% static '/img/icon/ca-test-2-qu.svg' %}" alt=""></span>
+                     </div>
+                     <div class="ca-test-2-rating">
+                        <div class="ca-ratings">
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                        </div>
+                        <div class="ca-rating-num">
+                           <h4 class="ca-rating-title-2">(5) <span>Rating</span></h4>
+                        </div>
+                     </div>
+                     <div class="ca-test-2-content">
+                        <p>“Our clients' satisfaction is the cornerstone of our success. We take immense pride in the
+                           positive feedback we receive from businesses across various industries.”</p>
+                     </div>
+                     <div class="ca-test-2-user">
+                        <div class="ca-test-2-user-img">
+                           <span><img src="{% static '/img/testimonial/testimonial-2.1.png' %}" alt=""></span>
+                        </div>
+                        <div class="ca-test-2-user-name">
+                           <h4 class="test-2-title">Sunil Narine</h4>
+                           <span>Happy Client</span>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- testimonial-item -->
+                  <div class="ca-testimonial-card">
+                     <div class="ca-test-2-icon">
+                        <span><img src="{% static '/img/icon/ca-test-2-qu.svg' %}" alt=""></span>
+                     </div>
+                     <div class="ca-test-2-rating">
+                        <div class="ca-ratings">
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                        </div>
+                        <div class="ca-rating-num">
+                           <h4 class="ca-rating-title-2">(5) <span>Rating</span></h4>
+                        </div>
+                     </div>
+                     <div class="ca-test-2-content">
+                        <p>“Our clients' satisfaction is the cornerstone of our success. We take immense pride in the
+                           positive feedback we receive from businesses across various industries.”</p>
+                     </div>
+                     <div class="ca-test-2-user">
+                        <div class="ca-test-2-user-img">
+                           <span><img src="{% static '/img/testimonial/testimonial-2.1.png' %}" alt=""></span>
+                        </div>
+                        <div class="ca-test-2-user-name">
+                           <h4 class="test-2-title">Sunil Narine</h4>
+                           <span>Happy Client</span>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- testimonial-item -->
+                  <div class="ca-testimonial-card">
+                     <div class="ca-test-2-icon">
+                        <span><img src="{% static '/img/icon/ca-test-2-qu.svg' %}" alt=""></span>
+                     </div>
+                     <div class="ca-test-2-rating">
+                        <div class="ca-ratings">
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                           <span><i class="fa-solid fa-star"></i></span>
+                        </div>
+                        <div class="ca-rating-num">
+                           <h4 class="ca-rating-title-2">(5) <span>Rating</span></h4>
+                        </div>
+                     </div>
+                     <div class="ca-test-2-content">
+                        <p>“Our clients' satisfaction is the cornerstone of our success. We take immense pride in the
+                           positive feedback we receive from businesses across various industries.”</p>
+                     </div>
+                     <div class="ca-test-2-user">
+                        <div class="ca-test-2-user-img">
+                           <span><img src="{% static '/img/testimonial/testimonial-2.1.png' %}" alt=""></span>
+                        </div>
+                        <div class="ca-test-2-user-name">
+                           <h4 class="test-2-title">Sunil Narine</h4>
+                           <span>Happy Client</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- testimonial section end -->
+   <!-- faq-section-start -->
+   <section class="ca-faq-area pt-100 pb-70">
+      <div class="container">
+         <div class="row align-items-center">
+            <div class="col-lg-5 mb-30 aos-init aos-animate" data-aos="zoom-out" data-aos-duration="800">
+               <div class="ca-faq-content ca-sec-content-2">
+                  <h5 class="ca-section-subtitle subtitle-bg-4 p-relative theme-color-2">Asked Questions</h5>
+                  <h2 class="ca-about-title theme-black-2 fnw-600 pt-16 ca-text-cap">Everything You Need to Know Help &
+                     Support</h2>
+                  <p class="pt-22 pb-32">Our clients satisfaction is the cornerstone of our success at Cargon<br> We
+                     take immense pride in the positive feedback we receive from businesses worldwide who rely on our
+                     expertise for their.</p>
+               </div>
+               <div class="ca-faq-img-2 mr-50">
+                  <img class="w-100" src="{% static '/img/faq/ca-faq-2.1.png' %}" alt="">
+               </div>
+            </div>
+            <div class="col-lg-7 mb-30">
+               <div class="ca-acordion-area ml-50 aos-init aos-animate" data-aos="zoom-out-down"
+                  data-aos-duration="1000">
+                  <div class="accordion" id="accordionExample">
+                     <!-- single accordion item -->
+                     <div class="ca-accordion-item mb-24">
+                        <h2 class="ca-accordion-header" id="headingTwo">
+                           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                              What is your policy on damaged or lost goods?
+                           </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                           data-bs-parent="#accordionExample">
+                           <div class="ca-accordion-body">
+                              <p>That's why we've compiled a list of frequently asked questions to help you get the <br>
+                                 answers you need quickly and easily. Whether you're curious about our range of<br>
+                                 services, need information on tracking your shipment, or want to understand.</p>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- single accordion item -->
+                     <div class="ca-accordion-item mb-24">
+                        <h2 class="ca-accordion-header" id="headingOne">
+                           <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              What should I do if my shipment is delayed?
+                           </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                           data-bs-parent="#accordionExample">
+                           <div class="ca-accordion-body">
+                              <p>That's why we've compiled a list of frequently asked questions to help you get the <br>
+                                 answers you need quickly and easily. Whether you're curious about our range of<br>
+                                 services, need information on tracking your shipment, or want to understand.</p>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- single accordion item -->
+                     <div class="ca-accordion-item mb-24">
+                        <h2 class="ca-accordion-header" id="headingThree">
+                           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                              Can you handle oversized or special cargo?
+                           </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                           data-bs-parent="#accordionExample">
+                           <div class="ca-accordion-body">
+                              <p>That's why we've compiled a list of frequently asked questions to help you get the <br>
+                                 answers you need quickly and easily. Whether you're curious about our range of<br>
+                                 services, need information on tracking your shipment, or want to understand.</p>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- single accordion item -->
+                     <div class="ca-accordion-item mb-24">
+                        <h2 class="ca-accordion-header" id="headingFour">
+                           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                              What types of goods can you transport?
+                           </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                           data-bs-parent="#accordionExample">
+                           <div class="ca-accordion-body">
+                              <p>That's why we've compiled a list of frequently asked questions to help you get the <br>
+                                 answers you need quickly and easily. Whether you're curious about our range of<br>
+                                 services, need information on tracking your shipment, or want to understand.</p>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- single accordion item -->
+                     <div class="ca-accordion-item mb-24">
+                        <h2 class="ca-accordion-header" id="headingFive">
+                           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                              How can I get a quote for my shipment?
+                           </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                           data-bs-parent="#accordionExample">
+                           <div class="ca-accordion-body">
+                              <p>That's why we've compiled a list of frequently asked questions to help you get the <br>
+                                 answers you need quickly and easily. Whether you're curious about our range of<br>
+                                 services, need information on tracking your shipment, or want to understand.</p>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- single accordion item -->
+                     <div class="ca-accordion-item">
+                        <h2 class="ca-accordion-header" id="headingSix">
+                           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                              How do you ensure the safety and security of my goods?
+                           </button>
+                        </h2>
+                        <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
+                           data-bs-parent="#accordionExample">
+                           <div class="ca-accordion-body">
+                              <p>That's why we've compiled a list of frequently asked questions to help you get the <br>
+                                 answers you need quickly and easily. Whether you're curious about our range of<br>
+                                 services, need information on tracking your shipment, or want to understand.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- faq-section-End -->
+   <!-- contact-section start -->
+   <section class="ca-contact-area-2 p-relative z-index-1 fix pt-100 pb-70"
+      style="background-image: url(/static/img/contact/contact-bg-2.1.png);">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-6 mb-30">
+               <div class="ca-contact-from ca-contact-from-2 off-wh aos-init aos-animate" data-aos="fade-right"
+                  data-aos-duration="800">
+                  <div class="ca-contact-content-2">
+                     <h4 class="ca-contact-title-2 theme-black-2 fnw-600">Send Us A Message</h4>
+                     <p class="pt-16 pb-24">Our response time is within 30 minutes during business hours</p>
+                  </div>
+                  <form action="#">
+                     <div class="row">
+                        <div class="col-md-6 mb-20">
+                           <input type="text" placeholder="First Name">
+                        </div>
+                        <div class="col-md-6 mb-20">
+                           <input type="text" placeholder="Last Name">
+                        </div>
+                        <div class="col-md-6 mb-20">
+                           <input type="tel" placeholder="Phone Number">
+                        </div>
+                        <div class="col-md-6 mb-20">
+                           <input type="email" placeholder="Email Address">
+                        </div>
+                        <div class="col-md-12 mb-20">
+                           <select class="nice-select wide ca-select">
+                              <option data-display="Service Type">Nothing</option>
+                              <option value="1">01</option>
+                              <option value="2">02</option>
+                              <option value="3">03</option>
+                              <option value="4">04</option>
+                           </select>
+                        </div>
+                        <div class="col-md-12 mb-20">
+                           <textarea name="message" id="mesage" placeholder="Message"></textarea>
+                        </div>
+                        <div class="submit-btn">
+
+                           <button class="ca-btn-primary-22" type="submit" value="submit"> Submit Now <span><i
+                                    class="fa-solid fa-arrow-right"></i></span></button>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+            <div class="col-lg-6 mb-30 d-none d-lg-block">
+               <div class="ca-location-area2 p-relative z-index-1 aos-init aos-animate" data-aos="fade-left"
+                  data-aos-duration="1000">
+                  <!-- single item -->
+                  <div class="ca-location-item p-absolute ca-lca-1">
+                     <img src="{% static '/img/contact/ca-man2.1.png' %}" alt="">
+                     <div class="ca-top-lc">
+                        <img src="{% static '/img/icon/ca-lc-2.1.svg' %}" alt="">
+                     </div>
+                     <div class="ca-lc-box">
+                        <p>198 West 21th Street,<br>New York NY City 1010</p>
+                     </div>
+                  </div>
+                  <!-- single item -->
+                  <div class="ca-location-item p-absolute ca-lca-2">
+                     <img src="{% static '/img/contact/ca-man2.1.png' %}" alt="">
+                     <div class="ca-top-lc">
+                        <img src="{% static '/img/icon/ca-lc-2.1.svg' %}" alt="">
+                     </div>
+                     <div class="ca-lc-box">
+                        <p>198 West 21th Street,<br>New York NY City 1010</p>
+                     </div>
+                  </div>
+                  <!-- single item -->
+                  <div class="ca-location-item p-absolute ca-lca-3">
+                     <img src="{% static '/img/contact/ca-man2.3.png' %}" alt="">
+                     <div class="ca-top-lc">
+                        <img src="{% static '/img/icon/ca-lc-2.1.svg' %}" alt="">
+                     </div>
+                     <div class="ca-lc-box">
+                        <p>198 West 21th Street,<br>New York NY City 1010</p>
+                     </div>
+                  </div>
+                  <!-- single item -->
+                  <div class="ca-location-item p-absolute ca-lca-4">
+                     <img src="{% static '/img/contact/ca-man2.4.png' %}" alt="">
+                     <div class="ca-top-lc">
+                        <img src="{% static '/img/icon/ca-lc-2.1.svg' %}" alt="">
+                     </div>
+                     <div class="ca-lc-box">
+                        <p>198 West 21th Street,<br>New York NY City 1010</p>
+                     </div>
+                  </div>
+                  <!-- single item -->
+                  <div class="ca-location-item p-absolute ca-lca-5">
+                     <img src="{% static '/img/contact/ca-man2.5.png' %}" alt="">
+                     <div class="ca-top-lc">
+                        <img src="{% static '/img/icon/ca-lc-2.1.svg' %}" alt="">
+                     </div>
+                     <div class="ca-lc-box">
+                        <p>198 West 21th Street,<br>New York NY City 1010</p>
+                     </div>
+                  </div>
+                  <!-- single item -->
+                  <div class="ca-location-item p-absolute ca-lca-6">
+                     <img src="{% static '/img/contact/ca-man2.6.png' %}" alt="">
+                     <div class="ca-top-lc">
+                        <img src="{% static '/img/icon/ca-lc-2.1.svg' %}" alt="">
+                     </div>
+                     <div class="ca-lc-box">
+                        <p>198 West 21th Street,<br>New York NY City 1010</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- contact-section end -->
+   <!-- blog section start -->
+   <section class="ca-blog pt-100 pb-70">
+      <div class="container">
+         <div class="ca-blog-content ca-sec-content-2 text-center mb-60 aos-init aos-animate" data-aos="fade-up"
+            data-aos-duration="800">
+            <h5 class="ca-section-subtitle subtitle-bg-4 p-relative theme-color-2">Our Blog</h5>
+            <h2 class="ca-section-title theme-black-2 fnw-600 pt-16">Reliable Freight Forwarding Services</h2>
+            <p class="pt-16">Explore the unique challenges of e-commerce logistics and how to overcome them. Find out
+               how to <br> handle high order volumes, ensure fast delivery, & provide exceptional customer service.</p>
+         </div>
+         <div class="row">
+            <!-- single-blog-item -->
+            <div class="col-lg-6 col-md-6">
+               <div
+                  class="ca-team-box ca-blog-box-2 cream-bg-2 br-7 fix p-relative z-index-1 d-flex mb-30 aos-init aos-animate"
+                  data-aos="fade-right" data-aos-duration="800">
+                  <div class="ca-team-img ca-blogimg-2">
+                     <a href="#"> <img class="" src="{% static '/img/blog/ca-blog-2.1.png' %}"
+                           alt=""></a>
+                  </div>
+                  <div class="ca-blog-box-content ca-blog-box-content-2">
+                     <div class="ca-b-meta ca-b-meta-2">
+                        <!-- blog meta box -->
+                        <a href="#" class="ca-blog-meta ca-blog-meta-2">
+                           <div class="ca-meta-icon">
+                              <span><img src="{% static '/img/icon/ca-user2.1.svg' %}" alt=""></span>
+                           </div>
+                           <div class="ca-meta-title ca-meta-title-2">
+                              <span>Henry Nicolls</span>
+                           </div>
+                        </a>
+                        <!-- blog meta box -->
+                        <a href="#" class="ca-blog-meta ca-blog-meta-2">
+                           <div class="ca-meta-icon">
+                              <span><img src="{% static '/img/icon/ca-calender2.1.svg' %}" alt=""></span>
+                           </div>
+                           <div class="ca-meta-title ca-meta-title-2">
+                              <span>March 05, 2024</span>
+                           </div>
+                        </a>
+                     </div>
+                     <h4 class="ca-blog-title fnw-600"><a href="#">Maximizing Efficiency in Supply <br> Chain
+                           Management</a></h4>
+                     <p>From AI and automation to sustainability <br> practices, learn how these innovations.</p>
+                     <div class="blog-rearmore">
+                        <a href="#" class="read-more">Read More <span><i
+                                 class="fa-solid fa-angle-right"></i></span></a>
+                     </div>
+                  </div>
+               </div>
+               <!-- single blog item -->
+               <div
+                  class="ca-team-box ca-blog-box-2 cream-bg-2 br-7 fix p-relative z-index-1 d-flex mb-30 aos-init aos-animate"
+                  data-aos="fade-right" data-aos-duration="1000">
+                  <div class="ca-team-img ca-blogimg-2">
+                     <a href="#"><img class="" src="{% static '/img/blog/ca-blog-2.2.png' %}" alt=""></a>
+                  </div>
+                  <div class="ca-blog-box-content ca-blog-box-content-2">
+                     <div class="ca-b-meta ca-b-meta-2">
+                        <!-- blog meta box -->
+                        <a href="#" class="ca-blog-meta ca-blog-meta-2">
+                           <div class="ca-meta-icon">
+                              <span><img src="{% static '/img/icon/ca-user2.1.svg' %}" alt=""></span>
+                           </div>
+                           <div class="ca-meta-title ca-meta-title-2">
+                              <span>Henry Nicolls</span>
+                           </div>
+                        </a>
+                        <!-- blog meta box -->
+                        <a href="#" class="ca-blog-meta ca-blog-meta-2">
+                           <div class="ca-meta-icon">
+                              <span><img src="{% static '/img/icon/ca-calender2.1.svg' %}" alt=""></span>
+                           </div>
+                           <div class="ca-meta-title ca-meta-title-2">
+                              <span>March 05, 2024</span>
+                           </div>
+                        </a>
+                     </div>
+                     <h4 class="ca-blog-title fnw-600"><a href="#">How Technology is Revolutionizing <br>the Logistics
+                           Industry</a></h4>
+                     <p>Explore how innovations like IoT, blockchain,<br> and big data analytics are revolutionizing.
+                     </p>
+                     <div class="blog-rearmore">
+                        <a href="#" class="read-more">Read More <span><i
+                                 class="fa-solid fa-angle-right"></i></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- single-blog-item -->
+            <div class="col-lg-6 col-md-6">
+               <div
+                  class="ca-team-box ca-blog-box-2 cream-bg-2 br-7 fix p-relative z-index-1 mb-30 aos-init aos-animate"
+                  data-aos="fade-left" data-aos-duration="1200">
+                  <div class="ca-team-img ca-blogimg-2 ca-lar-img-2">
+                     <a href="#"> <img class="w-100" src="{% static '/img/blog/ca-blog-2.3.png' %}"
+                           alt=""></a>
+                  </div>
+                  <div class="ca-blog-box-content ca-blog-box-content-2">
+                     <div class="ca-b-meta ca-b-meta-2">
+                        <!-- blog meta box -->
+                        <a href="#" class="ca-blog-meta ca-blog-meta-2">
+                           <div class="ca-meta-icon">
+                              <span><img src="{% static '/img/icon/ca-user2.1.svg' %}" alt=""></span>
+                           </div>
+                           <div class="ca-meta-title ca-meta-title-2">
+                              <span>Henry Nicolls</span>
+                           </div>
+                        </a>
+                        <!-- blog meta box -->
+                        <a href="#" class="ca-blog-meta ca-blog-meta-2">
+                           <div class="ca-meta-icon">
+                              <span><img src="{% static '/img/icon/ca-calender2.1.svg' %}" alt=""></span>
+                           </div>
+                           <div class="ca-meta-title ca-meta-title-2">
+                              <span>March 05, 2024</span>
+                           </div>
+                        </a>
+                     </div>
+                     <h4 class="ca-blog-title fnw-600"><a href="#">Effective Warehouse Management: Best Practices
+                           and<br> Strategies Eco-Friendly Practices for Your Business</a></h4>
+                     <p>Gain insights into effective warehouse management strategies that <br>maximize space, improve
+                        accuracy, and boost productivity.</p>
+                     <div class="blog-rearmore">
+                        <a href="#" class="read-more">Read More <span><i
+                                 class="fa-solid fa-angle-right"></i></span></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- blog section end -->
+   <!-- cta section start -->
+   <div class="ca-cta-area-2 p-relative z-index-1 fix">
+      <div class="cta-shape-2 c-shape-1 p-absolute">
+         <img src="{% static '/img/shape/cat-shape-2.1.png' %}" alt="">
+      </div>
+      <div class="container">
+         <div class="row align-items-center">
+            <div class="col-lg-12">
+               <div class="ca-cta-2 theme-black-bg-2 fix">
+                  <div class="row">
+                     <div class="col-lg-7 mb-30">
+                        <div class="ca-cta-content aos-init aos-animate" data-aos="fade-up" data-aos-duration="800">
+                           <h2 class="ca-section-title cta-title-1 text-white fnw-700 pb-32 ca-text-cap">Join Us Today
+                              And let Us Help <br> You To Grow Your Business.</h2>
+                           <div class="ca-btn-cta-2">
+                              <a href="#" class="ca-btn-primary-22">Get Started<span><i
+                                       class="fa-solid fa-arrow-right"></i></span></a>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-lg-5 mb-30">
+                        <div class="cta-shape-2 c-shape-2 p-absolute aos-init aos-animate" data-aos="fade-down"
+                           data-aos-duration="800">
+                           <img src="{% static '/img/about/ca-cta-2.1.png' %}" alt="">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- cta end --> {% endcomment %}
+</main>
+
+{% include 'partials/footer.html' %}
+
+<!-- scroll top -->
+<button id="topBtn2"><i class="fa-solid fa-arrow-up"></i></button>
+
+{% endblock main %}
