@@ -99,7 +99,7 @@ a:focus {
     border-radius: 50px;
 }
 .b-bottom{
-    border-bottom: 1px solid #E8D8D0;
+    border-bottom: 1px solid #FFF;
 }
 
 .ca-text-cap{
@@ -142,7 +142,7 @@ a:focus {
     background: #FFF2EC;
 }
 .subtitle-bg-2{
-    background: #FAE9E1;
+    background: #22356F;
 }
 .subtitle-bg-3{
     background: #32221A;
@@ -154,7 +154,7 @@ a:focus {
     background: #22356F;
 }
 .subtitle-bg-6{
-    background: #E7EDF6;
+    /* background: #464950; */
 }
 .subtitle-bg-7{
     background: #191F27;
@@ -199,7 +199,7 @@ a:focus {
 }
 
 .theme-color-1{
-    color: #FF5E14;
+    color: #fff;
 }
 .theme-bg-1{
     background: #FF5E14;
@@ -211,10 +211,10 @@ a:focus {
     background: #23272B;
 }
 .theme-color-3{
-    color: #0E47A1;
+    color: #fff;
 }
 .theme-bg-3{
-    background: #0E47A1;
+    background: #464950;
 }
 
 .theme-bg-4{

@@ -2291,12 +2291,30 @@ header.header-4 {
 ============================================ */
 .ca-section-subtitle {
     display: inline-block;
-    font-size: 16px;
-    line-height: 16px;
+    font-size: 18px;
+    line-height: 18px;
     font-weight: 400;
     padding: 8px 12px;
     padding-left: 22px;
 }
+.ca-section-subtitle-1 {
+    display: inline-block;
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 600;
+    padding: 8px 12px;
+    color: #00060f;
+    border: 1px solid #00060f;
+}
+.ca-section-subtitle-2 {
+    display: inline-block;
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 600;
+    padding: 8px 12px;
+    color: #fff;
+    border: 1px solid #fff;
+}s
 .subtitle-bg-1:after {
     position: absolute;
     content: "";
@@ -2332,7 +2350,7 @@ header.header-4 {
     transition: .3s;
 }
 .ca-counter-bg{
-    background:#F9F5F3;
+    /* background:#F9F5F3; */
     padding: 32px;
 }
 .ca-counter-area {
@@ -2346,7 +2364,7 @@ header.header-4 {
     margin-bottom: 0;
 }
 .ca-about-ic {
-    background: #FFF2EC;
+    background: #22356F;
     height: 70px;
     width: 70px;
     border-radius: 50px;
@@ -2354,7 +2372,12 @@ header.header-4 {
     line-height: 70px;
     text-align: center;
     transition: .3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
 }
+
 .ca-about-content p {
     color: #4A4A49;
     font-size: 16px;
@@ -2362,7 +2385,7 @@ header.header-4 {
     transition: .3s;
 }
 .ca-about-icon-box {
-    border-bottom: 1px solid #E8E6E6;
+    border-bottom: 1px solid #FFF; 
     padding-bottom: 40px;
     margin-bottom: 32px;
 }
@@ -2375,16 +2398,18 @@ header.header-4 {
     margin-bottom: 0;
 }
 .ca-about-icon-box:hover .ca-about-ic{
-    background: #FF5E14;
+    background: #22356F;
     transition: .3s;
     transform: rotateY(180deg);
 }
 .ca-about-ic img{
-    transition: .3s;
+    width: 55px;
+    height: 55px;
+    filter: invert(1) brightness(2);
+    transition: filter 0.3s ease;
 }
 .ca-about-icon-box:hover .ca-about-ic img{
-    filter: brightness(0) invert(1);
-    transition: .3s;
+    filter: none !important;
 }
 
 .ca-about-content .ca-title a {
@@ -2401,6 +2426,16 @@ header.header-4 {
 .ca-choose-item .ca-title {
     font-size: 20px;
     line-height: 20px;
+}
+.ca-title-21 {
+    font-size: 10px;
+    line-height: 10px;
+}
+
+.ca-title.ca-title-21 a {
+    color: #1B0901;
+    transition: .3s;
+    font-weight: 700;
 }
 .ca-choose-item p {
     font-size: 16px;
@@ -2909,35 +2944,69 @@ header.header-4 {
     font-size: 40px;
     line-height: 40px;
     font-weight: 700;
-    color: #FFAF89;
+    color: #E7EDF6;
     transition: .3s;
     opacity: 0;
     visibility: hidden;
 }
+#uslugi {
+    background: linear-gradient(180deg, #fff 0%, #f5f6fa 30%, #464950 100%);
+}
+#about {
+    background: #464950;
+}
 .ca-ser-icon-box {
     transition: .3s;
+    position: relative;
+    overflow: hidden; /* Скрывает части псевдоэлемента, выходящие за границы */
 }
 
-.ca-ser-icon-box::after{
+.ca-ser-icon-box::after {
     position: absolute;
     content: "";
     left: 0;
     top: 0;
-    height: 0%;
+    height: 0%; /* Анимация высоты от 0% до 100% */
     width: 100%;
-    background-color: #FF5E14;
-    transition: .3s;
-    z-index: -1;
+    
+    /* Свойства для фонового изображения */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* Темное наложение для читаемости текста */
+    background-color: rgba(34, 53, 111, 0.90); /* #22356F с 85% непрозрачностью */
+    background-blend-mode: multiply; /* Смешивает цвет с фоновым изображением */
+
+    transition: height .4s ease-in-out; /* Плавный переход для появления */
+    z-index: -1; 
+}
+
+.service-bg-1::after {
+    background-image: url('/static/img/ag/u1.jpeg');
+}
+.service-bg-2::after {
+    background-image: url('/static/img/ag/u2.jpg');
+}
+.service-bg-3::after {
+    background-image: url('/static/img/ag/u3.jpg');
+}
+.service-bg-4::after {
+    background-image: url('/static/img/ag/u4.jpg');
+}
+.service-bg-5::after {
+    background-image: url('/static/img/ag/u5.jpg');
 }
 .ca-ser-icon-box:hover:after{
     height: 100%;
 }
 
 
-.ca-ser-icon-box:hover .ca-about-ic{
-    background: #fff;
+.ca-ser-icon-box:hover .ca-about-ic {
+    background: transparent; /* Убираем сплошной цвет фона */
     transform: rotateY(180deg);
     transition: .3s;
+    filter: none;
 }
 .ca-ser-icon-box:hover .ca-title a{
     color: #fff;
@@ -2959,7 +3028,7 @@ header.header-4 {
 }
 .ca-shape {
     z-index: -1;
-    top: 50px;
+    top: 50px; 
     margin-left: -30px;
     animation: move 7s linear infinite;
 }
@@ -7141,7 +7210,7 @@ button.ca-btn-primary.ca-btn-primary-2 span {
 }
 
 /* =======================
-             preloader css
+            preloader css
 ==========================================*/
 
 .ctn-preloader {
@@ -7368,3 +7437,55 @@ button.ca-btn-primary.ca-btn-primary-2 span {
 	}
 }
 
+.footer-one-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;                 /* чтобы не ломался на узких экранах */
+    padding: 20px 40px;
+    background: #464950;             /* или ваш фон */
+    color: #fff;
+    background-color: #FFF;
+    gap: 30px;
+}
+.footer-one-line .footer-logo img {
+    height: 40px;
+}
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+.footer-links a {
+    color: #00060F;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color .2s;
+}
+.footer-links a:hover {
+    color: #eacc2b;                  /* цвет при наведении */
+}
+.footer-social a {
+    color: #00060F;
+    font-size: 1.4em;
+    margin-right: 12px;
+    position: relative;
+    top: 2px;
+}
+.footer-social a:hover {
+    color: #ff3d00;
+}
+.footer-one-line > div, .footer-one-line > nav {
+    flex-shrink: 0;
+}
+@media (max-width: 800px) {
+    .footer-one-line {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 16px;
+    }
+    .footer-links {
+        gap: 10px;
+        margin: 8px 0;
+    }
+}
