@@ -6,27 +6,49 @@
 
 {% include 'partials/preloader.html' %}
 
-<section class="container" style="padding-top: 150px; padding-bottom: 100px;">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+<section class="container" style="max-width: 500px; margin: 0 auto; padding-top: 120px; padding-bottom: 60px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
             <h2 class="mb-4 text-center">Вход в личный кабинет</h2>
+
             {% if form.errors %}
-                <p class="text-danger">Ваше имя пользователя и пароль не совпали. Пожалуйста, попробуйте еще раз.</p>
+                <div class="alert alert-danger">
+                    Имя пользователя или пароль не совпали. Пожалуйста, попробуйте ещё раз.
+                </div>
             {% endif %}
-            
+
             <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label for="id_username" class="form-label">Имя пользователя:</label>
-                    <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" class="form-control" required="" id="id_username">
+                    <label for="id_username" class="form-label">Имя пользователя</label>
+                    <input type="text" name="username" maxlength="150" autofocus class="form-control" required id="id_username">
                 </div>
                 <div class="mb-3">
-                    <label for="id_password" class="form-label">Пароль:</label>
-                    <input type="password" name="password" autocomplete="current-password" class="form-control" required="" id="id_password">
+                    <label for="id_password" class="form-label">Пароль</label>
+                    <input type="password" name="password" autocomplete="current-password" class="form-control" required id="id_password">
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Войти</button>
+                <button type="submit" class="btn btn-primary w-100 mb-2">
+                    Войти
+                </button>
             </form>
+
+            <div class="text-center mt-3 mb-2">
+                <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+            </div>
+
+            <hr>
+
+            <div class="text-center">
+                <p>Ещё не зарегистрированы?</p>
+                <a href="{% url 'driver_signup' %}" class="btn btn-outline-secondary mb-2 w-100">
+                    Зарегистрироваться как водитель
+                </a>
+                <a href="{% url 'podryad_signup' %}" class="btn btn-outline-secondary w-100">
+                    Зарегистрироваться как подрядчик
+                </a>
+            </div>
         </div>
     </div>
 </section>
+
 {% endblock main %}

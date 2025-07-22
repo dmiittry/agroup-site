@@ -74,6 +74,8 @@
                 <thead class="table-dark">
                     <tr>
                         <th>№</th>
+                        <th>Водитель</th>
+                        <th>Второй водитель</th>
                         <th>Номер ПЛ</th>
                         <th>Дата выдачи ПЛ</th>
                         <th>Дата сдачи ПЛ</th>
@@ -89,6 +91,8 @@
                     {% for flight in flights %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
+                        <td>{{ flight.driver.full_name }}</td>
+                        <td>{% if flight.driver2 %}{{ flight.driver2.full_name }}{% endif %}</td>
                         <td>{{ flight.numberPL }}</td>
                         <td>{{ flight.dataPOPL|date:"d.m.Y" }}</td>
                         <td>{{ flight.dataSDPL|date:"d.m.Y" }}</td>

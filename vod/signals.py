@@ -11,6 +11,10 @@ def create_driver_user(sender, instance, created, **kwargs):
     Автоматически создает пользователя при создании нового водителя,
     если пользователь еще не привязан.
     """
+    def make_random_password(length=10):
+        chars = string.ascii_letters + string.digits
+        return ''.join(random.choices(chars, k=length))
+
     if created and not instance.user:
         # Генерируем уникальное имя пользователя (например, из ФИО и случайных цифр)
         base_username = ''.join(filter(str.isalnum, instance.full_name)).lower()[:20]
@@ -23,7 +27,7 @@ def create_driver_user(sender, instance, created, **kwargs):
             username = f"{base_username}_{unique_suffix}"
 
         # Создаем пользователя с временным паролем (пользователь должен будет его сменить)
-        password = User.objects.make_random_password()
+        password = make_random_password
         user = User.objects.create_user(username=username, password=password)
         
         # Привязываем созданного пользователя к водителю

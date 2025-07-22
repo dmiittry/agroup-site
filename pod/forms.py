@@ -21,3 +21,20 @@ class PodryadProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for f in self.fields.values():
             f.required = False
+
+class PodryadSignupForm(forms.ModelForm):
+    class Meta:
+        model = Podryad
+        fields = [
+            "org_name", "full_name", "birth_date", "snils",
+            "issued_by", "issue_date", "number", "series", "registration",
+            "bank", "inn", "kpp", "num_chet", "num_bik", "num_corch",
+            "email", "phone_1", "phone_2", "phone_3",
+            "photo1", "photo2", "photo3", "photo4", "photo5",
+        ]
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            instance.save()
+        return instance

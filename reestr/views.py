@@ -10,6 +10,8 @@ from car.models import Car
 # Импортируйте формы редактирования
 from vod.forms import DriverProfileForm
 from pod.forms import PodryadProfileForm
+from vod.forms import DriverSignupForm
+from pod.forms import PodryadSignupForm
 
 def index(request):
     return render(request, 'index.html')
@@ -106,3 +108,24 @@ def podryad_profile_edit(request):
         form = PodryadProfileForm(instance=profile)
 
     return render(request, 'podryad_profile_edit.html', {'form': form})
+
+
+def driver_signup(request):
+    if request.method == 'POST':
+        form = DriverSignupForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, 'signup_success.html', {'role': 'driver'})
+    else:
+        form = DriverSignupForm()
+    return render(request, 'driver_signup.html', {'form': form})
+
+def podryad_signup(request):
+    if request.method == 'POST':
+        form = PodryadSignupForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, 'signup_success.html', {'role': 'contractor'})
+    else:
+        form = PodryadSignupForm()
+    return render(request, 'podryad_signup.html', {'form': form})
