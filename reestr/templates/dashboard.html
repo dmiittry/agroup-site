@@ -15,23 +15,38 @@
         </form>
     </div>
 
+
     {% if user_type == 'driver' %}
     <!-- =================================================================== -->
     <!-- ======================== БЛОК ДЛЯ ВОДИТЕЛЯ ======================== -->
     <!-- =================================================================== -->
-    
-    <div class="card mb-4">
-        <div class="card-header">
-            <h3>Здравствуйте, {{ profile.full_name }}!</h3>
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <h4>Основная информация</h4>
+                <p><strong>ФИО:</strong> {{ profile.full_name }}</p>
+                <p><strong>Дата рождения:</strong> {{ profile.birth_date|date:"d.m.Y" }}</p>
+                <p><strong>Номер ВУ:</strong> {{ profile.driver_license }}</p>
+                <p><strong>Дата выдачи ВУ:</strong> {{ profile.vy_date|date:"d.m.Y" }}</p>
+                <p><strong>СНИЛС:</strong> {{ profile.snils }}</p>
+            </div>
+            <div class="col-md-6">
+                <h4>Паспортные данные</h4>
+                <p><strong>Кем выдан:</strong> {{ profile.issued_by }}</p>
+                <p><strong>Дата выдачи:</strong> {{ profile.issue_date|date:"d.m.Y" }}</p>
+                <p><strong>Серия:</strong> {{ profile.series }}</p>
+                <p><strong>Номер:</strong> {{ profile.number }}</p>
+                <p><strong>Прописка:</strong> {{ profile.registration }}</p>
+            </div>
         </div>
-        <div class="card-body">
-            <p><strong>Телефон:</strong> {{ profile.phone_1|default:"не указан" }}</p>
-            <p><strong>Номер ВУ:</strong> {{ profile.driver_license|default:"не указан" }}</p>
-            <p><strong>Подрядчик:</strong> {{ profile.contractor.org_name|default:"не привязан" }}</p>
+        <div class="mb-4">
+            <h4>Связь</h4>
+            <p><strong>Телефон 1:</strong> {{ profile.phone_1 }}</p>
+            <p><strong>Телефон 2:</strong> {{ profile.phone_2 }}</p>
+            <p><strong>Телефон 3:</strong> {{ profile.phone_3 }}</p>
         </div>
-    </div>
-
-    <h3 class="mt-5">Закрепленные за вами ТС</h3>
+    <!-- Редактировать профиль -->
+        <a href="{% url 'profile_edit' %}" class="btn btn-outline-primary mb-5">Редактировать профиль</a>
+        <h3 class="mt-5">Закрепленные за вами ТС</h3>
     {% if assigned_cars %}
         <ul class="list-group mb-5">
             {% for car in assigned_cars %}
@@ -41,37 +56,55 @@
     {% else %}
         <p>За вами не закреплено ни одного транспортного средства.</p>
     {% endif %}
-
-    <h3 class="mt-5">Ваши рейсы</h3>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h3 class="mb-0">Ваши рейсы</h3>
+                    <div>
+                        <span class="badge bg-secondary me-3">Всего рейсов: <strong>{{ total_flights }}</strong></span>
+                        <span class="badge bg-success me-3">Тонн: <strong>{{ total_tonn|default:"0.00" }}</strong></span>
+                        <span class="badge bg-info">ГСМ: <strong>{{ total_gsm|default:"0.00" }}</strong> л</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% if flights %}
         <div class="table-responsive">
-            <table class="table table-striped table-hover">
+            <table class="table table-bordered table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col">Номер ПЛ</th>
-                        <th scope="col">Маршрут</th>
-                        <th scope="col">Дата погрузки</th>
-                        <th scope="col">Груз</th>
-                        <th scope="col">Вес, т</th>
-                        <th scope="col">ТС</th>
+                        <th>№</th>
+                        <th>Номер ПЛ</th>
+                        <th>Дата выдачи ПЛ</th>
+                        <th>Дата сдачи ПЛ</th>
+                        <th>№ ТТН</th>
+                        <th>Дата погр. груза</th>
+                        <th>Дата выгрузки</th>
+                        <th>Тонн</th>
+                        <th>Груз</th>
+                        <th>ГСМ</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for flight in flights %}
                     <tr>
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ flight.numberPL }}</td>
-                        <td>{{ flight.marsh.name }}</td>
                         <td>{{ flight.dataPOPL|date:"d.m.Y" }}</td>
-                        <td>{{ flight.gruz.name }}</td>
-                        <td>{{ flight.tonn }}</td>
-                        <td>{{ flight.number.number }}</td>
+                        <td>{{ flight.dataSDPL|date:"d.m.Y" }}</td>
+                        <td>{{ flight.numberTN }}</td>
+                        <td>{{ flight.dataPOG|date:"d.m.Y" }}</td>
+                        <td>{{ flight.dataVYG|date:"d.m.Y" }}</td>
+                        <td>{{ flight.tonn|default:"" }}</td>
+                        <td>{{ flight.gruz }}</td>
+                        <td>{{ flight.gsm|default:"" }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     {% else %}
-        <p>У вас пока нет назначенных рейсов.</p>
+        <p>У вас пока нет рейсов.</p>
     {% endif %}
 
 
@@ -79,73 +112,128 @@
     <!-- =================================================================== -->
     <!-- ======================= БЛОК ДЛЯ ПОДРЯДЧИКА ======================= -->
     <!-- =================================================================== -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h3>Компания: {{ profile.org_name }}</h3>
+    {% if user_type == 'contractor' %}
+        <!-- Профиль подрядчика -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h4>Организация</h4>
+                <p><strong>Название:</strong> {{ profile.org_name }}</p>
+                <p><strong>Генеральный директор:</strong> {{ profile.full_name }}</p>
+                <p><strong>Дата рождения директора:</strong> {{ profile.birth_date|date:"d.m.Y" }}</p>
+                <p><strong>СНИЛС:</strong> {{ profile.snils }}</p>
+                <p><strong>Телефон:</strong> {{ profile.phone_1 }}</p>
+                <p><strong>Email:</strong> {{ profile.email }}</p>
+            </div>
+            <div class="col-md-6">
+                <h4>Юридические данные</h4>
+                <p><strong>ИНН:</strong> {{ profile.inn }}</p>
+                <p><strong>КПП:</strong> {{ profile.kpp }}</p>
+                <p><strong>Банк:</strong> {{ profile.bank }}</p>
+                <p><strong>Р/с:</strong> {{ profile.num_chet }}</p>
+                <p><strong>БИК:</strong> {{ profile.num_bik }}</p>
+                <p><strong>Корр. счет:</strong> {{ profile.num_corch }}</p>
+            </div>
         </div>
-        <div class="card-body">
-            <p><strong>Контактное лицо:</strong> {{ profile.full_name|default:"не указано" }}</p>
-            <p><strong>Email:</strong> {{ profile.email|default:"не указан" }}</p>
-            <p><strong>Телефон:</strong> {{ profile.phone_1|default:"не указан" }}</p>
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h4>Паспортные данные</h4>
+                <p><strong>Кем выдан:</strong> {{ profile.issued_by }}</p>
+                <p><strong>Серия:</strong> {{ profile.series }}</p>
+                <p><strong>Номер:</strong> {{ profile.number }}</p>
+                <p><strong>Дата выдачи:</strong> {{ profile.issue_date|date:"d.m.Y" }}</p>
+                <p><strong>Прописка:</strong> {{ profile.registration }}</p>
+            </div>
         </div>
-    </div>
-    
-    <h3 class="mt-5">Рейсы вашей компании</h3>
-    {% if flights %}
-        <div class="table-responsive">
-            <table class="table table-striped table-hover">
+        <a href="{% url 'podryad_profile_edit' %}" class="btn btn-outline-primary">Редактировать профиль</a>
+        <!-- Статистика -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h3 class="mb-0">Рейсы вашей компании</h3>
+                    <div>
+                        <span class="badge bg-secondary me-3">Всего рейсов: <strong>{{ total_flights }}</strong></span>
+                        <span class="badge bg-success me-3">Тонн: <strong>{{ total_tonn|default:"0.00" }}</strong></span>
+                        <span class="badge bg-info">ГСМ: <strong>{{ total_gsm|default:"0.00" }}</strong> л</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if flights %}
+            <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col">Номер ПЛ</th>
-                        <th scope="col">Водитель</th>
-                        <th scope="col">Машина</th>
-                        <th scope="col">Маршрут</th>
-                        <th scope="col">Дата погрузки</th>
+                        <th>#</th>
+                        <th>Номер ПЛ</th>
+                        <th>Водитель</th>
+                        <th>Второй водитель</th>
+                        <th>ТС</th>
+                        <th>Маршрут</th>
+                        <th>Дата погрузки</th>
+                        <th>Дата сдачи ПЛ</th>
+                        <th>№ ТТН</th>
+                        <th>Дата погр. груза</th>
+                        <th>Дата выгрузки</th>
+                        <th>Тонн</th>
+                        <th>Груз</th>
+                        <th>ГСМ</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for flight in flights %}
                     <tr>
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ flight.numberPL }}</td>
-                        <td>{{ flight.driver.full_name }} {% if flight.driver2 %}({{ flight.driver2.full_name }}){% endif %}</td>
+                        <td>{{ flight.driver.full_name }}</td>
+                        <td>{% if flight.driver2 %}{{ flight.driver2.full_name }}{% endif %}</td>
                         <td>{{ flight.number.number }}</td>
                         <td>{{ flight.marsh.name }}</td>
                         <td>{{ flight.dataPOPL|date:"d.m.Y" }}</td>
+                        <td>{{ flight.dataSDPL|date:"d.m.Y" }}</td>
+                        <td>{{ flight.numberTN }}</td>
+                        <td>{{ flight.dataPOG|date:"d.m.Y" }}</td>
+                        <td>{{ flight.dataVYG|date:"d.m.Y" }}</td>
+                        <td>{{ flight.tonn|default:"" }}</td>
+                        <td>{% if flight.gruz %}{{ flight.gruz.name }}{% endif %}</td>
+                        <td>{{ flight.gsm|default:"" }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            </div>
+        {% else %}
+            <p>За вашей компанией пока нет рейсов.</p>
+        {% endif %}
+
+        <!-- Водители и техника подрядчика -->
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h4>Водители компании</h4>
+                {% if contractor_drivers %}
+                    <ul class="list-group">
+                    {% for driver in contractor_drivers %}
+                        <li class="list-group-item">{{ driver.full_name }} ({{ driver.phone_1 }})</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Нет зарегистрированных водителей.</p>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <h4>Ваша техника</h4>
+                {% if contractor_cars %}
+                    <ul class="list-group">
+                    {% for car in contractor_cars %}
+                        <li class="list-group-item">{{ car.number }} ({{ car.marka.name }} {{ car.model.name }})</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Нет зарегистрированной техники.</p>
+                {% endif %}
+            </div>
         </div>
-    {% else %}
-        <p>За вашей компанией не закреплено ни одного рейса.</p>
     {% endif %}
 
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <h3>Ваши водители</h3>
-            {% if contractor_drivers %}
-                <ul class="list-group">
-                {% for driver in contractor_drivers %}
-                    <li class="list-group-item">{{ driver.full_name }} - {{ driver.phone_1 }}</li>
-                {% endfor %}
-                </ul>
-            {% else %}
-                <p>Нет зарегистрированных водителей.</p>
-            {% endif %}
-        </div>
-        <div class="col-md-6">
-            <h3>Ваша техника</h3>
-            {% if contractor_cars %}
-                <ul class="list-group">
-                {% for car in contractor_cars %}
-                    <li class="list-group-item">{{ car.number }} ({{ car.marka.name }} {{ car.model.name }})</li>
-                {% endfor %}
-                </ul>
-            {% else %}
-                <p>Нет зарегистрированной техники.</p>
-            {% endif %}
-        </div>
-    </div>
 
 
     {% else %}

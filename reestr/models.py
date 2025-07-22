@@ -31,10 +31,10 @@ class Registry(models.Model):
     number = models.ForeignKey(Car, on_delete=models.CASCADE, related_name="carnumber_reestr", verbose_name='Номер ТС')
     marsh = models.ForeignKey(Marsh, on_delete=models.CASCADE, related_name="marsh_reestr", verbose_name='Маршрут')
     
-    numberPL = models.CharField("Номер ПЛ", max_length=100, blank=True, null=True)
-    dataPOPL = models.DateField("Дата погрузки", blank=True, null=True)
     # timePOPL = models.TimeField("Время погрузки", blank=True, null=True)
     # timeSDPL = models.TimeField("Время сдачи путевого листа", blank=True, null=True)
+    numberPL = models.CharField("Номер ПЛ", max_length=100, blank=True, null=True)
+    dataPOPL = models.DateField("Дата погрузки", blank=True, null=True)
     dataSDPL = models.DateField("Дата сдачи путевого листа", blank=True, null=True)
     numberTN = models.CharField("Номер ТТН", max_length=100, blank=True, null=True)
     dataPOG = models.DateField("Дата погрузки груза", blank=True, null=True)

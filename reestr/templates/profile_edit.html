@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {# или 'index.html', если он у вас базовый #}
+
+{% block title %}Редактирование профиля{% endblock title %}
+
+{% block main %}
+
+{% include 'partials/preloader.html' %}
+<section class="container" style="padding-top: 120px; padding-bottom: 100px;">
+    <h2>Редактирование профиля</h2>
+    <p>Пожалуйста, заполните или обновите ваши данные. Эта информация необходима для оформления документов.</p>
+
+    <!-- enctype="multipart/form-data" ОБЯЗАТЕЛЕН для загрузки фотографий -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row">
+            {{ form.as_p }} 
+        </div>
+        
+        <button type="submit" class="btn btn-primary mt-4">Сохранить изменения</button>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary mt-4">Отмена</a>
+    </form>
+</section>
+{% endblock main %}

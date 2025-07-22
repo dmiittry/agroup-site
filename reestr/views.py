@@ -1,13 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Registry
+from django.db.models import Sum, Q
+
+from reestr.models import Registry
 from vod.models import Driver
 from pod.models import Podryad
 from car.models import Car
-from django.db import models
+
+# Импортируйте формы редактирования
+from vod.forms import DriverProfileForm
+from pod.forms import PodryadProfileForm
 
 def index(request):
-    # Ваша логика для главной страницы
     return render(request, 'index.html')
 
 @login_required
@@ -15,36 +19,90 @@ def dashboard(request):
     user = request.user
     context = {'user_type': 'unknown'}
 
-    # Проверяем профиль водителя
+    # --- ЛК ВОДИТЕЛЯ ---
     if hasattr(user, 'driver_profile'):
         profile = user.driver_profile
-        flights = Registry.objects.filter(models.Q(driver=profile) | models.Q(driver2=profile)).distinct()
-        
-        # Получаем закрепленные за водителем машины
-        assigned_cars = profile.cars.all()
+        flights = Registry.objects.filter(
+            Q(driver=profile) | Q(driver2=profile)
+        ).distinct().select_related('marsh', 'gruz', 'number')
 
-        context = {
+        total_flights = flights.count()
+        total_tonn = flights.aggregate(s=Sum('tonn'))['s'] or 0
+        total_gsm = flights.aggregate(s=Sum('gsm'))['s'] or 0
+
+        context.update({
             'user_type': 'driver',
             'profile': profile,
             'flights': flights,
-            'assigned_cars': assigned_cars, # <-- Передаем машины в шаблон
-        }
-    
-    # Проверяем профиль подрядчика
+            'total_flights': total_flights,
+            'total_tonn': total_tonn,
+            'total_gsm': total_gsm,
+        })
+        return render(request, 'dashboard.html', context)
+
+    # --- ЛК ПОДРЯДЧИКА ---
     elif hasattr(user, 'contractor_profile'):
         profile = user.contractor_profile
-        flights = Registry.objects.filter(pod=profile)
-        
-        # Получаем всех водителей и машины, связанные с этим подрядчиком
-        contractor_drivers = Driver.objects.filter(contractor=profile)
-        contractor_cars = Car.objects.filter(contractor=profile)
+        flights = Registry.objects.filter(
+            pod=profile
+        ).select_related('driver', 'driver2', 'number', 'marsh', 'gruz').order_by('-dataPOPL')
 
-        context = {
+        total_flights = flights.count()
+        total_tonn = flights.aggregate(s=Sum('tonn'))['s'] or 0
+        total_gsm = flights.aggregate(s=Sum('gsm'))['s'] or 0
+
+        contractor_drivers = profile.drivers.all().order_by('full_name')
+        contractor_cars = profile.cars.all().order_by('number')
+
+        context.update({
             'user_type': 'contractor',
             'profile': profile,
             'flights': flights,
-            'contractor_drivers': contractor_drivers, # <-- Передаем водителей
-            'contractor_cars': contractor_cars,       # <-- Передаем машины
-        }
+            'total_flights': total_flights,
+            'total_tonn': total_tonn,
+            'total_gsm': total_gsm,
+            'contractor_drivers': contractor_drivers,
+            'contractor_cars': contractor_cars,
+        })
+        return render(request, 'dashboard.html', context)
 
+    # Если профиль не найден
     return render(request, 'dashboard.html', context)
+
+
+# === Редактирование профиля ВОДИТЕЛЯ ===
+@login_required
+def profile_edit(request):
+    user = request.user
+    if not hasattr(user, 'driver_profile'):
+        return redirect('dashboard')
+    profile = user.driver_profile
+
+    if request.method == 'POST':
+        form = DriverProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = DriverProfileForm(instance=profile)
+
+    return render(request, 'profile_edit.html', {'form': form})
+
+
+# === Редактирование профиля ПОДРЯДЧИКА ===
+@login_required
+def podryad_profile_edit(request):
+    user = request.user
+    if not hasattr(user, 'contractor_profile'):
+        return redirect('dashboard')
+    profile = user.contractor_profile
+
+    if request.method == 'POST':
+        form = PodryadProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = PodryadProfileForm(instance=profile)
+
+    return render(request, 'podryad_profile_edit.html', {'form': form})
