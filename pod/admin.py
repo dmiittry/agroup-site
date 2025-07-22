@@ -54,11 +54,11 @@ class PodryadAdmin(ImportExportActionModelAdmin):
     resource_class = PodryadResource
     
     # Дополнительные настройки админки
-    list_display = ('org_name', 'full_name', 'cars_count')  # Замените на ваши поля
+    list_display = ('org_name', 'user', 'full_name', 'cars_count')  # Замените на ваши поля
     list_filter = ('org_name',)
-    search_fields = ('org_name',"drivers__full_name", "cars__number")    
+    search_fields = ('org_name',"drivers__full_name", "cars__number", 'user__username')    
     inlines = [CarInline, DriverInline]
-    # filter_horizontal = ("drivers", "cars")
+    raw_id_fields = ('user',)
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         # Добавляем аннотацию с подсчётом связанных машин

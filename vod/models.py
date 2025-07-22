@@ -1,8 +1,10 @@
 from django.db import models # type: ignore
 from car.models import Car
 from pod.models import Podryad
+from django.contrib.auth.models import User
 
 class Driver(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='driver_profile', null=True, blank=True)
     is_approved = models.BooleanField("Статус согласования", default=False)
 
     cars = models.ManyToManyField(

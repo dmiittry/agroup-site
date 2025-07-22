@@ -141,12 +141,12 @@ class CarInline(admin.TabularInline):
    
 class DriverModelAdmin(ImportExportModelAdmin):
     resource_class = DriverResource
-    list_display = ("full_name", 'contractor', "solo_trips", "joint_trips", 'cars_count', "birth_date", "phone_1", "driver_license", "snils", "is_approved")
-    search_fields = ("full_name", "phone_1", 'contractor__org_name')
+    list_display = ("full_name", 'user', 'contractor', "solo_trips", "joint_trips", 'cars_count', "birth_date", "phone_1", "driver_license", "snils", "is_approved")
+    search_fields = ("full_name", "phone_1", 'contractor__org_name', 'user__username')
     list_filter = (MarshFilter, SeasonFilter,  'is_approved', 'contractor')
+    raw_id_fields = ('user',)
     inlines = [CarInline,SoloRegistryInline, JointRegistryInline, JointRegistry2Inline]
     filter_horizontal = ("cars",)
-
     readonly_fields = ('contractors_stats', 'cars_stats')
 
     def get_queryset(self, request):

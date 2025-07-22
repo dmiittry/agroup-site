@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}Личный кабинет{% endblock title %}
+
+{% block main %}
+
+{% include 'partials/preloader.html' %}
+
+<section class="container" style="padding-top: 120px; padding-bottom: 100px;">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h1>Личный кабинет</h1>
+        <form action="{% url 'logout' %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger">Выйти</button>
+        </form>
+    </div>
+
+    {% if user_type == 'driver' %}
+    <!-- =================================================================== -->
+    <!-- ======================== БЛОК ДЛЯ ВОДИТЕЛЯ ======================== -->
+    <!-- =================================================================== -->
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>Здравствуйте, {{ profile.full_name }}!</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Телефон:</strong> {{ profile.phone_1|default:"не указан" }}</p>
+            <p><strong>Номер ВУ:</strong> {{ profile.driver_license|default:"не указан" }}</p>
+            <p><strong>Подрядчик:</strong> {{ profile.contractor.org_name|default:"не привязан" }}</p>
+        </div>
+    </div>
+
+    <h3 class="mt-5">Закрепленные за вами ТС</h3>
+    {% if assigned_cars %}
+        <ul class="list-group mb-5">
+            {% for car in assigned_cars %}
+                <li class="list-group-item">{{ car.marka.name }} {{ car.model.name }} (гос. номер: {{ car.number }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>За вами не закреплено ни одного транспортного средства.</p>
+    {% endif %}
+
+    <h3 class="mt-5">Ваши рейсы</h3>
+    {% if flights %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Номер ПЛ</th>
+                        <th scope="col">Маршрут</th>
+                        <th scope="col">Дата погрузки</th>
+                        <th scope="col">Груз</th>
+                        <th scope="col">Вес, т</th>
+                        <th scope="col">ТС</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for flight in flights %}
+                    <tr>
+                        <td>{{ flight.numberPL }}</td>
+                        <td>{{ flight.marsh.name }}</td>
+                        <td>{{ flight.dataPOPL|date:"d.m.Y" }}</td>
+                        <td>{{ flight.gruz.name }}</td>
+                        <td>{{ flight.tonn }}</td>
+                        <td>{{ flight.number.number }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>У вас пока нет назначенных рейсов.</p>
+    {% endif %}
+
+
+    {% elif user_type == 'contractor' %}
+    <!-- =================================================================== -->
+    <!-- ======================= БЛОК ДЛЯ ПОДРЯДЧИКА ======================= -->
+    <!-- =================================================================== -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>Компания: {{ profile.org_name }}</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Контактное лицо:</strong> {{ profile.full_name|default:"не указано" }}</p>
+            <p><strong>Email:</strong> {{ profile.email|default:"не указан" }}</p>
+            <p><strong>Телефон:</strong> {{ profile.phone_1|default:"не указан" }}</p>
+        </div>
+    </div>
+    
+    <h3 class="mt-5">Рейсы вашей компании</h3>
+    {% if flights %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Номер ПЛ</th>
+                        <th scope="col">Водитель</th>
+                        <th scope="col">Машина</th>
+                        <th scope="col">Маршрут</th>
+                        <th scope="col">Дата погрузки</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for flight in flights %}
+                    <tr>
+                        <td>{{ flight.numberPL }}</td>
+                        <td>{{ flight.driver.full_name }} {% if flight.driver2 %}({{ flight.driver2.full_name }}){% endif %}</td>
+                        <td>{{ flight.number.number }}</td>
+                        <td>{{ flight.marsh.name }}</td>
+                        <td>{{ flight.dataPOPL|date:"d.m.Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>За вашей компанией не закреплено ни одного рейса.</p>
+    {% endif %}
+
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h3>Ваши водители</h3>
+            {% if contractor_drivers %}
+                <ul class="list-group">
+                {% for driver in contractor_drivers %}
+                    <li class="list-group-item">{{ driver.full_name }} - {{ driver.phone_1 }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>Нет зарегистрированных водителей.</p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h3>Ваша техника</h3>
+            {% if contractor_cars %}
+                <ul class="list-group">
+                {% for car in contractor_cars %}
+                    <li class="list-group-item">{{ car.number }} ({{ car.marka.name }} {{ car.model.name }})</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>Нет зарегистрированной техники.</p>
+            {% endif %}
+        </div>
+    </div>
+
+
+    {% else %}
+    <!-- =================================================================== -->
+    <!-- ========================== БЛОК ОШИБКИ =========================== -->
+    <!-- =================================================================== -->
+    <div class="alert alert-warning">
+        Не удалось определить ваш профиль. Пожалуйста, обратитесь к администратору для привязки вашей учетной записи к профилю водителя или подрядчика.
+    </div>
+    {% endif %}
+</section>
+{% endblock main %}

@@ -1,6 +1,8 @@
 from django.db import models # type: ignore
+from django.contrib.auth.models import User
 
 class Podryad(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='contractor_profile', null=True, blank=True)
     org_name = models.CharField("Название организации", max_length=255, help_text="Например: ООО Компания или ИП Иванов Иван Иванович (ФИО Полностью)")
     full_name = models.CharField("ФИО", max_length=255, help_text="ФИО директора полностью", blank=True, null=True)
     birth_date = models.DateField("Дата рождения", blank=True, null=True)

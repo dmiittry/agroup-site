@@ -69,10 +69,18 @@
          </div>
          <div class="col-lg-3 col-md-6 col-6">
             <!-- ca-btn -->
-            <div class="ca-btn-header text-end d-none d-lg-block">
+               <div class="ca-btn-header text-end d-none d-lg-block">
+               {% if user.is_authenticated %}
+                  <a class="ca-btn-primary-22" href="{% url 'dashboard' %}">Личный кабинет<span><i
+                  class="fa-solid fa-arrow-right"></i></span></a>
+               {% else %}
+                  <a class="ca-btn-primary-22" href="{% url 'login' %}">Вход для партнеров</a>
+               {% endif %}
+               </div>
+            {% comment %} <div class="ca-btn-header text-end d-none d-lg-block">
                <a href="#" class="ca-btn-primary-22">Вход<span><i
                         class="fa-solid fa-arrow-right"></i></span></a>
-            </div>
+            </div> {% endcomment %}
 
             <div class="ca-header-action-item d-lg-none text-end">
                <button type="button" class="ca-offcanvas-toogle">
