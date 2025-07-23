@@ -6,11 +6,19 @@
 
 {% include 'partials/preloader.html' %}
 
-    <h2>Регистрация водителя</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-    </form>
+<section class="row justify-content-center" style="padding-top:120px;">
+    <div class="col-md-8 col-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="mb-4 text-center">Регистрация водителя</h2>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success w-100">Зарегистрироваться</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}

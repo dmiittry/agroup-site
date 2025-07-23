@@ -4,8 +4,9 @@ from pod.models import Podryad
 from django.contrib.auth.models import User
 
 class Driver(models.Model):
+    can_login = models.BooleanField("Доступ к личному кабинету", default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='driver_profile', null=True, blank=True)
-    is_approved = models.BooleanField("Статус согласования", default=False)
+    is_approved = models.BooleanField("Статус согласования СБ", default=False)
 
     cars = models.ManyToManyField(
         Car,

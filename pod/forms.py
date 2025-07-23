@@ -1,5 +1,6 @@
 from django import forms
 from .models import Podryad
+from django.contrib.auth.models import User
 
 class PodryadProfileForm(forms.ModelForm):
     class Meta:
@@ -38,3 +39,30 @@ class PodryadSignupForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+    
+class ContractorUserChangeForm(forms.ModelForm):
+    username = forms.CharField(label="Логин (номер телефона)", max_length=150)
+    password1 = forms.CharField(
+        label="Новый пароль", required=False, widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label="Повторите новый пароль", required=False, widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['username']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        if password1 or password2:
+            if password1 != password2:
+                raise forms.ValidationError("Пароли не совпадают")
+            if len(password1.strip()) < 6:
+                raise forms.ValidationError("Пароль должен быть не короче 6 символов.")
+        # Проверка уникальности username
+        username = cleaned_data.get('username')
+        if username and User.objects.filter(username=username).exclude(id=self.instance.id).exists():
+            raise forms.ValidationError("Пользователь с таким логином уже существует.")
+        return cleaned_data
+    

@@ -8,7 +8,7 @@ import string
 @receiver(post_save, sender=Driver)
 def create_driver_user(sender, instance, created, **kwargs):
     """
-    Автоматически создает пользователя при создании нового водителя,
+    Автоматически создает пользователя для водителя при регистрации,
     если пользователь еще не привязан.
     """
     def make_random_password(length=10):
@@ -16,26 +16,23 @@ def create_driver_user(sender, instance, created, **kwargs):
         return ''.join(random.choices(chars, k=length))
 
     if created and not instance.user:
-        # Генерируем уникальное имя пользователя (например, из ФИО и случайных цифр)
-        base_username = ''.join(filter(str.isalnum, instance.full_name)).lower()[:20]
-        unique_suffix = ''.join(random.choices(string.digits, k=4))
-        username = f"{base_username}_{unique_suffix}"
-        
-        # Проверяем, что такое имя пользователя еще не занято
-        while User.objects.filter(username=username).exists():
-            unique_suffix = ''.join(random.choices(string.digits, k=4))
-            username = f"{base_username}_{unique_suffix}"
+        # Используем телефон как логин
+        base_username = (instance.phone_1 or '').strip()
+        if not base_username:
+            # fallback если телефон не указан
+            base_username = 'drv' + ''.join(random.choices(string.digits, k=8))
 
-        # Создаем пользователя с временным паролем (пользователь должен будет его сменить)
-        password = make_random_password
+        username = base_username
+        # Делаем username уникальным
+        suffix = 0
+        while User.objects.filter(username=username).exists():
+            suffix += 1
+            username = f"{base_username}_{suffix}"
+
+        password = make_random_password()
         user = User.objects.create_user(username=username, password=password)
-        
-        # Привязываем созданного пользователя к водителю
         instance.user = user
         instance.save()
-
-        # Выводим в консоль данные для входа (в реальном проекте их нужно отправлять на email)
-        print(f"Создан пользователь для водителя '{instance.full_name}'.")
-        print(f"Логин: {username}")
+        print(f"Создан пользователь для водителя '{instance.full_name}'")
+        print(f"Логин (номер телефона): {username}")
         print(f"Пароль: {password}")
-

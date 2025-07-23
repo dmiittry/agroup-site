@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Q
+from django.contrib.auth import update_session_auth_hash
 
 from reestr.models import Registry
 from vod.models import Driver
@@ -8,10 +9,8 @@ from pod.models import Podryad
 from car.models import Car
 
 # Импортируйте формы редактирования
-from vod.forms import DriverProfileForm
-from pod.forms import PodryadProfileForm
-from vod.forms import DriverSignupForm
-from pod.forms import PodryadSignupForm
+from vod.forms import DriverProfileForm, DriverSignupForm, UserChangeForm
+from pod.forms import PodryadProfileForm, PodryadSignupForm, ContractorUserChangeForm
 
 def index(request):
     return render(request, 'index.html')
@@ -24,6 +23,8 @@ def dashboard(request):
     # --- ЛК ВОДИТЕЛЯ ---
     if hasattr(user, 'driver_profile'):
         profile = user.driver_profile
+        if not profile.can_login:
+            return render(request, 'lk_not_allowed.html')
         flights = Registry.objects.filter(
             Q(driver=profile) | Q(driver2=profile)
         ).distinct().select_related('marsh', 'gruz', 'number')
@@ -71,7 +72,6 @@ def dashboard(request):
     # Если профиль не найден
     return render(request, 'dashboard.html', context)
 
-
 # === Редактирование профиля ВОДИТЕЛЯ ===
 @login_required
 def profile_edit(request):
@@ -90,7 +90,6 @@ def profile_edit(request):
 
     return render(request, 'profile_edit.html', {'form': form})
 
-
 # === Редактирование профиля ПОДРЯДЧИКА ===
 @login_required
 def podryad_profile_edit(request):
@@ -108,7 +107,6 @@ def podryad_profile_edit(request):
         form = PodryadProfileForm(instance=profile)
 
     return render(request, 'podryad_profile_edit.html', {'form': form})
-
 
 def driver_signup(request):
     if request.method == 'POST':
@@ -129,3 +127,41 @@ def podryad_signup(request):
     else:
         form = PodryadSignupForm()
     return render(request, 'podryad_signup.html', {'form': form})
+
+@login_required
+def user_change_credentials(request):
+    user = request.user
+    if request.method == "POST":
+        form = UserChangeForm(request.POST, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            # Если задан новый пароль — сохранить его
+            password1 = form.cleaned_data.get('password1')
+            if password1:
+                user.set_password(password1)
+            user.save()
+            # Чтобы не "выбросило" пользователя сессии при смене пароля:
+            update_session_auth_hash(request, user)
+            return redirect("dashboard")
+    else:
+        form = UserChangeForm(instance=user)
+    return render(request, "user_change_credentials.html", {"form": form})
+
+@login_required
+def contractor_change_credentials(request):
+    user = request.user
+    if not hasattr(user, 'contractor_profile'):
+        return redirect('dashboard')
+    if request.method == "POST":
+        form = ContractorUserChangeForm(request.POST, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            password1 = form.cleaned_data.get('password1')
+            if password1:
+                user.set_password(password1)
+            user.save()
+            update_session_auth_hash(request, user)  # Оставляет пользователя залогиненым
+            return redirect("dashboard")
+    else:
+        form = ContractorUserChangeForm(instance=user)
+    return render(request, "contractor_change_credentials.html", {"form": form})

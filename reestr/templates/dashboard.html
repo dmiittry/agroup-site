@@ -46,6 +46,7 @@
         </div>
     <!-- Редактировать профиль -->
         <a href="{% url 'profile_edit' %}" class="btn btn-outline-primary mb-5">Редактировать профиль</a>
+        <a href="{% url 'user_change_credentials' %}" class="btn btn-outline-secondary mb-3">Сменить логин/пароль</a>
         <h3 class="mt-5">Закрепленные за вами ТС</h3>
     {% if assigned_cars %}
         <ul class="list-group mb-5">
@@ -76,10 +77,11 @@
                         <th>№</th>
                         <th>Водитель</th>
                         <th>Второй водитель</th>
+                        <th>подрядчик</th>
                         <th>Номер ПЛ</th>
                         <th>Дата выдачи ПЛ</th>
                         <th>Дата сдачи ПЛ</th>
-                        <th>№ ТТН</th>
+                        <th>№ ТТН</th>  
                         <th>Дата погр. груза</th>
                         <th>Дата выгрузки</th>
                         <th>Тонн</th>
@@ -93,6 +95,7 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ flight.driver.full_name }}</td>
                         <td>{% if flight.driver2 %}{{ flight.driver2.full_name }}{% endif %}</td>
+                        <td>{{ flight.pod }}</td>
                         <td>{{ flight.numberPL }}</td>
                         <td>{{ flight.dataPOPL|date:"d.m.Y" }}</td>
                         <td>{{ flight.dataSDPL|date:"d.m.Y" }}</td>
@@ -149,6 +152,7 @@
             </div>
         </div>
         <a href="{% url 'podryad_profile_edit' %}" class="btn btn-outline-primary">Редактировать профиль</a>
+        <a href="{% url 'contractor_change_credentials' %}" class="btn btn-outline-secondary mb-3">Сменить логин/пароль</a>
         <!-- Статистика -->
         <div class="card mb-4">
             <div class="card-body">
