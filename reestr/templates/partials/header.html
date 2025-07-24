@@ -1,107 +1,43 @@
 {% load static %}
 
-<header class="header-area-3 stiky">
-    <div class="container header-3">
-        <div class="row align-items-center">
-            <div class="col-xl-3 col-lg col-md-6 col-6">
-                <!-- ca-logo -->
-                <div class="ca-logo">
-                    <a href="{% url 'pages:dynamic_pages' template_name='index-03' %}"><img
-                            src="{% static '/img/logo/ca-logo3.1.png' %}" alt=""></a>
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-7 d-none d-lg-block">
-                <!-- ca-main-menu -->
-                <div class="ca-main-menu-3">
-                    <nav class="ca-mobile-menu-active-3">
-                        <ul>
-                            <li>
-                                <a href="#">Home <span><i class="fa-solid fa-angle-down"></i></span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='index' %}">Home 01</a></li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='index-02' %}">Home 02</a>
-                                    </li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='index-03' %}">Home 03</a>
-                                    </li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='index-04' %}">Home 04</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a href="{% url 'pages:dynamic_pages' template_name='about' %}">About Us</a></li>
-                            <li>
-                                <a href="#">Service <span><i class="fa-solid fa-angle-down"></i></span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='service' %}">Service</a>
-                                    </li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='service-left' %}">Service
-                                            Left</a></li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='service-right' %}">Service
-                                            Right</a></li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='service-single' %}">Service
-                                            Single</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Pages <span><i class="fa-solid fa-angle-down"></i></span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='team' %}">Team</a></li>
-                                    <li><a
-                                            href="{% url 'pages:dynamic_pages' template_name='testimonial' %}">Testimonial</a>
-                                    </li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='faq' %}">Faq</a></li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='pricing' %}">Pricing
-                                            Plan</a></li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='contact' %}">Contact</a>
-                                    </li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='404' %}">404</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Blog <span><i class="fa-solid fa-angle-down"></i></span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='blog' %}">Blog</a></li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='blog-left' %}">Blog
-                                            Left</a></li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='blog-right' %}">Blog
-                                            Right</a></li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='blog-single' %}">Blog
-                                            Single</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Projects <span><i class="fa-solid fa-angle-down"></i></span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='projects' %}">Project</a>
-                                    </li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='project-left' %}">Project
-                                            Left</a></li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='project-right' %}">Project
-                                            Right</a></li>
-                                    <li><a href="{% url 'pages:dynamic_pages' template_name='project-single' %}">Project
-                                            Single</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg col-md-6 col-6">
-                <!-- ca-btn -->
-                <div class="ca-btn-header d-none d-lg-block text-end">
-                    <a href="{% url 'pages:dynamic_pages' template_name='contact' %}"
-                        class="ca-btn-primary-3 theme-bg-3 text-white br-50">Get A Quote <span><i
-                                class="fa-solid fa-angle-right"></i></span></a>
-                </div>
-                <div class="ca-header-action-item d-lg-none text-end">
-                    <button type="button" class="ca-offcanvas-toogle">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="16" viewBox="0 0 30 16">
-                            <rect x="10" width="20" height="2" fill="currentColor"></rect>
-                            <rect x="5" y="7" width="25" height="2" fill="currentColor"></rect>
-                            <rect x="10" y="14" width="20" height="2" fill="currentColor"></rect>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+<header class="header-area-3 stiky bg-white shadow-sm py-3 px-2 px-md-4 mb-4">
+  <div class="container-fluid">
+    {% if user_type == 'driver' %}
+      <div class="row align-items-center justify-content-between">
+        <div class="col-8 col-md-6 d-flex align-items-center">
+          <!-- MOBILE: компактный заголовок, DESKTOP: крупный -->
+          <a href="{% url 'index' %}"><img src="{% static 'img/ag/logo_b.png' %}" alt="Логотип" class="me-2 d-none d-md-block" style="height:42px;" /></a>
+          <h1 class="mb-0 h4 h2-md flex-grow-1" style="font-weight: 700; color:#22356F;">Личный кабинет водителя</h1>
         </div>
-    </div>
+        <div class="col-4 col-md-auto text-end">
+          <form action="{% url 'logout' %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background-color: #22356F; color: #fff;">Выйти</button>
+          </form>
+        </div>
+      </div>
+    {% elif user_type == 'contractor' %}
+      <div class="row align-items-center justify-content-between">
+        <div class="col-8 col-md-6 d-flex align-items-center">
+          <!-- MOBILE: компактный заголовок, DESKTOP: крупный -->
+          <a href="{% url 'index' %}"><img src="{% static 'img/ag/logo_b.png' %}" alt="Логотип" class="me-2 d-none d-md-block" style="height:42px;" /></a>
+          <h1 class="mb-0 h4 h2-md flex-grow-1" style="font-weight: 700; color:#22356F;">Личный кабинет организации: {{ profile.org_name }}</h1>
+        </div>
+        <div class="col-4 col-md-auto text-end">
+          <form action="{% url 'logout' %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background-color: #22356F; color: #fff;">Выйти</button>
+          </form>
+        </div>
+      </div>
+    {% else %}
+      <div class="row align-items-center justify-content-between">
+        <div class="col-8 col-md-6 d-flex align-items-center">
+          <!-- MOBILE: компактный заголовок, DESKTOP: крупный -->
+          <a href="{% url 'index' %}"><img src="{% static 'img/ag/logo_b.png' %}" alt="Логотип" class="me-2 d-none d-md-block" style="height:42px;" /></a>
+        </div>
+      </div>
+
+    {% endif %}
+  </div>
 </header>

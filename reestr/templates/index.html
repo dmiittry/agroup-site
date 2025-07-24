@@ -49,7 +49,7 @@
          <div class="col-lg-3 col-md-6 col-6">
             <!-- ca-logo -->
             <div class="ca-logo">
-               <a href=""><img src="{% static '/img/ag/logo.png' %}" alt=""></a>
+               <a href="#"><img src="{% static '/img/ag/logo.png' %}" alt=""></a>
             </div>
          </div>
          <div class="col-lg-6 d-none d-lg-block">
@@ -74,7 +74,7 @@
                   <a class="ca-btn-primary-22" href="{% url 'dashboard' %}">Личный кабинет<span><i
                   class="fa-solid fa-arrow-right"></i></span></a>
                {% else %}
-                  <a class="ca-btn-primary-22" href="{% url 'login' %}">Вход для партнеров</a>
+                  <a class="ca-btn-primary-22" href="{% url 'login' %}">Вход/Регистрация</a>
                {% endif %}
                </div>
             {% comment %} <div class="ca-btn-header text-end d-none d-lg-block">
@@ -101,7 +101,7 @@
    <div class="ca-offcanvas-wrapper">
       <div class="ca-offcanvas-header d-flex justify-content-between align-items-center mb-40">
          <div class="ca-offcanvas-logo">
-            <a href="#"><img src="{% static '/img/logo/ca-logo2.2.png' %}" alt=""></a>
+            <a href="#"><img src="{% static '/img/ag/logo_b.png' %}" alt=""></a>
          </div>
          <div class="ca-offcanvas-close">
             <button class="ca-offcanvas-close-toggle"><i class="fal fa-times"></i></button>
@@ -112,8 +112,12 @@
          </nav>
       </div>
       <div class="ca-offcanvas-contact mb-40">
-         <a href="#" class="ca-btn-primary ca-btn-primary-2 theme-bg-2 text-white">Оставить заявку<span><i
-                  class="fa-solid fa-arrow-right"></i></span></a>
+         {% if user.is_authenticated %}
+            <a class="ca-btn-primary-22" href="{% url 'dashboard' %}">Личный кабинет<span><i
+            class="fa-solid fa-arrow-right"></i></span></a>
+         {% else %}
+            <a class="ca-btn-primary-22" href="{% url 'login' %}">Вход/Регистрация</a>
+         {% endif %}
       </div>
       <div class="ca-offcanvas-contact-info mb-40">
          <h3 class="ca-offcanvas-sm-title">Контакты</h3>
@@ -125,7 +129,7 @@
                </span>
             </div>
             <div class="ca-sm-single-item-4-content">
-               <p><a href="#">г. Якутск, ул.Орджоникидзе 36/1</a></p>
+               <p><a href="#">г. Якутск, ул.Орджоникидзе 36/1, 309 каб.</a></p>
             </div>
          </div>
 
@@ -509,7 +513,14 @@
             <h5 class="ca-section-subtitle-2 p-relative  br-50">Наш проект</h5>
             <h2 class="ca-section-title text-white fnw-600 pt-16">Перевозка горнорудной массы в 2025 году</h2>
             <p class="pt-16 text-white" >Связываем месторождение "Прогноз-Серебро" и ГОК "Нежданинское"</p>
+
+            <div class="text-center mt-4">
+               <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#mapModal" style="background-color: #22356F; color: #fff;">
+                     Посмотреть на карте
+               </button>
             </div>
+         </div>
+
          </div>
          <div class="row align-items-center">
             <div class="col-xl-3 col-md-6 mb-30">
@@ -517,8 +528,8 @@
                <div class="ca-counter-bg br-7 text-white aos-init aos-animate" data-aos="fade-right" data-aos-duration="800">
                   <!-- single counter area -->
                   <div class="ca-counter-area text-center">
-                     <h3 class="ca-counter-title fnw-700 pb-16"><span class="counter">200</span> тыс.</h3>
-                     <p class="text-white">Перевезено руды</p>
+                     <h3 class="ca-counter-title fnw-700 pb-16"><span class="counter">200</span>т. тонн</h3>
+                     <p class="text-white">Перевезено руды </p>
                   </div>
                   <!-- single counter area -->
                   <div class="ca-counter-area text-center">
@@ -538,9 +549,17 @@
                </div>
                <!-- counter area end -->
             </div>
-            <div class="col-xl-4 col-md-6 mb-30">
+            {% comment %} <div class="col-xl-4 col-md-6 mb-30">
                <div class="ca-about-img aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000">
                   <img class="w-100 br-7" src="{% static '/img/ag/p1.jpg' %}" alt="">
+               </div>
+            </div> {% endcomment %}
+            <div class="col-xl-4 col-md-6 mb-30">
+               <div class="ca-about-img aos-init aos-animate br-7 overflow-hidden" data-aos="fade-up" data-aos-duration="1000" style="min-height: 300px;">
+                  <iframe
+                  src="https://yandex.ru/map-widget/v1/?um=constructor%3Aca118207bde6c602b356dff7509e898192a8bb0de39aa38fc632a20644d983e5&amp;source=constructor"
+                  width="100%" height="600" frameborder="0" allowfullscreen="true" style="border:0; border-radius:12px;">
+                  </iframe>
                </div>
             </div>
             <div class="col-xl-5 mb-30 aos-init text-wh aos-animate" data-aos="fade-left" data-aos-duration="1200">
@@ -607,6 +626,23 @@
          </div>
       </div>
    </section>
+
+   {% comment %} Модальное окно карты {% endcomment %}
+   <div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+         <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="mapModalLabel">Карта маршрута проекта</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body p-0">
+            <iframe
+               src="https://yandex.ru/map-widget/v1/?um=constructor%3Aca118207bde6c602b356dff7509e898192a8bb0de39aa38fc632a20644d983e5&amp;source=constructor"
+               width="100%" height="500" frameborder="0" allowfullscreen style="border:0;"></iframe>
+            </div>
+         </div>
+      </div>
+   </div>
    <!-- about area end -->
    <!-- breadcrumb area start -->
    <section id="contact" class="ca-breadcrumb-area cream-bg-3 p-relative z-index-1 fix">

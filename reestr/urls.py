@@ -10,4 +10,5 @@ urlpatterns = [
     path('register/podryad/', views.podryad_signup, name='podryad_signup'),
     path('profile/change_credentials/', views.user_change_credentials, name='user_change_credentials'),
     path('profile/contractor_change_credentials/', views.contractor_change_credentials, name='contractor_change_credentials'),
+    path('export/excel/', views.export_flights_to_excel, name='export_excel'),
 ]

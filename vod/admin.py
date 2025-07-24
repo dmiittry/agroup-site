@@ -138,7 +138,7 @@ class CarInline(admin.TabularInline):
         url = reverse('admin:car_car_change', args=[obj.car.pk])
         return format_html('<a href="{}" target="_blank">{}</a>', url, obj.car.number)
     car_link.short_description = "Карточка ТС"
-   
+
 class DriverModelAdmin(ImportExportModelAdmin):
     resource_class = DriverResource
     list_display = ("full_name", 'user', 'contractor', "solo_trips", "joint_trips", 'cars_count', "birth_date", "phone_1", "driver_license", "snils", "is_approved")

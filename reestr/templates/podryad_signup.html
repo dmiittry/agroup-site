@@ -1,24 +1,155 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Регистрация подрядчика{% endblock %}
-
+{% block title %}
+  Регистрация подрядчика
+{% endblock %}
+{% block scripts %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Находим все поля с классом 'datepicker-input'
+      document.querySelectorAll('.datepicker-input').forEach(function (element) {
+        new AirDatepicker(element, {
+          autoClose: true, // Автоматически закрывать после выбора даты
+          position: 'bottom right', // Позиция календаря
+          dateFormat: 'dd.MM.yyyy' // Формат даты
+        })
+      })
+    })
+  </script>
+{% endblock %}
 {% block main %}
+  {% include 'partials/preloader.html' %}
+  {% include 'partials/header.html' %}
 
-{% include 'partials/preloader.html' %}
+  <div class="container bg-light" style="padding-top: 140px; padding-bottom: 100px;">
+    <main>
+      <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="{% static 'img/ag/logo.png' %}" alt="Логотип" width="72" />
+        <h2 class="h3" style="color: #22356F;">Регистрация организации</h2>
+        <p class="lead text-muted">Пожалуйста, заполните все необходимые поля для подачи заявки.</p>
+      </div>
 
-<section class="row justify-content-center" style="padding-top:120px;">
-    <div class="col-md-8 col-12">
-        <div class="card shadow">
-            <div class="card-body">
-                <h2 class="mb-4 text-center">Регистрация подрядчика</h2>
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-success w-100">Зарегистрироваться</button>
-                </form>
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+            <!-- Блок 1: Данные организации -->
+            <h4 class="mb-3">Данные организации</h4>
+            <div class="row g-3">
+              <div class="col-12">
+                <label for="{{ form.org_name.id_for_label }}" class="form-label">{{ form.org_name.label }}</label>
+                {{ form.org_name }}
+              </div>
+              <div class="col-md-8">
+                <label for="{{ form.full_name.id_for_label }}" class="form-label">Генеральный директор</label>
+                {{ form.full_name }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.birth_date.id_for_label }}" class="form-label">{{ form.birth_date.label }}</label>
+                  {{ form.birth_date }}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+                {{ form.email }}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.phone_1.id_for_label }}" class="form-label">{{ form.phone_1.label }}</label>
+                {{ form.phone_1 }}
+              </div>
             </div>
-        </div>
-    </div>
-</section>
 
+            <hr class="my-4" />
+
+            <!-- Блок 2: Юридические и банковские реквизиты -->
+            <h4 class="mb-3">Юридические и банковские реквизиты</h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="{{ form.inn.id_for_label }}" class="form-label">{{ form.inn.label }}</label>{{ form.inn }}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.kpp.id_for_label }}" class="form-label">{{ form.kpp.label }}</label>{{ form.kpp }}
+              </div>
+              <div class="col-12">
+                <label for="{{ form.bank.id_for_label }}" class="form-label">{{ form.bank.label }}</label>{{ form.bank }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.num_chet.id_for_label }}" class="form-label">Расчетный счет</label>{{ form.num_chet }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.num_bik.id_for_label }}" class="form-label">{{ form.num_bik.label }}</label>{{ form.num_bik }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.num_corch.id_for_label }}" class="form-label">Корр. счет</label>{{ form.num_corch }}
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Блок 3: Паспортные данные -->
+            <h4 class="mb-3">Паспортные данные директора</h4>
+            <div class="row g-3">
+              <div class="col-12">
+                <label for="{{ form.issued_by.id_for_label }}" class="form-label">{{ form.issued_by.label }}</label>{{ form.issued_by }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.series.id_for_label }}" class="form-label">{{ form.series.label }}</label>{{ form.series }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.number.id_for_label }}" class="form-label">{{ form.number.label }}</label>{{ form.number }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.issue_date.id_for_label }}" class="form-label">{{ form.issue_date.label }}</label>{{ form.issue_date }}
+              </div>
+              <div class="col-12">
+                <label for="{{ form.registration.id_for_label }}" class="form-label">{{ form.registration.label }}</label>{{ form.registration }}
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Блок 4: Фотографии документов -->
+            <h4 class="mb-3">Фотографии документов</h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="{{ form.photo1.id_for_label }}" class="form-label">{{ form.photo1.label }}</label>{{ form.photo1 }}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.photo2.id_for_label }}" class="form-label">{{ form.photo2.label }}</label>{{ form.photo2 }}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.photo3.id_for_label }}" class="form-label">{{ form.photo3.label }}</label>{{ form.photo3 }}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.photo4.id_for_label }}" class="form-label">{{ form.photo4.label }}</label>{{ form.photo4 }}
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary btn-lg" type="submit" style="background-color: #22356F; border-color: #22356F;">Отправить заявку на регистрацию</button>
+              <a href="{% url 'login' %}" class="btn btn-outline-secondary">Вернуться ко входу</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- СТИЛИ ДЛЯ ВИДИМЫХ РАМОК У ПОЛЕЙ ВВОДА -->
+  <style>
+    .form-control,
+    .form-select {
+      /* Задаем видимую рамку по умолчанию */
+      border: 1px solid #ced4da;
+    }
+    
+    .form-control:focus,
+    .form-select:focus {
+      /* При нажатии делаем рамку ярче и добавляем тень */
+      border-color: #22356f;
+    }
+  </style>
 {% endblock %}

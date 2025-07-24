@@ -1,48 +1,103 @@
 {% extends "base.html" %}
+{% load static %} {% block title %}Вход в личный кабинет{% endblock %}
 
-{% block title %}Вход в личный кабинет{% endblock %}
+{% block main %} {% include 'partials/preloader.html' %}
+{% block scripts %}
+{% endblock scripts %}
+<section
+  class="form-signin w-100 m-auto"
+  style="max-width: 340px; padding: 80px 0 40px 0"
+>
+  <form method="post" action="{% url 'login' %}" autocomplete="on">
+    {% csrf_token %}
 
-{% block main %}
+    <a href="{% url 'index' %}"><img class="mb-4 text-center" 
+      src="{% static 'img/ag/logo_b.png' %}"
+    /></a>
+    <h1 class="h3 mb-3 fw-normal text-center">Вход в личный кабинет</h1>
 
-{% include 'partials/preloader.html' %}
-
-<section class="row justify-content-center" style="padding-top:120px;">
-    <div class="col-md-5 col-12">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h2 class="mb-4 text-center">Вход в личный кабинет</h2>
-                {% if form.errors %}
-                    <div class="alert alert-danger">
-                        Неверный логин или пароль.
-                    </div>
-                {% endif %}
-                <form method="post" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="id_username" class="form-label">Имя пользователя</label>
-                        <input type="text" name="username" class="form-control" id="id_username" required autofocus>
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_password" class="form-label">Пароль</label>
-                        <input type="password" name="password" class="form-control" id="id_password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Войти</button>
-                </form>
-                <div class="text-center mt-2 mb-2">
-                    <a href="{% url 'password_reset' %}">Забыли пароль?</a>
-                </div>
-                <hr>
-                <div class="text-center">
-                    <p>Ещё не зарегистрированы?</p>
-                    <a href="{% url 'driver_signup' %}" class="btn btn-outline-secondary mb-2 w-100">
-                        Регистрация водителя
-                    </a>
-                    <a href="{% url 'podryad_signup' %}" class="btn btn-outline-secondary w-100">
-                        Регистрация подрядчика
-                    </a>
-                </div>
-            </div>
-        </div>
+    {% if form.errors %}
+    <div class="alert alert-danger text-center py-2">
+      Неверный логин или пароль!
     </div>
+    {% endif %}
+
+    <div class="form-floating mb-2">
+      <input
+        type="text"
+        name="username"
+        class="form-control"
+        id="floatingInput"
+        placeholder="Логин"
+        autocapitalize="none"
+        autocorrect="off"
+      />
+      <label for="floatingInput">Логин (номер телефона)</label>
+    </div>
+    <div class="form-floating mb-2">
+      <input
+        type="password"
+        name="password"
+        class="form-control"
+        id="floatingPassword"
+        placeholder="Пароль"
+        required
+      />
+      <label for="floatingPassword">Пароль</label>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3 small">
+      <div>
+        <input
+          type="checkbox"
+          value="remember-me"
+          id="rememberMe"
+          class="form-check-input"
+        />
+        <label class="form-check-label ms-1" for="rememberMe"
+          >Запомнить меня</label
+        >
+      </div>
+      {% comment %} <a href="{% url 'password_reset' %}" class="float-end">Забыли пароль?</a> {% endcomment %}
+    </div>
+
+    <button
+      class="ca-btn-primary-22"
+      style="width: 100%;"
+      type="submit"
+    >
+      Войти
+    </button>
+
+    <div class="text-center mt-3">
+      <p class="mb-2">Ещё не зарегистрированы?</p>
+      <a
+        href="{% url 'driver_signup' %}"
+        class="btn btn-outline-success w-100 mb-2"
+        >Регистрация водителя</a
+      >
+      <a
+        href="{% url 'podryad_signup' %}"
+        class="btn btn-outline-success w-100"
+        >Регистрация подрядчика</a
+      >
+      <p class="mt-5 mb-3 text-muted text-center">&copy; {% now "Y" %} А-Групп</p>
+    </div>
+  </form>
 </section>
+
+<!-- Bootstrap form-signin доп.стиль -->
+<style>
+  body {
+    background: #f8fafc !important;
+  }
+  main.form-signin {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 6px 30px 0 rgba(34, 53, 111, 0.04);
+  }
+  .form-signin .form-floating > label {
+    color: #22356f !important;
+  }
+</style>
 {% endblock %}

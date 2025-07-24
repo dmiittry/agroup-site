@@ -4,10 +4,29 @@
 
 {% include 'partials/preloader.html' %}
 
-<div class="container" style="padding-top:150px;">
-    <div class="alert alert-danger">
-        <h3>Доступ к личному кабинету временно заблокирован.</h3>
-        <p>Обратитесь к своему координатору или службе поддержки.</p>
+<div class="container" style="padding-top:150px; max-width: 600px;">
+    <div class="alert alert-danger text-center shadow" role="alert">
+        <h3 class="mb-3">
+            Доступ к личному кабинету временно заблокирован
+        </h3>
+        <p class="mb-4">
+            Обратитесь к своему координатору или службе поддержки для выяснения причин.<br>
+            <span class="text-muted">Телефон: <b>+7 (4112) 12-34-56</b></span>
+        </p>
+        <div class="d-grid gap-2 mb-2">
+            <a href="{% url 'index' %}" class="btn btn-secondary">
+                Вернуться на главную
+            </a>
+            <form action="{% url 'logout' %}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger">Выйти</button>
+            </form>
+        </div>
+        <small class="text-muted">
+            Если вы считаете, что произошла ошибка — напишите нам: 
+            <a href="mailto:support@вашдомен.ru">support@вашдомен.ru</a>
+        </small>
     </div>
 </div>
+
 {% endblock %}

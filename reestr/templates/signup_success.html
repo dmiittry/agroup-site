@@ -6,8 +6,27 @@
 
 {% include 'partials/preloader.html' %}
 
-<h2>Спасибо за регистрацию!</h2>
-<p>Ваша заявка отправлена на рассмотрение администратора. После проверки вы получите дальнейшие инструкции.</p>
-<a href="{% url 'index' %}">Вернуться на главную</a>
-
+<section class="d-flex justify-content-center align-items-center" style="min-height:60vh;">
+    <div class="card shadow-sm" style="max-width: 420px; width: 100%;">
+        <div class="card-body text-center">
+            <!-- Иконка успеха — Bootstrap 5 или SVG -->
+            <div class="mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#198754" class="bi bi-person-check" viewBox="0 0 16 16">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4.854 3.146a.5.5 0 0 0-.708-.708l-2 2-.647-.646a.5.5 0 1 0-.708.708l1 1a.5.5 0 0 0 .708 0l2.355-2.354z"/>
+                <path d="M8 9a5 5 0 0 0-4.546 2.914c-.003.008-.004.017-.007.025C3.175 12.971 3.943 13 4 13h8c.057 0 .825-.028 1.553-.061a1.527 1.527 0 0 0-.007-.025A5 5 0 0 0 8 9z"/>
+                </svg>
+            </div>
+            <h2 class="mb-3">Спасибо за регистрацию!</h2>
+            <p class="mb-4">
+                Ваша заявка отправлена администратору.<br>
+                После проверки вы получите инструкцию для дальнейшего входа.
+            </p>
+            <a href="{% url 'index' %}" class="btn btn-primary w-100 mb-2">Вернуться на главную</a>
+            <div class="mt-3 text-muted small">
+                Если у вас остались вопросы — свяжитесь с координатором или по email:<br>
+                <a href="mailto:support@вашдомен.ru">support@вашдомен.ru</a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
