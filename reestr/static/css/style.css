@@ -2952,7 +2952,7 @@ header.header-4 {
 #uslugi {
     background: linear-gradient(180deg, #fff 0%, #f5f6fa 30%, #464950 100%);
 }
-#about {
+#project {
     background: #464950;
 }
 .ca-ser-icon-box {
@@ -7461,7 +7461,7 @@ button.ca-btn-primary.ca-btn-primary-2 span {
     transition: color .2s;
 }
 .footer-links a:hover {
-    color: #eacc2b;                  /* цвет при наведении */
+    color: #22356F;                  /* цвет при наведении */
 }
 .footer-social a {
     color: #00060F;
