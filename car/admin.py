@@ -1,5 +1,5 @@
 from django.contrib import admin # type: ignore
-from django.db.models import Count # type: ignore
+from django.db.models import Count, Q # type: ignore
 from django.urls import reverse # type: ignore
 from django.utils.html import format_html # type: ignore
 from import_export.admin import ImportExportActionModelAdmin # type: ignore
@@ -8,18 +8,55 @@ from import_export.widgets import ForeignKeyWidget # type: ignore
 from .models import Car, CarMarka, CarModel
 from pod.models import Podryad
 from vod.models import Driver
+from reestr.models import Registry
 
 class DriverInline(admin.TabularInline):
-    model = Car.drivers.through
-    extra = 0
-    verbose_name = "Водитель"
-    verbose_name_plural = "Водители"
+    model = Driver
+    fk_name = "cars"
     readonly_fields = ('driver_link',)
+    fields = ('driver_link',)
+    extra = 0
+    verbose_name = "Закрепленный водитель"
+    verbose_name_plural = "Закрепленные водители"
 
     def driver_link(self, obj):
-        url = reverse('admin:vod_driver_change', args=[obj.driver.pk])
-        return format_html('<a href="{}" target="_blank">{}</a>', url, obj.driver.full_name)
-    driver_link.short_description = "Карточка водителя"
+        if obj.pk:
+            url = reverse('admin:vod_driver_change', args=[obj.pk])
+            return format_html('<a href="{}">{}</a>', url, obj.full_name)
+        return "-"
+    driver_link.short_description = "Водитель"
+
+    # Запрещаем добавлять водителей со страницы машины
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    # Запрещаем удалять водителей со страницы машины
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+class RegistryInlineForCar(admin.TabularInline):
+    model = Registry
+    fk_name = 'number' # Поле в модели Registry, которое ссылается на Car
+    
+    # Поля, которые будут видны в инлайне
+    fields = ('numberPL', 'dataPOPL', 'driver', 'pod', 'tonn', 'view_link')
+    readonly_fields = fields # Делаем все поля только для чтения
+    
+    extra = 0 # Не показывать пустые формы для добавления
+    can_delete = False # Запретить удаление отсюда
+    verbose_name = "Рейс"
+    verbose_name_plural = "История рейсов на этом ТС"
+
+    def has_add_permission(self, request, obj=None):
+        return False # Запретить добавление
+
+    # Ссылка на полную запись в реестре
+    def view_link(self, obj):
+        if obj.pk:
+            url = reverse('admin:reestr_registry_change', args=[obj.pk])
+            return format_html('<a href="{}">Открыть рейс</a>', url)
+        return ""
+    view_link.short_description = "Ссылка"
 
 class CarResourse(resources.ModelResource):
     organization = fields.Field(
@@ -78,37 +115,23 @@ class CarMarkaAdmin(admin.ModelAdmin):
         return obj._cars_count
     cars_count.short_description = 'Количество машин'
     cars_count.admin_order_field = '_cars_count'
-    
-class DriverInline(admin.TabularInline):
-    model = Driver.cars.through  # промежуточная таблица ManyToMany
-    extra = 0
-    verbose_name = "Водитель"
-    verbose_name_plural = "Водители"
-    readonly_fields = ('driver_link',)
-    fields = ('driver_link',) 
 
-    def driver_link(self, obj):
-        # driver = instance.driver  # или instance.driver_id, зависит от модели
-        if obj.driver:
-            url = reverse('admin:vod_driver_change', args=[obj.driver.pk])
-            return format_html('<a href="{}">{} {}</a>', url, obj.driver.full_name, obj.driver.birth_date)
-        return "-"
-    driver_link.short_description = "Водитель"
-    # Можно добавить поля из Driver, если нужно
-
+@admin.register(Car)
 class CarAdmin(ImportExportActionModelAdmin):
     resource_class = CarResourse
     list_display = ("model",'contractor', "marka", "number", "drivers_count")
     list_filter = ("model", "marka",'contractor')
-    search_fields = ("number","drivers__full_name")
-    inlines = [DriverInline]
-    # filter_horizontal = ("drivers",) if hasattr(Car, 'drivers') else () 
+    search_fields = ("number",)
+    inlines = [DriverInline, RegistryInlineForCar]
+    
+    def get_search_results(self, request, queryset, search_term):
+        _, use_distinct = super().get_search_results(request, queryset, search_term)
 
-    def get_form(self, request, obj = ..., change = ..., **kwargs):
-        form = super().get_form(request, obj, **kwargs)
-        form.base_fields['model'].widget.can_add_related = False # Фалсе запрещает добавить новый элемент сразу
-        form.base_fields['marka'].widget.can_add_related = False
-        return form
+        if search_term:
+            # Ищем по номеру машины без учета регистра
+            queryset = queryset.filter(number__icontains=search_term)
+        
+        return queryset, use_distinct
     
     
     def get_queryset(self, request):
@@ -119,7 +142,3 @@ class CarAdmin(ImportExportActionModelAdmin):
         return obj.drivers_num
     drivers_count.short_description = 'Количество водителей'
     drivers_count.admin_order_field = 'drivers_num'
-
-
-    
-admin.site.register(Car, CarAdmin)

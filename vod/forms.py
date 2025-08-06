@@ -4,12 +4,13 @@ from django.contrib.auth.models import User
 from datetime import datetime 
 
 class DriverProfileForm(forms.ModelForm):
+    
     class Meta:
         model = Driver
         fields = [
             'full_name', 'birth_date', 'driver_license', 'vy_date', 'snils',
             'issued_by', 'issue_date', 'number', 'series', 'registration',
-            'phone_1', 'phone_2', 'phone_3',
+            'phone_1', 'phone_2', 'phone_3', 
             'photo1', 'photo2', 'photo21', 'photo3', 'photo4', 'photo5'
         ]
         widgets = {

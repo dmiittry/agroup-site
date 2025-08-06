@@ -38,3 +38,4 @@ class Podryad(models.Model):
     class Meta:
         verbose_name = "Подрядчик"
         verbose_name_plural = "Подрядчики"
+        ordering = ['org_name']

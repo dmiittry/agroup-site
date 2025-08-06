@@ -8,11 +8,14 @@ class Driver(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='driver_profile', null=True, blank=True)
     is_approved = models.BooleanField("Статус согласования СБ", default=False)
 
-    cars = models.ManyToManyField(
+    cars = models.ForeignKey(
         Car,
+        on_delete=models.SET_NULL,
         blank=True,
-        verbose_name='Закрепленные ТС',
+        null=True,
+        verbose_name='Закрепленное ТС',
         related_name='drivers',
+        help_text='Выберите закрепленное транспортное средство'
     )
     
     contractor = models.ForeignKey(
