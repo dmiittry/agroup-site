@@ -11,7 +11,6 @@ class PodryadProfileForm(forms.ModelForm):
             'issued_by', 'issue_date', 'number', 'series', 'registration',
             'bank', 'inn', 'kpp', 'num_chet', 'num_bik', 'num_corch',
             'email', 'phone_1', 'phone_2', 'phone_3',
-            'photo1', 'photo2', 'photo3', 'photo4', 'photo5',
         ]
         widgets = {
             'birth_date': forms.DateInput(attrs={'type': 'date'}),
@@ -40,7 +39,6 @@ class PodryadSignupForm(forms.ModelForm):
             "issued_by", "issue_date", "number", "series", "registration",
             "bank", "inn", "kpp", "num_chet", "num_bik", "num_corch",
             "email", "phone_1", "phone_2", "phone_3",
-            "photo1", "photo2", "photo3", "photo4", "photo5",
         ]
         widgets = {
             'birth_date': forms.DateInput(attrs={'type': 'date'}),

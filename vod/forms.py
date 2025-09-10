@@ -10,8 +10,7 @@ class DriverProfileForm(forms.ModelForm):
         fields = [
             'full_name', 'birth_date', 'driver_license', 'vy_date', 'snils',
             'issued_by', 'issue_date', 'number', 'series', 'registration',
-            'phone_1', 'phone_2', 'phone_3', 
-            'photo1', 'photo2', 'photo21', 'photo3', 'photo4', 'photo5'
+            'phone_1', 'phone_2', 'phone_3',
         ]
         widgets = {
             'birth_date': forms.DateInput(attrs={'type': 'date'}),
@@ -38,7 +37,6 @@ class DriverSignupForm(forms.ModelForm):
             "full_name", "birth_date", "driver_license", "vy_date", "snils",
             "issued_by", "issue_date", "number", "series", "registration",
             "phone_1", "phone_2", "phone_3",
-            "photo1", "photo2", "photo21", "photo3", "photo4", "photo5",
         ]
         # ДОБАВЛЕНЫ ВИДЖЕТЫ ДЛЯ ПОЛЕЙ С ДАТОЙ
         widgets = {
