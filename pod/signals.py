@@ -35,3 +35,9 @@ def create_podryad_user(sender, instance, created, **kwargs):
         print(f"Создан пользователь для подрядчика '{instance.org_name}'")
         print(f"Логин (номер телефона): {username}")
         print(f"Пароль: {password}")
+
+@receiver(post_save, sender=Podryad)
+def update_podryad_access(sender, instance, **kwargs):  # Изменено: убрана логика can_login (удалённое поле), оставлен только аудит
+    if instance.status == 'approved' and not instance.approved_at:
+        instance.approved_at = now()
+        instance.save(update_fields=['approved_at'])

@@ -1,5 +1,8 @@
 from django.db import models # type: ignore
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save  # Добавлено: для сигналов
+from django.dispatch import receiver  # Добавлено: для сигналов
+from django.utils.timezone import now  # Добавлено: для времени одобрения
 
 class PodryadPhoto(models.Model):
     podryad = models.ForeignKey(
@@ -19,6 +22,13 @@ class PodryadPhoto(models.Model):
         return f"Фото для {self.podryad.org_name}"
 
 class Podryad(models.Model):
+    
+    class StatusChoices(models.TextChoices):
+        DRAFT = 'draft', 'Черновик'
+        PENDING = 'pending', 'На рассмотрении'
+        APPROVED = 'approved', 'Одобрено'
+        REJECTED = 'rejected', 'Отклонено'
+        
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='contractor_profile', null=True, blank=True)
     org_name = models.CharField("Название организации", max_length=255, help_text="Например: ООО Компания или ИП Иванов Иван Иванович (ФИО Полностью)")
     
@@ -62,6 +72,33 @@ class Podryad(models.Model):
     phone_2 = models.CharField("Номер телефона 2", max_length=20, blank=True, null=True, help_text="Если есть второй номер")
     phone_3 = models.CharField("Номер телефона 3", max_length=20, blank=True, null=True, help_text="Можно номер бухгалтера")
 
+    status = models.CharField(  # Добавлено: статус заявки
+        "Статус",
+        max_length=20,
+        choices=StatusChoices.choices,
+        default=StatusChoices.PENDING,
+        db_index=True
+    )
+    approved_by = models.ForeignKey(  # Добавлено: кто одобрил
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='approved_podryads',
+        verbose_name="Одобрено кем"
+    )
+    approved_at = models.DateTimeField(  # Добавлено: когда одобрено
+        "Одобрено когда",
+        null=True,
+        blank=True
+    )
+    
+    refusal_reason = models.TextField(  # Добавлено: причина отклонения
+        "Причина отклонения",
+        blank=True,
+        null=True,
+        help_text="Укажите причину, если статус 'Отклонено'"
+    )
     def __str__(self):
         return self.org_name
     
@@ -69,3 +106,4 @@ class Podryad(models.Model):
         verbose_name = "Подрядчик"
         verbose_name_plural = "Подрядчики"
         ordering = ['org_name']
+

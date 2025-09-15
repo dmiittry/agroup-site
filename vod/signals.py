@@ -36,3 +36,9 @@ def create_driver_user(sender, instance, created, **kwargs):
         print(f"Создан пользователь для водителя '{instance.full_name}'")
         print(f"Логин (номер телефона): {username}")
         print(f"Пароль: {password}")
+
+@receiver(post_save, sender=Driver)
+def update_driver_access(sender, instance, **kwargs):  # Изменено: убрана логика can_login/is_approved (удалённые поля), оставлен аудит
+    if instance.status == 'approved' and not instance.approved_at:
+        instance.approved_at = now()
+        instance.save(update_fields=['approved_at'])

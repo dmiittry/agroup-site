@@ -2,6 +2,7 @@ from django.db import models
 from car.models import Car #, CarMarka
 from pod.models import Podryad
 from vod.models import Driver
+from season.models import Season 
 
 class Gruz(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
@@ -24,6 +25,15 @@ class Marsh(models.Model):
         verbose_name_plural = "Маршруты"
 
 class Registry(models.Model):
+    season = models.ForeignKey(  # Изменено: добавлено поле для сезона (было category, теперь season)
+        Season,
+        default="-1",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='registries',
+        verbose_name='Сезон'
+    )
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='primary_registries', verbose_name='Водитель')
     driver2 = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='secondary_registries', blank=True, null=True, verbose_name='Второй водитель')
     pod = models.ForeignKey(Podryad, on_delete=models.CASCADE, related_name="pod_reestr", verbose_name='Подрядчик')
@@ -54,3 +64,9 @@ class Registry(models.Model):
     class Meta:
         verbose_name = "Реестр"
         verbose_name_plural = "Реестры"
+        indexes = [  # Изменено: добавлены индексы для ускорения фильтров по датам и сезону
+            models.Index(fields=['dataPOPL']),
+            models.Index(fields=['marsh']),
+            models.Index(fields=['pod']),
+            models.Index(fields=['season']),
+        ]

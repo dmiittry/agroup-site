@@ -58,19 +58,23 @@ class PodryadAdmin(ImportExportActionModelAdmin):
     resource_class = PodryadResource
     
     # Дополнительные настройки админки
-    list_display = ('org_name', 'contract_number', 'user', 'drivers_count', 'cars_count')
+    list_display = ('org_name', 'status', 'contract_number', 'user', 'drivers_count', 'cars_count')
     
-    list_filter = ('org_name',)
+    list_filter = ('org_name', 'status')
     search_fields = ('org_name',"drivers__full_name", "cars__number", 'user__username')    
     inlines = [PodryadPhotoInline, RegistryInlineForPodryad]
     raw_id_fields = ('user',)
     filter_horizontal = ('drivers',)
-    autocomplete_fields = ('cars',)
+    autocomplete_fields = ('cars', 'approved_by')
     readonly_fields = ('get_drivers_with_cars',)
     
     fieldsets = (
         ("Основная информация", {
-            'fields': ('org_name', 'contract_number', 'user', 'full_name')
+            'fields': ('org_name', 'contract_number', 'user', 'full_name', 'status')
+        }),
+        ("Детали статуса", {  # Добавлено: новый раздел для причины отклонения и аудита
+            'classes': ('collapse',),
+            'fields': ('refusal_reason', 'approved_by', 'approved_at'),
         }),
         ("Управление командой и парком", {'fields': ('drivers', 'cars')}),
         ("Список водителей и их ТС", {'classes': ('collapse',), 'fields': ('get_drivers_with_cars',)}),
@@ -84,18 +88,20 @@ class PodryadAdmin(ImportExportActionModelAdmin):
             'fields': ('birth_date', 'snils', 'issued_by', 'issue_date', 'number', 'series', 'registration', 'adress')
         })
     )
-
+    
+    def get_readonly_fields(self, request, obj=None):  # Добавлено: ограничение на смену статуса
+        fields = list(super().get_readonly_fields(request, obj))
+        if not (request.user.is_superuser or request.user.groups.filter(name='managers').exists()):
+            fields.append('status')  # Только менеджеры могут менять статус
+        return fields
+    
     def get_search_results(self, request, queryset, search_term):
-        # Вызываем родительский метод, чтобы получить use_distinct.
-        # Сам queryset мы будем фильтровать по-своему.
         _, use_distinct = super().get_search_results(request, queryset, search_term)
-
         if search_term:
-            # Создаем регистронезависимый поисковый запрос по нужным полям
             search_query = (
-                Q(org_name__icontains=search_term) |
-                Q(full_name__icontains=search_term) |
-                Q(inn__icontains=search_term)
+                Q(org_name__icontains=search_term)
+                | Q(full_name__icontains=search_term)
+                | Q(inn__icontains=search_term)
             )
             queryset = queryset.filter(search_query)
 
@@ -103,11 +109,10 @@ class PodryadAdmin(ImportExportActionModelAdmin):
     
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        # Аннотируем для сортировки по количеству машин и водителей
         qs = qs.annotate(
             _cars_count=Count('cars', distinct=True),
             _drivers_count=Count('drivers', distinct=True)
-        )
+        ).prefetch_related('drivers__cars', 'cars')
         return qs
 
     def cars_count(self, obj):
@@ -121,25 +126,29 @@ class PodryadAdmin(ImportExportActionModelAdmin):
     drivers_count.admin_order_field = '_drivers_count'
     
     def get_drivers_with_cars(self, obj):
-        """Формирует HTML-список водителей с их машинами и ссылками."""
         drivers = obj.drivers.prefetch_related('cars').all()
         if not drivers:
             return "К этому подрядчику еще не прикреплены водители."
-            
-        html = "<ul style='list-style-type: none; padding-left: 0;'>"
-        for driver in drivers:
-            # Получаем машины, привязанные к водителю
-            cars_str = ", ".join([car.number for car in driver.cars.all()])
-            if not cars_str:
-                cars_str = "<i>(машина не закреплена)</i>"
-            
-            # Ссылка на карточку водителя
-            driver_url = reverse('admin:vod_driver_change', args=[driver.pk])
-            
-            html += (f"<li style='margin-bottom: 8px;'>"
-                    f"<strong><a href='{driver_url}'>{driver.full_name}</a></strong>"
-                    f" &mdash; ТС: {cars_str}"
-                    f"</li>")
-        html += "</ul>"
-        return format_html(html)
+        items = []
+        for d in drivers:
+            d_url = reverse('admin:vod_driver_change', args=[d.pk])
+            cars = ", ".join(escape(c.number) for c in d.cars.all()) or "Нет ТС"
+            items.append(f'<li><a href="{d_url}">{escape(d.full_name)}</a> — {cars}</li>')
+        return format_html('<ul>{}</ul>', format_html("".join(items)))
     get_drivers_with_cars.short_description = "Список водителей и их транспорт"
+    
+    actions = ['approve_selected', 'reject_selected']  # Добавлено: действия для массового одобрения/отклонения
+
+    def approve_selected(self, request, queryset):  # Добавлено: действие одобрения
+        from django.utils.timezone import now
+        updated = queryset.update(status='approved', approved_by=request.user, approved_at=now())
+        self.message_user(request, f"Одобрено {updated} подрядчиков.")
+
+    approve_selected.short_description = "Одобрить выбранные"
+
+    def reject_selected(self, request, queryset):  # Добавлено: действие отклонения
+        updated = queryset.update(status='rejected')
+        self.message_user(request, f"Отклонено {updated} подрядчиков.")
+
+    reject_selected.short_description = "Отклонить выбранные"
+

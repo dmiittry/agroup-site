@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'pod.apps.PodConfig',
     'car.apps.CarConfig',
     'vod.apps.VodConfig',
+    'season.apps.SeasonConfig',
     'import_export'
 ]
 

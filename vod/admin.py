@@ -9,6 +9,7 @@ from reestr.models import Registry, Marsh
 from import_export import resources, fields # type: ignore
 from import_export.widgets import ManyToManyWidget, BooleanWidget # type: ignore
 from datetime import date
+from season.models import Season
 
 class MarshFilter(admin.SimpleListFilter):
     title = 'Маршрут'
@@ -32,18 +33,11 @@ class SeasonFilter(admin.SimpleListFilter):
     parameter_name = 'season'
 
     def lookups(self, request, model_admin):
-        return [
-            ('first', 'Зимник 2025 (01.12.24–01.04.25)'),
-        ]
+        return [(s.id, s.name) for s in Season.objects.filter(is_active=True)]  # Изменено: только активные сезоны
 
     def queryset(self, request, queryset):
-        if self.value() == 'first':
-            season_start = date(2024, 12, 1)
-            season_end = date(2025, 5, 1)
-            return queryset.filter(
-                primary_registries__dataPOPL__gte=season_start,
-                primary_registries__dataPOPL__lte=season_end
-            ).distinct()
+        if self.value():
+            return queryset.filter(primary_registries__season__id=self.value()).distinct()  # Изменено: фильтр по сезонам рейсов
         return queryset
 
 class DriverPhotoInline(admin.TabularInline):
@@ -125,31 +119,38 @@ class JointRegistry2Inline(ReadOnlyRegistryInline):
 class DriverModelAdmin(ImportExportModelAdmin):
     resource_class = DriverResource
     list_display = (
-        "full_name", 'user', 'display_cars', 'display_contractors',
-        "solo_trips", "joint_trips", "is_approved", "dopog"
+        "full_name", 'user', "status", 'display_cars', 'display_contractors',
+        "solo_trips", "joint_trips", "dopog"
     )
     search_fields = (
         "full_name", "phone_1", 'user__username',
-        'cars__number', 'contractors__org_name', "dopog" # Обновлено для M2M
+        'cars__number', 'contractors__org_name', "dopog" 
     )
-    list_filter = (MarshFilter, SeasonFilter, 'is_approved') # Убран 'contractor'
+    list_filter = (MarshFilter, SeasonFilter, 'status') 
     raw_id_fields = ('user',)
     inlines = [
-        DriverPhotoInline, # Добавлен фотоальбом
+        DriverPhotoInline,
         SoloRegistryInline, JointRegistryInline, JointRegistry2Inline
     ]
-    # Улучшенный интерфейс для выбора нескольких машин
     filter_horizontal = ('cars',) 
-    # УЛУЧШЕНИЕ: Добавляем новое поле и статистику в readonly
     readonly_fields = ('display_contractors_list', 'contractors_stats', 'cars_stats')
-
-    # УЛУЧШЕНИЕ: Группируем поля для удобства
+    autocomplete_fields = ['approved_by']
     fieldsets = (
-        ("Статус и доступ", {"fields": ('user', 'is_approved', 'can_login')}),
-        ("Основная информация", {"fields": ('full_name', 'driver_license', 'vy_date', 'snils', 'phone_1' )}),
+        ("Статус и доступ", {"fields": ('user', 'status')}),  
+        ("Основная информация", {"fields": ('full_name', 'driver_license', 'vy_date', 'snils', 'phone_1')}),
+        ("Детали статуса", {  # Добавлено: новый раздел для причины отклонения и аудита
+            'classes': ('collapse',),
+            'fields': ('refusal_reason', 'approved_by', 'approved_at'),
+        }),
         ("Привязки и статистика", {"fields": ('cars', 'display_contractors_list', 'contractors_stats', 'cars_stats')}),
         ("Документы", {"classes": ('collapse',), "fields": ('dopog','birth_date', 'issued_by', 'issue_date', 'number', 'series', 'registration','phone_2', 'phone_3')})
     )
+    
+    def get_readonly_fields(self, request, obj=None):  # Добавлено: ограничение на смену статуса
+        fields = list(super().get_readonly_fields(request, obj))
+        if not (request.user.is_superuser or request.user.groups.filter(name='managers').exists()):
+            fields.append('status')  # Только менеджеры могут менять статус
+        return fields
     
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -212,3 +213,18 @@ class DriverModelAdmin(ImportExportModelAdmin):
             inline_instances.append(inline)
         return inline_instances
     
+    actions = ['approve_selected', 'reject_selected']  # Добавлено: действия для массового одобрения/отклонения
+
+    def approve_selected(self, request, queryset):  # Добавлено: действие одобрения
+        from django.utils.timezone import now
+        updated = queryset.update(status='approved', approved_by=request.user, approved_at=now())
+        self.message_user(request, f"Одобрено {updated} водителей.")
+
+    approve_selected.short_description = "Одобрить выбранных"
+
+    def reject_selected(self, request, queryset):  # Добавлено: действие отклонения
+        updated = queryset.update(status='rejected')
+        self.message_user(request, f"Отклонено {updated} водителей.")
+
+    reject_selected.short_description = "Отклонить выбранных"
+
