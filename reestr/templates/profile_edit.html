@@ -135,27 +135,20 @@
             <hr class="my-4" />
 
             <!-- Блок 4: Фотографии документов -->
-            <h4 class="mb-3">Фотографии документов</h4>
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label for="{{ form.photo1.id_for_label }}" class="form-label">{{ form.photo1.label }}</label>{{ form.photo1 }}
-              </div>
-              <div class="col-md-6">
-                <label for="{{ form.photo2.id_for_label }}" class="form-label">{{ form.photo2.label }}</label>{{ form.photo2 }}
-              </div>
-              <div class="col-md-6">
-                <label for="{{ form.photo21.id_for_label }}" class="form-label">{{ form.photo21.label }}</label>{{ form.photo21 }}
-              </div>
-              <div class="col-md-6">
-                <label for="{{ form.photo3.id_for_label }}" class="form-label">{{ form.photo3.label }}</label>{{ form.photo3 }}
-              </div>
-              <div class="col-md-6">
-                <label for="{{ form.photo4.id_for_label }}" class="form-label">{{ form.photo4.label }}</label>{{ form.photo4 }}
-              </div>
-              <div class="col-md-6">
-                <label for="{{ form.photo5.id_for_label }}" class="form-label">{{ form.photo5.label }}</label>{{ form.photo5 }}
-              </div>
+            <h3>Фотоальбом</h3>
+            <div class="row">
+              {% for photo in profile.photos.all %}
+                <div class="col-4 mb-3">
+                  <img src="{{ photo.image.url }}" alt="" class="img-thumbnail" style="max-width:140px;">
+                  <div class="small text-muted">{{ photo.description }}</div>
+                </div>
+              {% empty %}
+                <div class="col">Нет фотографий</div>
+              {% endfor %}
             </div>
+            {% if profile.status == "approved" %}
+              <a href="{% url 'add_driver_photo' %}" class="btn btn-secondary">Добавить фото</a>
+            {% endif %}
 
             <hr class="my-4" />
 

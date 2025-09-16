@@ -11,4 +11,7 @@ urlpatterns = [
     path('profile/change_credentials/', views.user_change_credentials, name='user_change_credentials'),
     path('profile/contractor_change_credentials/', views.contractor_change_credentials, name='contractor_change_credentials'),
     path('export/excel/', views.export_flights_to_excel, name='export_excel'),
+    path('pod-add-photo/', views.add_podryad_photo, name='add_podryad_photo'),
+    path('pod-edit-photo/<int:photo_id>/', views.edit_podryad_photo, name='edit_podryad_photo'),
+
 ]

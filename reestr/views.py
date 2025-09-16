@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Q
 from django.contrib.auth import update_session_auth_hash
 from django.http import HttpResponse
+from django.contrib import messages
+from django.shortcuts import get_object_or_404
 
 import openpyxl
 
@@ -13,13 +15,49 @@ from car.models import Car
 
 # Импортируем все необходимые формы
 from vod.forms import DriverProfileForm, DriverSignupForm, UserChangeForm
-from pod.forms import PodryadProfileForm, PodryadSignupForm, ContractorUserChangeForm
+from pod.forms import PodryadProfileForm, PodryadSignupForm, ContractorUserChangeForm, PodryadPhotoForm, PodryadPhotoEditForm, PodryadPhoto  
 
 def index(request):
     return render(request, 'index.html')
 # reestr/views.py (добавьте в конец файла)
 
+@login_required
+def edit_podryad_photo(request, photo_id):
+    podryad = getattr(request.user, 'contractor_profile', None)
+    photo = get_object_or_404(PodryadPhoto, id=photo_id, podryad=podryad)
+    if request.method == 'POST':
+        if 'delete' in request.POST:
+            photo.delete()
+            messages.success(request, "Фото удалено")
+            return redirect('dashboard')
+        form = PodryadPhotoEditForm(request.POST, instance=photo)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Описание обновлено")
+            return redirect('dashboard')
+    else:
+        form = PodryadPhotoEditForm(instance=photo)
+    return render(request, 'pod_edit_photo.html', {'form': form, 'photo': photo})
 
+@login_required
+def add_podryad_photo(request):
+    podryad = getattr(request.user, 'contractor_profile', None)
+    if not podryad or podryad.status != 'approved':
+        messages.error(request, "Доступ запрещён")
+        return redirect('dashboard')  # или другой URL
+
+    if request.method == 'POST':
+        form = PodryadPhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo = form.save(commit=False)
+            photo.podryad = podryad
+            photo.save()
+            messages.success(request, "Фото успешно добавлено")
+            return redirect('dashboard')
+    else:
+        form = PodryadPhotoForm()
+
+    return render(request, 'pod_add_photo.html', {'form': form})
 
 @login_required
 def export_flights_to_excel(request):

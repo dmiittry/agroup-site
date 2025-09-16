@@ -233,9 +233,26 @@
               </p>
             </div>
           </div>
+          <h3>Фотоальбом</h3>
+          <div class="row mb-3">
+            {% for photo in profile.photos.all %}
+              <div class="col-3 mb-2 position-relative">
+                <img src="{{ photo.image.url }}" class="img-thumbnail" style="max-width:140px;" alt="">
+                <div class="small text-muted">{{ photo.description }}</div>
+                
+                <div class="mt-1">
+                  <a href="{% url 'edit_podryad_photo' photo.id %}" class="btn btn-sm btn-outline-primary">Редактировать</a>
+                </div>
+              </div>
+            {% empty %}
+              <div class="col">Нет фотографий</div>
+            {% endfor %}
+          </div>
+          
           <hr />
           <a href="{% url 'podryad_profile_edit' %}" class="btn btn-primary" style="background-color: #22356F; border:none;">Редактировать профиль</a>
           <a href="{% url 'contractor_change_credentials' %}" class="btn btn-outline-secondary">Сменить логин/пароль</a>
+          <a href="{% url 'add_podryad_photo' %}" class="btn btn-secondary">Добавить фото</a>
         </div>
       </div>
       <!-- Водители и техника подрядчика -->

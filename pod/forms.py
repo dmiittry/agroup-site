@@ -1,8 +1,18 @@
 from django import forms
-from .models import Podryad
+from .models import Podryad, PodryadPhoto
 from django.contrib.auth.models import User
 from datetime import datetime 
 
+class PodryadPhotoEditForm(forms.ModelForm):
+    class Meta:
+        model = PodryadPhoto
+        fields = ['description']
+        
+class PodryadPhotoForm(forms.ModelForm):
+    class Meta:
+        model = PodryadPhoto
+        fields = ['image', 'description']
+        
 class PodryadProfileForm(forms.ModelForm):
     class Meta:
         model = Podryad

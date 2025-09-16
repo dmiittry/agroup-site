@@ -16,6 +16,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 
 APPS_DIR = BASE_DIR / "agroup"
 # Application definition
@@ -123,10 +124,8 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [str(APPS_DIR / "/reestr/static")]
 
 # MEDIA
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#media-root
+# -------------------------------------------------------------------
 MEDIA_ROOT = str(APPS_DIR / "media")
-# https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"
 
 
