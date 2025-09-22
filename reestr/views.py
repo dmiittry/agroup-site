@@ -8,18 +8,77 @@ from django.shortcuts import get_object_or_404
 
 import openpyxl
 
-from reestr.models import Registry
+from reestr.models import Registry, Season
 from vod.models import Driver
 from pod.models import Podryad
 from car.models import Car
 
 # Импортируем все необходимые формы
-from vod.forms import DriverProfileForm, DriverSignupForm, UserChangeForm
+from vod.forms import DriverProfileForm, DriverSignupForm, UserChangeForm, DriverPhotoForm, DriverPhoto, DriverPhotoEditForm
 from pod.forms import PodryadProfileForm, PodryadSignupForm, ContractorUserChangeForm, PodryadPhotoForm, PodryadPhotoEditForm, PodryadPhoto  
+from car.forms import CarForm
 
 def index(request):
     return render(request, 'index.html')
 # reestr/views.py (добавьте в конец файла)
+
+@login_required
+def car_add(request):
+    contractor = getattr(request.user, 'contractor_profile', None)
+    if not contractor:
+        messages.error(request, "Эта функция доступна только подрядчикам.")
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        form = CarForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_car = form.save()
+            contractor.cars.add(new_car)          # привязываем к подрядчику
+            messages.success(request,
+                            f"ТС {new_car.number} успешно добавлено.")
+            return redirect('dashboard')
+    else:
+        form = CarForm()
+
+    return render(request, 'car_add.html', {'form': form})
+
+@login_required
+def edit_driver_photo(request, photo_id):  # [4]
+    driver = getattr(request.user, 'driver_profile', None)  # [23]
+    photo = get_object_or_404(DriverPhoto, id=photo_id, driver=driver)  # [13]
+    if request.method == 'POST':  # [4]
+        if 'delete' in request.POST:  # обработка удаления [4]
+            photo.delete()  # [23]
+            messages.success(request, "Фото удалено")  # [6]
+            return redirect('dashboard')  # [6]
+        form = DriverPhotoEditForm(request.POST, instance=photo)  # [3]
+        if form.is_valid():  # [3]
+            form.save()  # [3]
+            messages.success(request, "Описание обновлено")  # [6]
+            return redirect('dashboard')  # [6]
+    else:
+        form = DriverPhotoEditForm(instance=photo)  # [3]
+    return render(request, 'vod_edit_photo.html', {'form': form, 'photo': photo})
+
+@login_required
+def add_driver_photo(request):
+    driver = getattr(request.user, 'driver_profile', None)
+    if not driver or driver.status != 'approved':
+        messages.error(request, "Доступ запрещён")
+        return redirect('dashboard')  # или другой URL
+
+    if request.method == "POST":
+        form = DriverPhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo = form.save(commit=False)
+            photo.driver = driver
+            photo.save()
+            messages.success(request, "Фото успешно добавлено")
+            return redirect('dashboard')
+    else:
+        form = DriverPhotoForm()
+
+    return render(request, 'vod_add_photo.html', {'form': form})
 
 @login_required
 def edit_podryad_photo(request, photo_id):
@@ -124,71 +183,61 @@ def export_flights_to_excel(request):
 @login_required
 def dashboard(request):
     user = request.user
-    context = {'user_type': 'unknown'}
 
-    # --- ЛК ВОДИТЕЛЯ ---
-    if hasattr(user, 'driver_profile'):
-        profile = user.driver_profile
-        if not profile.can_login:
+    # Определяем профиль и роль
+    driver = getattr(user, 'driver_profile', None)
+    contractor = getattr(user, 'contractor_profile', None)
+    profile = driver or contractor
+    if not profile:
+        return render(request, 'dashboard.html', {'user_type': 'unknown'})
+
+    is_driver = driver is not None
+
+    # --- ОБЩАЯ ЛОГИКА ФИЛЬТРАЦИИ ---
+    season_id = request.GET.get('season')
+    
+    if is_driver:
+        if profile.status != 'approved':
             return render(request, 'lk_not_allowed.html')
-        
-        # Сортировка по дате для корректной обратной нумерации в шаблоне
-        flights = Registry.objects.filter(
-            Q(driver=profile) | Q(driver2=profile)
-        ).distinct().select_related('marsh', 'gruz', 'number').order_by('dataPOPL')
+        # Базовый запрос для водителя
+        flights_qs = Registry.objects.filter(Q(driver=profile) | Q(driver2=profile)).distinct()
+    else:
+        # Базовый запрос для подрядчика
+        flights_qs = Registry.objects.filter(pod=profile)
 
-        total_flights = flights.count()
-        total_tonn = flights.aggregate(s=Sum('tonn'))['s'] or 0
-        total_gsm = flights.aggregate(s=Sum('gsm'))['s'] or 0
-        
-        # Счетчик завершенных рейсов для водителя
-        total_completed_flights = flights.filter(tonn__isnull=False).exclude(tonn=0).count()
+    # Применяем фильтр по сезону, если он выбран
+    if season_id:
+        flights_qs = flights_qs.filter(season_id=season_id)
 
+    # Финальный запрос с подгрузкой связанных данных
+    flights = flights_qs.select_related('driver', 'driver2', 'pod', 'number', 'marsh', 'gruz', 'season').order_by('-dataPOPL')
+
+    # --- ОБЩИЙ РАСЧЕТ СТАТИСТИКИ И КОНТЕКСТ ---
+    seasons = Season.objects.all().order_by('-name')
+    context = {
+        'profile': profile,
+        'is_driver': is_driver,
+        'user_type': 'driver' if is_driver else 'contractor',
+        'flights': flights,
+        'total_flights': flights.count(),
+        'total_completed_flights': flights.filter(tonn__isnull=False).exclude(tonn=0).count(),
+        'total_tonn': flights.aggregate(s=Sum('tonn'))['s'] or 0,
+        'total_gsm': flights.aggregate(s=Sum('gsm'))['s'] or 0,
+        'seasons': seasons,
+        'current_season': int(season_id) if season_id else None,
+    }
+
+    # Добавляем специфичные для подрядчика данные
+    if not is_driver:
+        if profile.status != 'approved':
+            return render(request, 'lk_not_allowed.html')
         context.update({
-            'user_type': 'driver',
-            'profile': profile,
-            'flights': flights,
-            'total_flights': total_flights,
-            'total_completed_flights': total_completed_flights,
-            'total_tonn': total_tonn,
-            'total_gsm': total_gsm,
+            'contractor_drivers': profile.drivers.all().order_by('full_name').prefetch_related('cars'),
+            'contractor_cars': profile.cars.all().order_by('number'),
         })
-        return render(request, 'dashboard.html', context)
 
-    # --- ЛК ПОДРЯДЧИКА ---
-    elif hasattr(user, 'contractor_profile'):
-        profile = user.contractor_profile
-        
-        # Сортировка по дате для корректной обратной нумерации
-        flights = Registry.objects.filter(
-            pod=profile
-        ).select_related('driver', 'driver2', 'number', 'marsh', 'gruz').order_by('dataPOPL')
-
-        total_flights = flights.count()
-        total_tonn = flights.aggregate(s=Sum('tonn'))['s'] or 0
-        total_gsm = flights.aggregate(s=Sum('gsm'))['s'] or 0
-
-        # СЧЕТЧИК ЗАВЕРШЕННЫХ РЕЙСОВ (с тоннажем)
-        total_completed_flights = flights.filter(tonn__isnull=False).exclude(tonn=0).count()
-
-        contractor_drivers = profile.drivers.all().order_by('full_name')
-        contractor_cars = profile.cars.all().order_by('number')
-
-        context.update({
-            'user_type': 'contractor',
-            'profile': profile,
-            'flights': flights,
-            'total_flights': total_flights,
-            'total_completed_flights': total_completed_flights,
-            'total_tonn': total_tonn,
-            'total_gsm': total_gsm,
-            'contractor_drivers': contractor_drivers,
-            'contractor_cars': contractor_cars,
-        })
-        return render(request, 'dashboard.html', context)
-
-    # Если профиль не найден
     return render(request, 'dashboard.html', context)
+
 
 @login_required
 def profile_edit(request):

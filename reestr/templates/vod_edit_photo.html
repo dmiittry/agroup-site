@@ -1,0 +1,14 @@
+{% extends 'base.html' %}  {# базовый шаблон #}  {# [14] #}
+{% block main %}
+<div class="container mt-4 bg-light">
+  <h2>Редактировать фото</h2>
+  <img src="{{ photo.image.url }}" class="img-thumbnail mb-3" style="max-width:300px;" alt="">  {# [14] #}
+  <form method="post">  {# редактируем только описание, без повторной загрузки файла #}  {# [14] #}
+    {% csrf_token %}  {# защита POST #}  {# [17] #}
+    {{ form.as_p }}  {# поля формы #}  {# [14] #}
+    <button type="submit" class="btn btn-primary">Сохранить</button>  {# [14] #}
+    <button type="submit" name="delete" value="yes" class="btn btn-danger ms-2" onclick="return confirm('Удалить фото?')">Удалить</button>  {# [14] #}
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary ms-2">Отмена</a>  {# [14] #}
+  </form>
+</div>
+{% endblock %}

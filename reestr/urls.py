@@ -13,5 +13,8 @@ urlpatterns = [
     path('export/excel/', views.export_flights_to_excel, name='export_excel'),
     path('pod-add-photo/', views.add_podryad_photo, name='add_podryad_photo'),
     path('pod-edit-photo/<int:photo_id>/', views.edit_podryad_photo, name='edit_podryad_photo'),
+    path('vod-add-photo/', views.add_driver_photo, name='add_driver_photo'),
+    path('vod-add-photo/<int:photo_id>/edit/', views.edit_driver_photo, name='edit_driver_photo'),
+    path('car-add/', views.car_add, name='car_add'),
 
 ]

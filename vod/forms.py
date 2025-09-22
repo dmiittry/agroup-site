@@ -1,8 +1,19 @@
 from django import forms
-from .models import Driver
+from .models import Driver, DriverPhoto
 from django.contrib.auth.models import User
 from datetime import datetime 
 
+
+class DriverPhotoEditForm(forms.ModelForm):
+    class Meta:
+        model = DriverPhoto  
+        fields = ['description']  
+        
+class DriverPhotoForm(forms.ModelForm):
+    class Meta:
+        model = DriverPhoto
+        fields = ['image', 'description']
+        
 class DriverProfileForm(forms.ModelForm):
     
     class Meta:
@@ -28,7 +39,6 @@ class DriverProfileForm(forms.ModelForm):
         
         for field in self.fields.values():
             field.required = False
-
 
 class DriverSignupForm(forms.ModelForm):
     class Meta:
@@ -84,7 +94,6 @@ class DriverSignupForm(forms.ModelForm):
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        instance.is_approved = False  # по умолчанию не одобрен
         if commit:
             instance.save()
         return instance

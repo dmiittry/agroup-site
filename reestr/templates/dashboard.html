@@ -48,14 +48,13 @@
                 <div class="col-lg-6">
                   <h5 class="mb-3" style="color: #22356F;">Статус и связь</h5>
                   <p>
-                    <strong>Подрядчик:</strong> {{ profile.contractor.org_name|default:'Не привязан' }}
+                    <strong>Подрядчик:</strong> {{ profile.contractors.first.org_name|default:'Не привязан' }}
                   </p>
                   <p>
                     <strong>Статус согласования СБ:</strong>
-                    {% if profile.is_approved %}
-                      <span class="badge bg-success">Согласовано</span>
-                    {% else %}
-                      <span class="badge bg-danger">Не согласовано</span>
+                    {{ profile.get_status_display }}  {# покажет метку из TextChoices #}
+                    {% if profile.status == 'rejected' and profile.refusal_reason %}
+                    Причина отклонения: {{ profile.refusal_reason }}
                     {% endif %}
                   </p>
                   <p>
@@ -92,6 +91,23 @@
             </div>
           </div>
           <hr class="my-4" />
+          {% if is_driver %}
+            <h3>Ваши фотографии</h3>  {# [14] #}
+            <div class="row mb-3">  {# [14] #}
+              {% for photo in profile.photos.all %}  {# related_name='photos' #}  {# [23] #}
+                <div class="col-3 mb-2">
+                  <img src="{{ photo.image.url }}" class="img-thumbnail" style="max-width:140px;" alt="">  {# [14] #}
+                  <div class="small text-muted">{{ photo.description }}</div>  {# [14] #}
+                  <div class="mt-1">
+                    <a href="{% url 'edit_driver_photo' photo.id %}" class="btn btn-sm btn-outline-primary">Редактировать</a>  {# [14] #}
+                  </div>
+                </div>
+                {% empty %}
+                  <div class="col">Нет фотографий</div>
+                {% endfor %}
+              </div>
+              <a href="{% url 'add_driver_photo' %}" class="btn btn-secondary">Добавить фото</a>
+          {% endif %}
           <a href="{% url 'profile_edit' %}" class="btn btn-primary" style="background-color: #22356F; border:none;">Редактировать профиль</a>
           <a href="{% url 'user_change_credentials' %}" class="btn btn-outline-secondary">Сменить логин/пароль</a>
         </div>
@@ -114,6 +130,21 @@
         <div class="card-header bg-light d-flex justify-content-between align-items-center flex-wrap">
           <h5 class="mb-0">Статистика рейсов</h5>
           <div>
+            <!-- ===== ФОРМА ФИЛЬТРА ПО СЕЗОНУ ДЛЯ ВОДИТЕЛЯ ===== -->
+            <form method="get" class="d-inline-flex align-items-center ms-auto me-3">
+                <label for="season-select" class="form-label me-2 mb-0">Сезон:</label>
+                <select name="season" id="season-select" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">Все сезоны</option>
+                    {% for s in seasons %}
+                        <option value="{{ s.id }}" {% if s.id == current_season %}selected{% endif %}>
+                            {{ s.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if current_season %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-sm btn-link text-secondary">Сбросить</a>
+                {% endif %}
+            </form>
             <span class="badge bg-primary me-2">Завершенные рейсы: <strong>{{ total_completed_flights }}</strong></span>
             <span class="badge bg-secondary me-2">Кол-во выданных ПЛ: <strong>{{ total_flights }}</strong></span>
             <span class="badge bg-success me-2">Кол-во тонн: <strong>{{ total_tonn|floatformat:2 }}</strong></span>
@@ -253,6 +284,7 @@
           <a href="{% url 'podryad_profile_edit' %}" class="btn btn-primary" style="background-color: #22356F; border:none;">Редактировать профиль</a>
           <a href="{% url 'contractor_change_credentials' %}" class="btn btn-outline-secondary">Сменить логин/пароль</a>
           <a href="{% url 'add_podryad_photo' %}" class="btn btn-secondary">Добавить фото</a>
+          <a href="{% url 'car_add' %}" class="btn btn-success">Добавить ТС</a>
         </div>
       </div>
       <!-- Водители и техника подрядчика -->
@@ -290,6 +322,22 @@
         <div class="card-header bg-light d-flex justify-content-between align-items-center flex-wrap">
           <h5 class="mb-0">Статистика по рейсам</h5>
           <div>
+            <!-- ===== ФОРМА ФИЛЬТРА ПО СЕЗОНУ ===== -->
+            <form method="get" class="d-inline-flex align-items-center ms-auto me-3">
+                <label for="season-select" class="form-label me-2 mb-0">Сезон:</label>
+                <select name="season" id="season-select" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">Все сезоны</option>
+                    {% for s in seasons %}
+                        <option value="{{ s.id }}" {% if s.id == current_season %}selected{% endif %}>
+                            {{ s.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if current_season %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-sm btn-link text-secondary">Сбросить</a>
+                {% endif %}
+            </form>
+            <!-- ======================================= -->
             <span class="badge bg-primary me-2">Завершенные рейсы: <strong>{{ total_completed_flights }}</strong></span>
             <span class="badge bg-secondary me-2">Кол-во выданных ПЛ: <strong>{{ total_flights }}</strong></span>
             <span class="badge bg-success me-2">Кол-во тонн: <strong>{{ total_tonn|floatformat:2 }}</strong></span>

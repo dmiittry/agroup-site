@@ -41,14 +41,12 @@ class Car(models.Model):
         CarModel,
         on_delete=models.CASCADE,
         verbose_name="Вид ТС",
-        help_text="Если нету в списке, то добавьте в разделе Вид ТС",
         related_name='cars_by_model'
     )
     marka = models.ForeignKey(
         CarMarka,
         on_delete=models.CASCADE,
         verbose_name="Марка ТС",
-        help_text="Если нету в списке, то добавьте в разделе Марка ТС",
         related_name='cars_by_marka'
     )
     number = models.CharField("Номер ТС", max_length=20, unique=True)
