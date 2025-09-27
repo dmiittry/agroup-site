@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     'car.apps.CarConfig',
     'vod.apps.VodConfig',
     'season.apps.SeasonConfig',
-    'import_export'
+    'import_export',
+    'auditlog'
 ]
 
 MIDDLEWARE = [
@@ -43,7 +44,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'auditlog.middleware.AuditlogMiddleware'
 ]
 
 ROOT_URLCONF = 'agroup.urls'

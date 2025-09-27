@@ -1,4 +1,5 @@
 from django.db import models # type: ignore
+from auditlog.registry import auditlog
 
 class CarPhoto(models.Model):
     car = models.ForeignKey(
@@ -62,3 +63,5 @@ class Car(models.Model):
         verbose_name = "Транспортное средство"
         verbose_name_plural = "Транспортные средства"
         ordering = ['number']
+
+auditlog.register(Car)

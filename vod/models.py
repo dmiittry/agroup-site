@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save  # Добавлено: для сигналов
 from django.dispatch import receiver  # Добавлено: для сигналов
 from django.utils.timezone import now  # Добавлено: для времени одобрения
+from auditlog.registry import auditlog
 
 class DriverPhoto(models.Model):
     driver = models.ForeignKey(
@@ -91,4 +92,6 @@ class Driver(models.Model):
     class Meta:
         verbose_name = "Водитель"
         verbose_name_plural = "Водители"
+
+auditlog.register(Driver)
         

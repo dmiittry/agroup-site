@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save  # Добавлено: для сигналов
 from django.dispatch import receiver  # Добавлено: для сигналов
 from django.utils.timezone import now  # Добавлено: для времени одобрения
+from auditlog.registry import auditlog
 
 class PodryadPhoto(models.Model):
     podryad = models.ForeignKey(
@@ -107,3 +108,4 @@ class Podryad(models.Model):
         verbose_name_plural = "Подрядчики"
         ordering = ['org_name']
 
+auditlog.register(Podryad, m2m_fields={'drivers', 'cars'})
