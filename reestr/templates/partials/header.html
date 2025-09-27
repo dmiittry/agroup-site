@@ -1,0 +1,43 @@
+{% load static %}
+
+<header class="header-area-3 stiky bg-white shadow-sm py-3 px-2 px-md-4 mb-4">
+  <div class="container-fluid">
+    {% if user_type == 'driver' %}
+      <div class="row align-items-center justify-content-between">
+        <div class="col-8 col-md-6 d-flex align-items-center">
+          <!-- MOBILE: компактный заголовок, DESKTOP: крупный -->
+          <a href="{% url 'index' %}"><img src="{% static 'img/ag/logo_b.png' %}" alt="Логотип" class="me-2 d-none d-md-block" style="height:42px;" /></a>
+          <h1 class="mb-0 h4 h2-md flex-grow-1" style="font-weight: 700; color:#22356F;">Личный кабинет водителя</h1>
+        </div>
+        <div class="col-4 col-md-auto text-end">
+          <form action="{% url 'logout' %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background-color: #22356F; color: #fff;">Выйти</button>
+          </form>
+        </div>
+      </div>
+    {% elif user_type == 'contractor' %}
+      <div class="row align-items-center justify-content-between">
+        <div class="col-8 col-md-6 d-flex align-items-center">
+          <!-- MOBILE: компактный заголовок, DESKTOP: крупный -->
+          <a href="{% url 'index' %}"><img src="{% static 'img/ag/logo_b.png' %}" alt="Логотип" class="me-2 d-none d-md-block" style="height:42px;" /></a>
+          <h1 class="mb-0 h4 h2-md flex-grow-1" style="font-weight: 700; color:#22356F;">Личный кабинет организации: {{ profile.org_name }}</h1>
+        </div>
+        <div class="col-4 col-md-auto text-end">
+          <form action="{% url 'logout' %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background-color: #22356F; color: #fff;">Выйти</button>
+          </form>
+        </div>
+      </div>
+    {% else %}
+      <div class="row align-items-center justify-content-between">
+        <div class="col-8 col-md-6 d-flex align-items-center">
+          <!-- MOBILE: компактный заголовок, DESKTOP: крупный -->
+          <a href="{% url 'index' %}"><img src="{% static 'img/ag/logo_b.png' %}" alt="Логотип" class="me-2 d-none d-md-block" style="height:42px;" /></a>
+        </div>
+      </div>
+
+    {% endif %}
+  </div>
+</header>

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Регистрация водителя
+{% endblock %}
+
+{% block main %}
+  {% include 'partials/preloader.html' %}
+  {% include 'partials/header.html' %}
+
+  <div class="container bg-light" style="padding-top: 140px; padding-bottom: 100px;">
+    <main>
+      <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="{% static 'img/ag/logo.png' %}" alt="Логотип" width="72" />
+        <h2 class="h3" style="color: #22356F;">Регистрация водителя</h2>
+        <p class="lead text-muted">Пожалуйста, заполните все необходимые поля для подачи заявки.</p>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+            <!-- Блок 1: Основная информация -->
+            <h4 class="mb-3">Основная информация</h4>
+            <div class="row g-3">
+              <div class="col-md-8">
+                <label for="{{ form.full_name.id_for_label }}" class="form-label">{{ form.full_name.label }}</label>
+                {{ form.full_name }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.birth_date.id_for_label }}" class="form-label">{{ form.birth_date.label }}</label>
+                {{ form.birth_date }}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.driver_license.id_for_label }}" class="form-label">{{ form.driver_license.label }}</label>
+                {{ form.driver_license }}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.vy_date.id_for_label }}" class="form-label">{{ form.vy_date.label }}</label>
+                {{ form.vy_date }}
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Блок 2: Паспортные данные -->
+            <h4 class="mb-3">Паспортные данные</h4>
+            <div class="row g-3">
+              <div class="col-12">
+                <label for="{{ form.issued_by.id_for_label }}" class="form-label">{{ form.issued_by.label }}</label>{{ form.issued_by }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.series.id_for_label }}" class="form-label">{{ form.series.label }}</label>{{ form.series }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.number.id_for_label }}" class="form-label">{{ form.number.label }}</label>{{ form.number }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.issue_date.id_for_label }}" class="form-label">{{ form.issue_date.label }}</label>{{ form.issue_date }}
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Блок 3: Фотографии документов -->
+            <h4 class="mb-3">Фотографии документов</h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">{{ form.photo1.label }}</label>{{ form.photo1 }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">{{ form.photo2.label }}</label>{{ form.photo2 }}
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary btn-lg" type="submit" style="background-color: #22356F; border-color: #22356F;">Отправить заявку</button>
+              <a href="{% url 'login' %}" class="btn btn-outline-secondary">Вернуться ко входу</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- СТИЛИ ДЛЯ ВИДИМЫХ РАМОК У ПОЛЕЙ ВВОДА -->
+  <style>
+    .form-control,
+    .form-select {
+      border: 1px solid #ced4da;
+    }
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #22356f;
+    }
+  </style>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Находим все поля с классом 'datepicker-input'
+      document.querySelectorAll('.datepicker-input').forEach(function (element) {
+        new AirDatepicker(element, {
+          autoClose: true, // Автоматически закрывать после выбора даты
+          position: 'bottom right', // Позиция календаря
+          dateFormat: 'dd.MM.yyyy', // Формат даты
+          maxDate: new Date() // Нельзя выбрать дату в будущем
+        })
+      })
+    })
+  </script>
+{% endblock %}

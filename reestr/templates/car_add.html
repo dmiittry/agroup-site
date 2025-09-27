@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block main %}
+<section class="container bg-light" style="padding-top:140px; padding-bottom:500px;">
+  <h2 class="mb-4">Добавление транспортного средства</h2>
+
+  <form method="post" enctype="multipart/form-data" class="row gy-3">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <div class="col-12 mt-2">
+      <button type="submit" class="btn btn-primary" style="background:#22356F;border:none;">Добавить ТС</button>
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary ms-2">Отмена</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

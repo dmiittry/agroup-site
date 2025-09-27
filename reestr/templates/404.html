@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Страница не найдена (Ошибка 404){% endblock %}
+
+{% block main %}
+<div class="d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold" style="color: #22356F;">404</h1>
+        <p class="fs-3"> <span class="text-danger">Упс!</span> Страница не найдена.</p>
+        <p class="lead text-muted">
+            К сожалению, страница, которую вы ищете, не существует или была перемещена.
+        </p>
+        <a href="{% url 'index' %}" class="btn btn-primary btn-lg mt-3" style="background-color: #22356F; border-color: #22356F;">
+            Вернуться на главную
+        </a>
+    </div>
+</div>
+{% endblock %}

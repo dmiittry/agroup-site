@@ -1,0 +1,901 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}A-Group{% endblock title %}
+
+{% block logo %}href={% static '/img/ag/logo.png' %}{% endblock logo %}
+
+{% block main %}
+
+{% include 'partials/preloader.html' %}
+
+<style>
+   #st-01 {
+      overflow: hidden;
+      background-image: url("{% static '/img/ag/1-1.jpg' %}");
+      width: 100%;  /* Изменено с 1440px */
+      height: 926px;
+      background-size: cover;  /* Добавьте это для корректного отображения фона */
+   }
+   #st-02 {
+      overflow: hidden;
+      background-image: url("{% static '/img/ag/1-2.jpg' %}");
+      width: 100%;  /* Изменено с 1440px */
+      height: 926px;
+      background-size: cover;  /* Добавьте это для корректного отображения фона */
+   }
+   #st-03 {
+      overflow: hidden;
+      background-image: url("{% static '/img/ag/1-3.jpg' %}");
+      width: 100%;  /* Изменено с 1440px */
+      height: 926px;
+      background-size: cover;  /* Добавьте это для корректного отображения фона */
+   }
+
+   #TODO-img-2-1 {
+      width: 370px;
+      height: 480px;
+   }
+   #TODO-img-2-2 {
+      width: 350px;
+      height: 340px;
+   }
+</style>
+<!-- Header Area Start-->
+<header class="header-2 stiky">
+   <div class="container ca-header-bg-2">
+      <div class="row align-items-center">
+         <div class="col-lg-3 col-md-6 col-6">
+            <!-- ca-logo -->
+            <div class="ca-logo">
+               <a href="#"><img src="{% static '/img/ag/logo.png' %}" alt=""></a>
+            </div>
+         </div>
+         <div class="col-lg-6 d-none d-lg-block">
+            <!-- ca-main-menu -->
+            <div class="ca-main-menu-2">
+               <nav class="ca-mobile-menu-active-2">
+                  <ul>
+                     <li>
+                        <a href="#">Главная<span></a>
+                     </li>
+                     <li><a href="#uslugi">Услуги</a></li>
+                     <li><a href="#project">Проект</a></li>
+                     <li><a href="#about">О нас</a></li>
+                     <li><a href="#contact">Контакты</a></li>
+                  </ul>
+               </nav>
+            </div>
+         </div>
+         <div class="col-lg-3 col-md-6 col-6">
+            <!-- ca-btn -->
+               <div class="ca-btn-header text-end d-none d-lg-block">
+               {% if user.is_authenticated %}
+                  <a class="ca-btn-primary-22" href="{% url 'dashboard' %}">Личный кабинет<span><i
+                  class="fa-solid fa-arrow-right"></i></span></a>
+               {% else %}
+                  <a class="ca-btn-primary-22" href="{% url 'login' %}">Вход/Регистрация</a>
+               {% endif %}
+               </div>
+            {% comment %} <div class="ca-btn-header text-end d-none d-lg-block">
+               <a href="#" class="ca-btn-primary-22">Вход<span><i
+                        class="fa-solid fa-arrow-right"></i></span></a>
+            </div> {% endcomment %}
+
+            <div class="ca-header-action-item d-lg-none text-end">
+               <button type="button" class="ca-offcanvas-toogle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="16" viewBox="0 0 30 16">
+                     <rect x="10" width="20" height="2" fill="currentColor"></rect>
+                     <rect x="5" y="7" width="25" height="2" fill="currentColor"></rect>
+                     <rect x="10" y="14" width="20" height="2" fill="currentColor"></rect>
+                  </svg>
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</header>
+<!-- Header Area End-->
+<!-- offcanvas start -->
+<div class="ca-offcanvas w-bg">
+   <div class="ca-offcanvas-wrapper">
+      <div class="ca-offcanvas-header d-flex justify-content-between align-items-center mb-40">
+         <div class="ca-offcanvas-logo">
+            <a href="#"><img src="{% static '/img/ag/logo_b.png' %}" alt=""></a>
+         </div>
+         <div class="ca-offcanvas-close">
+            <button class="ca-offcanvas-close-toggle"><i class="fal fa-times"></i></button>
+         </div>
+      </div>
+      <div class="ca-offcanvas-menu-2 mb-40">
+         <nav>
+         </nav>
+      </div>
+      <div class="ca-offcanvas-contact mb-40">
+         {% if user.is_authenticated %}
+            <a class="ca-btn-primary-22" href="{% url 'dashboard' %}">Личный кабинет<span><i
+            class="fa-solid fa-arrow-right"></i></span></a>
+         {% else %}
+            <a class="ca-btn-primary-22" href="{% url 'login' %}">Вход/Регистрация</a>
+         {% endif %}
+      </div>
+      <div class="ca-offcanvas-contact-info mb-40">
+         <h3 class="ca-offcanvas-sm-title">Контакты</h3>
+         <!-- single item -->
+         <div class="ca-sm-single-item-4 mb-20">
+            <div class="icon">
+               <span>
+                  <i class="fa-solid fa-location-dot"></i>
+               </span>
+            </div>
+            <div class="ca-sm-single-item-4-content">
+               <p><a href="#">г. Якутск, ул.Орджоникидзе 36/1, 309 каб.</a></p>
+            </div>
+         </div>
+
+         <!-- single item -->
+         <div class="ca-sm-single-item-4 mb-20">
+            <div class="icon">
+               <span>
+                  <i class="fa-solid fa-phone"></i>
+               </span>
+            </div>
+            <div class="ca-sm-single-item-4-content">
+               <p><a href="tel:+79148222100">+7(914)822-21-00</a></p>
+            </div>
+         </div>
+
+         <!-- single item -->
+         <div class="ca-sm-single-item-4 mb-20">
+            <div class="icon">
+               <span>
+                  <i class="fa-solid fa-envelope"></i>
+               </span>
+            </div>
+            <div class="ca-sm-single-item-4-content">
+               <p><a href="mailto:infocargon@gmail.com">skamgroup@mail.ru</a></p>
+            </div>
+         </div>
+      </div>
+      {% comment %} <div class="ca-offcanvas-social mb-40">
+         <h3 class="ca-offcanvas-sm-title">Follow Us</h3>
+         <div class="ca-footer-social ca-footer-social-2">
+            <ul>
+               <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+               <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+               <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+               <li><a href="#"><i class="fa-brands fa-x-twitter"></i></a></li>
+            </ul>
+         </div> {% endcomment %}
+      </div>
+   </div>
+</div>
+<div class="ca-offcanvas-overlay"></div>
+<!-- offcanvas end -->
+<!-- main -->
+<main>
+   <!-- Main section start -->
+   <!-- slider section start -->
+   <div class="slider-for slider-2-img" style="height: 100%;">
+      <!-- single slider item -->
+      <div class="slider-text slider-2 p-relative z-index-1 d-flex align-items-center fix"
+         style="background-image: url(/static/img/ag/1-1.jpg);  height: 100vh; background-size: cover; background-position: center;">
+         <div class="ca-slider-2-shape p-absolute shape-2-slider"><img
+               src="{% static '/img/shape/slider-shape-2.1.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-1-slider"><img
+               src="{% static '/img/shape/slider-shape-2.2.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-3-slider"><img
+               src="{% static '/img/shape/ca-black-shpae-2.png' %}" alt=""></div>
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-6 col-md-8 mb-30">
+                  <div class="ca-slider-content-2 p-relative">
+                     <h5 class="ca-section-subtitle subtitle-bg-5 text-white theme-color-2">А-Групп: Любые направления - любой сложности
+                     </h5>
+                     <h1 class="ca-slider-heading text-white pt-20 pb-20 ca-text-cap">«Зимник 2025»:<br>Покоряя ледяные трассы
+                        </h1>
+                     <p class="pb-32 slider-sub-content">Миссия выполнена: 200 000 тонн руды доставлены за 100 дней в экстремальных условиях Севера. Посмотрите, как это было, в нашем видеоотчете.</p>
+                     <div class="ca-slider-2-btn d-flex mb-60">
+                        <div class="ca-slider-btn-2">
+                           <a href="#" class="ca-btn-primary-22 mr-16">Подать заявку<span><i
+                                    class="fa-solid fa-arrow-right"></i></span></a>
+                        </div>
+                        <div class="ca-slider-2-video">
+                           <a href="https://www.youtube.com/watch?v=x-RUZeNbqL4"
+                              class="video-play-button-2 popup-video"> <span>
+                              <iframe class="video-play-button-2 popup-video"
+                                 width="720"
+                                 height="405"
+                                 src="https://rutube.ru/play/embed/2786b52371b7ca675b0e19c9d7bd1eac"
+                                 frameBorder="0"
+                                 allow="clipboard-write; autoplay"
+                                 allowFullScreen
+                              ></iframe>
+                              </span></a>
+                           <div class="ca-slider-video-text-2">
+                              <a href="https://www.youtube.com/watch?v=x-RUZeNbqL4" class="popup-video">Посмотреть видео</a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- single slider item -->
+      <div class="slider-text slider-2 p-relative z-index-1 d-flex align-items-center fix"
+         style="background-image: url(/static/img/ag/1-2.jpg);  height: 100vh; background-size: cover; background-position: center;">
+         <div class="ca-slider-2-shape p-absolute shape-2-slider"><img
+               src="{% static '/img/shape/slider-shape-2.1.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-1-slider"><img
+               src="{% static '/img/shape/slider-shape-2.2.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-3-slider"><img
+               src="{% static '/img/shape/ca-black-shpae-2.png' %}" alt=""></div>
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-6 col-md-8 mb-30">
+                  <div class="ca-slider-content-2 p-relative">
+                     <h5 class="ca-section-subtitle subtitle-bg-5 text-white theme-color-2">А-Групп: Любые направления - любой сложности
+                     </h5>
+                     <h1 class="ca-slider-heading text-white pt-20 pb-20 ca-text-cap">VOLVO: Характер, закалённый Полярным кругом</h1>
+                     <p class="pb-32 slider-sub-content">Что происходит, когда шведские технологии встречаются с арктической стихией? Реальные истории водителей, которые каждый день проверяют Volvo на прочность. Смотрите наш репортаж с ледяных трасс.</p>
+                     <div class="ca-slider-2-btn d-flex mb-60">
+                        <div class="ca-slider-btn-2">
+                           <a href="#" class="ca-btn-primary-22 mr-16">Подать заявку<span><i
+                                    class="fa-solid fa-arrow-right"></i></span></a>
+                        </div>
+                        <div class="ca-slider-2-video">
+                           <a href="https://www.youtube.com/watch?v=x-RUZeNbqL4"
+                              class="video-play-button-2 popup-video"> <span></span></a>
+                           <div class="ca-slider-video-text-2">
+                              <span> Посмотреть видео</span>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- single slider item -->
+      <div class="slider-text slider-2 p-relative z-index-1 d-flex align-items-center fix"
+         style="background-image: url(/static/img/ag/1-3.jpg);  height: 100vh; background-size: cover; background-position: center;">
+         <div class="ca-slider-2-shape p-absolute shape-2-slider"><img
+               src="{% static '/img/shape/slider-shape-2.1.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-1-slider"><img
+               src="{% static '/img/shape/slider-shape-2.2.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-3-slider"><img
+               src="{% static '/img/shape/ca-black-shpae-2.png' %}" alt=""></div>
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-6 col-md-8 mb-30">
+                  <div class="ca-slider-content-2 p-relative">
+                     <h5 class="ca-section-subtitle subtitle-bg-5 text-white theme-color-2">А-Групп: Любые направления - любой сложности
+                     </h5>
+                     <h1 class="ca-slider-heading text-white pt-20 pb-20 ca-text-cap">Доставляя тепло.<br>
+                        В любых условиях.</h1>
+                     <p class="pb-32 slider-sub-content">Мы обеспечиваем бесперебойное движение «черного золота».
+                        Узнайте, как наши логистические решения поддерживают энергетическую безопасность и промышленный рост страны.</p>
+                     <div class="ca-slider-2-btn d-flex mb-60">
+                        <div class="ca-slider-btn-2">
+                           <a href="#" class="ca-btn-primary-22 mr-16">Подать заявку<span><i
+                                    class="fa-solid fa-arrow-right"></i></span></a>
+                        </div>
+                        <div class="ca-slider-2-video">
+                           <a href="https://www.youtube.com/watch?v=x-RUZeNbqL4"
+                              class="video-play-button-2 popup-video"> <span></span></a>
+                           <div class="ca-slider-video-text-2">
+                              <span> Посмотреть видео</span>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- single slider item -->
+      <div class="slider-text slider-2 p-relative z-index-1 d-flex align-items-center fix"
+         style="background-image: url(/static/img/ag/1-4.jpg);  height: 100vh; background-size: cover; background-position: center;">
+         <div class="ca-slider-2-shape p-absolute shape-2-slider"><img
+               src="{% static '/img/shape/slider-shape-2.1.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-1-slider"><img
+               src="{% static '/img/shape/slider-shape-2.2.png' %}" alt=""></div>
+         <div class="ca-slider-2-shape p-absolute shape-3-slider"><img
+               src="{% static '/img/shape/ca-black-shpae-2.png' %}" alt=""></div>
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-6 col-md-8 mb-30">
+                  <div class="ca-slider-content-2 p-relative">
+                     <h5 class="ca-section-subtitle subtitle-bg-5 text-white theme-color-2">А-Групп: Любые направления - любой сложности
+                     </h5>
+                     <h1 class="ca-slider-heading text-white pt-20 pb-20 ca-text-cap">Опыт, проверенный Арктикой</h1>
+                     <p class="pb-32 slider-sub-content">С 2015 года «А-Групп» прокладывает маршруты там, где другие видят лишь преграды. 
+                        Мы — ваш эксперт по логистике в экстремальных условиях Крайнего Севера.</p>
+                     <div class="ca-slider-2-btn d-flex mb-60">
+                        <div class="ca-slider-btn-2">
+                           <a href="#" class="ca-btn-primary-22 mr-16">Подать заявку<span><i
+                                    class="fa-solid fa-arrow-right"></i></span></a>
+                        </div>
+                        <div class="ca-slider-2-video">
+                           <a href="https://www.youtube.com/watch?v=x-RUZeNbqL4"
+                              class="video-play-button-2 popup-video"> <span></span></a>
+                           <div class="ca-slider-video-text-2">
+                              <span> Посмотреть видео</span>
+                           </div>
+                        </div>
+                     </div>
+                     {% comment %} <div class="ca-slider-team">
+                        <h3 class="slider-team-title text-white mb-20">Команда, которой доверяют в самых сложных проектах.</h3>
+                        <div class="ca-slider-2-team">
+                           <div class="ca-slider-team-img">
+                              <img src="{% static '/img/ag/team-shape-2.1.png' %}" alt="">
+                           </div>
+                           <div class="ca-slider-team-review">
+                              <p class="review-text">Наша команда</p>
+                           </div>
+                        </div>
+                     </div> {% endcomment %}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="slider-nav sm-slider-img d-none d-md-block">
+      <div><img src="{% static '/img/ag/1-1-1.jpg' %}" alt="Фотография 1"></div>
+      <div><img src="{% static '/img/ag/1-2-1.jpg' %}" alt="Фотография 2"></div>
+      <div><img src="{% static '/img/ag/1-3-1.jpg' %}" alt="Фотография 3"></div>
+      <div><img src="{% static '/img/ag/1-4-1.jpg' %}" alt="Фотография 4"></div>
+      <!-- More thumbnails -->
+   </div>
+   <!-- slider section end -->
+   <section class="ca-about-2 pt-100 pb-70">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-6 mb-30">
+               <div class="ca-about-content-2 ca-sec-content-2 mb-40 aos-init aos-animate" data-aos="fade-down"
+                  data-aos-duration="800">
+                  <h5 class="ca-section-subtitle subtitle-bg-5 p-relative text-white">Почему нас выбирают</h5>
+                  <h2 class="ca-about-title theme-black-2 fnw-600 pt-16" style="color: #22356F;">А-ГРУПП — движущая сила логистики Арктики и Севера</h2>
+                  <p class="pt-16">Мы открываем новые маршруты там, где другие видят лишь преграды. 
+                     Ваш груз — под нашей защитой, в любых условиях и на любых расстояниях. Надёжность, инновации и лидерство для самых смелых проектов.
+               </div>
+               <div class="row">
+                  <div class="col-lg-6 col-md-6">
+                     <div class="ca-choose-item p-relative aos-init aos-animate" data-aos="fade-up"
+                        data-aos-duration="1000">
+                        <h4 class="ca-title fnw-600 theme-black-2 pb-16" style="color: #22356F;">Команда, которая меняет правила игры</h4>
+                        <p>Наши профессионалы — источник энергии, идей и побед. Вместе мы не просто преодолеваем вызовы — мы задаём стандарты отрасли и достигаем невозможного.</p>
+                     </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6">
+                     <div class="ca-choose-item p-relative aos-init aos-animate" data-aos="fade-up"
+                        data-aos-duration="1200">
+                        <h4 class="ca-title fnw-600 theme-black-2 pb-16" style="color: #22356F;">Доверие, заслуженное делом и временем</h4>
+                        <p>Выбор лидеров рынка, признание партнёров и гордость коллектива — вот наш главный капитал. С нами работают те, кто ценит ответственность и безупречный результат.</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-6 mb-30">
+               <div class="ca-about-2-img p-relative z-index-1">
+                  <img id="TODO-img-2-1" class="aos-init aos-animate" data-aos="fade-left" data-aos-duration="800"
+                     src="{% static '/img/ag/2-1.jpg' %}" alt="">
+                  <div class="ca-about-2-overlay p-absolute aos-init aos-animate" data-aos="fade-left"
+                     data-aos-duration="1000">
+                     <img id="TODO-img-2-2" src="{% static '/img/ag/2-2.jpg' %}" alt="">
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- main section end -->
+   <!-- uslugi section start -->
+   <section  id="uslugi" class="ca-service-section p-relative z-index-1 pt-100 pb-70">
+      <div class="ca-service-shape p-absolute"><img src="{% static '/img/shape/shape-1.2.png' %}" alt=""></div>
+      <div class="container">
+         <div class="ca-shape p-absolute"><img src="{% static '/img/shape/ca-ft-shape4.1.png' %}" alt=""></div>
+         <div class="ca-service-content ca-sec-content text-center mb-60 aos-init aos-animate" data-aos="fade-up"
+            data-aos-duration="1000">
+            <h5 class="ca-section-subtitle-1 p-relative theme-color-3 br-50">Наши услуги</h5>
+            <h2 class="ca-section-title theme-black-3 fnw-600 pt-16">Преодолевая границы и расстояния</h2>
+            <p class="pt-16"> Северные маршруты и региональные перевозки — мы надёжно доставляем грузы любой сложности по любым направлениям</p>
+         </div>
+         <div class="row">
+            <div class="col-xl-4 col-md-6 mb-30">
+               <!-- single-service-box -->
+               <div class="ca-ser-icon-box service-bg-1 fix p-relative w-bg z-index-1 p-32 br-7 aos-init aos-animate"
+                  data-aos="flip-left" data-aos-duration="1500" >
+                  <div class="ca-about-icon">
+                     <div class="ca-about-ic">
+                        <img src="{% static '/img/ag/ser-ic-1.1.svg' %}" alt="">
+                     </div>
+                     <div class="ca-num">
+                        <h4 class="overly-num">01</h4>
+                     </div>
+                  </div>
+                  <div class="ca-service-content" >
+                     <h4 class="ca-title ca-title-2 fnw-700 theme-black-1 pb-16 pt-32"><a >Грузовые перевозки</a></h4>
+                     <a class="read-more">Транспортировка сыпучих грузов<span><i
+                              class="fa-solid fa-angle-right"></i></span></a>
+                     <p class="pb-24">Осуществляем перевозку горнорудной массы и других сыпучих материалов по сложным маршрутам Арктики и Крайнего Севера. 
+                           Гарантируем сохранность, точные сроки и индивидуальный подход к каждому проекту.</p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-xl-4 col-md-6 mb-30">
+               <!-- single-service-box -->
+               <div class="ca-ser-icon-box service-bg-2 fix p-relative w-bg z-index-1 p-32 br-7 aos-init aos-animate"
+                  data-aos="flip-left" data-aos-duration="1500">
+                  <div class="ca-about-icon">
+                     <div class="ca-about-ic">
+                        <img src="{% static '/img/ag/ser-ic-1.2.svg' %}" alt="">
+                     </div>
+                     <div class="ca-num">
+                        <h4 class="overly-num">02</h4>
+                     </div>
+                  </div>
+                  <div class="ca-service-content">
+                     <h4 class="ca-title ca-title-2 fnw-700 theme-black-1 pb-16 pt-32"><a>Энергетические грузы</a></h4>
+                     <a class="read-more">Доставка ГСМ<span><i class="fa-solid fa-angle-right"></i></span></a>
+                     <p class="pb-24">Надёжно и безопасно доставляем горюче-смазочные материалы в отдалённые районы. 
+                           Используем специализированный автопарк и строго соблюдаем все требования по транспортировке опасных грузов.
+                     </p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-xl-4 col-md-6 mb-30">
+               <!-- single-service-box -->
+               <div class="ca-ser-icon-box service-bg-3 fix p-relative w-bg z-index-1 p-32 br-7 aos-init aos-animate"
+                  data-aos="flip-left" data-aos-duration="1500">
+                  <div class="ca-about-icon">
+                     <div class="ca-about-ic">
+                        <img src="{% static '/img/ag/ser-ic-1.3.svg' %}" alt="">
+                     </div>
+                     <div class="ca-num">
+                        <h4 class="overly-num">03</h4>
+                     </div>
+                  </div>
+                  <div class="ca-service-content">
+                     <h4 class="ca-title ca-title-2 fnw-700 theme-black-1 pb-16 pt-32"><a>Спецперевозки</a></h4>
+                     <a class="read-more">Траловые перевозки<span><i
+                              class="fa-solid fa-angle-right"></i></span></a>
+                     <p class="pb-24">Перевозим тяжёлую технику, негабаритное оборудование, строительные конструкции и ТМЦ 
+                        по сложным маршрутам. Оформляем все разрешения и обеспечиваем сопровождение на каждом этапе.</p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-xl-6 col-md-6 mb-30">
+               <!-- single-service-box -->
+               <div class="ca-ser-icon-box service-bg-4 fix p-relative w-bg z-index-1 p-32 br-7 aos-init aos-animate"
+                  data-aos="flip-left" data-aos-duration="1500">
+                  <div class="ca-about-icon">
+                     <div class="ca-about-ic">
+                        <img src="{% static '/img/ag/ser-ic-1.4.svg' %}" alt="">
+                     </div>
+                     <div class="ca-num">
+                        <h4 class="overly-num">04</h4>
+                     </div>
+                  </div>
+                  <div class="ca-service-content">
+                     <h4 class="ca-title ca-title-2 fnw-700 theme-black-1 pb-16 pt-32"><a>Спецтехника</a></h4>
+                     <a class="read-more">Услуги спецтехники<span><i
+                              class="fa-solid fa-angle-right"></i></span></a>
+                     <p class="pb-24">Предоставляем широкий спектр услуг специализированной техники: автокраны, экскаваторы, бульдозеры, погрузчики
+                           . Оперативно подбираем решения под задачи любого масштаба.</p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-xl-6 col-md-6 mb-30">
+               <!-- single-service-box -->
+               <div class="ca-ser-icon-box service-bg-5 fix p-relative w-bg z-index-1 p-32 br-7 aos-init aos-animate"
+                  data-aos="flip-left" data-aos-duration="1500">
+                  <div class="ca-about-icon">
+                     <div class="ca-about-ic">
+                        <img src="{% static '/img/ag/ser-ic-1.5.svg' %}" alt="">
+                     </div>
+                     <div class="ca-num">
+                        <h4 class="overly-num">05</h4>
+                     </div>
+                  </div>
+                  <div class="ca-service-content">
+                     <h4 class="ca-title ca-title-2 fnw-700 theme-black-1 pb-16 pt-32"><a>Хранение грузов</a></h4>
+                     <a class="read-more">Аренда складских помещений<span><i
+                              class="fa-solid fa-angle-right"></i></span></a>
+                     <p class="pb-24">Предлагаем в аренду современные складские помещения различной площади для хранения любых видов грузов. 
+                           Обеспечиваем безопасность, оперативный доступ и полный комплекс складских услуг.</p>
+                     
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- project area start -->
+   <section id="project"  class="ca-about-section pt-100 pb-70">
+      <div class="container">
+         <div class="row align-items-center">
+         <div class="ca-service-content ca-sec-content text-center mb-60 aos-init aos-animate" data-aos="fade-up"
+            data-aos-duration="1000">
+            <h5 class="ca-section-subtitle-2 p-relative  br-50">Наш проект</h5>
+            <h2 class="ca-section-title text-white fnw-600 pt-16">Перевозка горнорудной массы в 2025 году</h2>
+            <p class="pt-16 text-white" >Связываем месторождение "Прогноз-Серебро" и ГОК "Нежданинское"</p>
+
+            <div class="text-center mt-4">
+               <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#mapModal" style="background-color: #22356F; color: #fff;">
+                     Посмотреть на карте
+               </button>
+            </div>
+         </div>
+
+         </div>
+         <div class="row align-items-center">
+            <div class="col-xl-3 col-md-6 mb-30">
+               <!-- counter area start -->
+               <div class="ca-counter-bg br-7 text-white aos-init aos-animate" data-aos="fade-right" data-aos-duration="800">
+                  <!-- single counter area -->
+                  <div class="ca-counter-area text-center">
+                     <h3 class="ca-counter-title fnw-700 pb-16"><span class="counter">200</span>т. тонн</h3>
+                     <p class="text-white">Перевезено руды </p>
+                  </div>
+                  <!-- single counter area -->
+                  <div class="ca-counter-area text-center">
+                     <h3 class="ca-counter-title fnw-700 pb-16"><span class="counter">700</span>+</h3>
+                     <p class="text-white">Единиц техники</p>
+                  </div>
+                  <!-- single counter area -->
+                  <div class="ca-counter-area text-center">
+                     <h3 class="ca-counter-title fnw-700 pb-16"><span class="counter">669</span> км</h3>
+                     <p class="text-white">Протяженность маршрута</p>
+                  </div>
+                  <!-- single counter area -->
+                  <div class="ca-counter-area text-center">
+                     <h3 class="ca-counter-title fnw-700 pb-16"><span class="counter">100</span> дней</h3>
+                     <p class="text-white">Сезон работы автозимника</p>
+                  </div>
+               </div>
+               <!-- counter area end -->
+            </div>
+            {% comment %} <div class="col-xl-4 col-md-6 mb-30">
+               <div class="ca-about-img aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000">
+                  <img class="w-100 br-7" src="{% static '/img/ag/p1.jpg' %}" alt="">
+               </div>
+            </div> {% endcomment %}
+            <div class="col-xl-4 col-md-6 mb-30">
+               <div class="ca-about-img aos-init aos-animate br-7 overflow-hidden" data-aos="fade-up" data-aos-duration="1000" style="min-height: 300px;">
+                  <iframe
+                  src="https://yandex.ru/map-widget/v1/?um=constructor%3Aca118207bde6c602b356dff7509e898192a8bb0de39aa38fc632a20644d983e5&amp;source=constructor"
+                  width="100%" height="600" frameborder="0" allowfullscreen="true" style="border:0; border-radius:12px;">
+                  </iframe>
+               </div>
+            </div>
+            <div class="col-xl-5 mb-30 aos-init text-wh aos-animate" data-aos="fade-left" data-aos-duration="1200">
+               <!-- single-icon-box-start -->
+               <div class="ca-about-icon-box d-flex align-items-center">
+                  <div class="ca-about-icon">
+                     <div class="ca-about-ic">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                           <path d="M12 22S19 18 19 12V5L12 2L5 5V12C5 18 12 22 12 22Z"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                           <path d="M8 13L10.5 10.5L12.5 12.5L16 9" stroke="currentColor" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                     </div>
+                  </div>
+                  <div class="ca-about-content">
+                     <h4 class="ca-title fnw-700 text-white pb-16 "><a class='text-white'>Надежность в экстремальных условиях</a></h4>
+                     <p class='text-white'>Мы специализируемся на перевозках в труднодоступных регионах. Маршрут по автозимнику протяженностью 669 км 
+                        требует безупречного планирования и контроля на каждом этапе для гарантии своевременной доставки.</p>
+                  </div>
+               </div>
+               <!-- single-icon-box-start -->
+               <div class="ca-about-icon-box d-flex align-items-center">
+                  <div class="ca-about-icon">
+                     <div class="ca-about-ic">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                           <path d="M2 17L11 17C11.5523 17 12 16.5523 12 16L12 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                           <path d="M20 8H12M12 8L15 5M12 8L15 11" stroke="currentColor" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                           <circle cx="4" cy="17" r="2" stroke="currentColor" stroke-width="1.5"/>
+                           <circle cx="20" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/>
+                           <circle cx="12" cy="17" r="2" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                     </div>
+                  </div>
+                  <div class="ca-about-content">
+                     <h4 class="ca-title fnw-700 text-white pb-16 "><a class='text-white' href="#">Масштаб и координация</a></h4>
+                     <p class='text-white'>Для реализации проекта задействовано более 700 единиц спецтехники. Слаженная работа диспетчерской 
+                        службы и опытных водителей обеспечивает бесперебойное движение караванов.</p>
+                  </div>  
+               </div>
+               <!-- single-icon-box-start -->
+               <div class="ca-about-icon-box d-flex align-items-center">
+                  <div class="ca-about-icon">
+                     <div class="ca-about-ic">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                           <path d="M2 20H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                           <path d="M4 20V12L7 12V20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                           <path d="M14 20V10L10 10L10 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                           <path d="M20 20V8L17 8V20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                           <path d="M10 14H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                           <path d="M4 16H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                           <path d="M17 12H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                           <path d="M10 5L12 3L14 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                           <path d="M12 3V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                     </div>
+                  </div>
+                  <div class="ca-about-content">
+                     <h4 class="ca-title fnw-700 text-white pb-16 "><a class='text-white'
+                           href="#">Бесперебойное снабжение производства</a></h4>
+                     <p class='text-white'>Наша главная задача — обеспечить стабильную работу вашего предприятия. 
+                        Мы гарантируем выполнение графика поставок, позволяя вам сосредоточиться на основных производственных задачах.</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   {% comment %} Модальное окно карты {% endcomment %}
+   <div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+         <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="mapModalLabel">Карта маршрута проекта</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body p-0">
+            <iframe
+               src="https://yandex.ru/map-widget/v1/?um=constructor%3Aca118207bde6c602b356dff7509e898192a8bb0de39aa38fc632a20644d983e5&amp;source=constructor"
+               width="100%" height="500" frameborder="0" allowfullscreen style="border:0;"></iframe>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- project area end -->
+   
+   <!-- faq-section-start -->
+   <section id="about" class="ca-faq-area pt-100 pb-70">
+      <div class="container">
+         <div class="row align-items-center">
+            <div class="col-lg-5 mb-30 aos-init aos-animate" data-aos="zoom-out" data-aos-duration="800">
+               <div class="ca-faq-content ca-sec-content-2">
+                  <h5 class="ca-section-subtitle-1 p-relative theme-color-3 br-50">О нас</h5>
+                  <h2 class="ca-about-title theme-black-2 fnw-600 pt-16 ca-text-cap">ВАШ УСПЕХ — НАША ГЛАВНАЯ ДОРОГА</h2>
+                  <p class="pt-22 pb-32">
+                     <strong>С 2015 года «А-Групп» — это синоним надёжной логистики в Якутии.</strong> Мы работаем там, где другие видят лишь преграды, доставляя грузы для лидеров промышленности.<br><br>
+                     Ранее известные как «Скам-Групп», мы провели ребрендинг, чтобы отразить наш рост и современные подходы. <strong>Имя новое — принципы вечны: результат, ответственность и полная отдача делу.</strong>
+                  </p>
+               </div>
+            <div class="ca-faq-img-2 mr-50"><img class="w-100" src="{% static '/img/ag/about.jpg' %}" alt="А-Групп"></div>
+         </div>
+
+         <div class="col-lg-7 mb-30">
+            <div class="ca-acordion-area ml-50 aos-init aos-animate" data-aos="zoom-out-down" data-aos-duration="1000">
+               <div class="accordion" id="accordionExample">
+
+               <!-- 1. НАША МИССИЯ -->
+               <div class="ca-accordion-item mb-24">
+                  <h2 class="ca-accordion-header" id="headingGoal">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                           data-bs-target="#collapseGoal" aria-expanded="true" aria-controls="collapseGoal">
+                     НАША МИССИЯ
+                  </button>   
+                  </h2>
+                  <div id="collapseGoal" class="accordion-collapse collapse show" aria-labelledby="headingGoal" data-bs-parent="#accordionExample">
+                     <div class="ca-accordion-body">
+                        <p>
+                        Быть не просто перевозчиком, а стратегическим партнёром для недропользователей Якутии. Мы обеспечиваем надёжную логистику, которая становится фундаментом для успеха и развития бизнеса наших клиентов.
+                        </p>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- 2. ОПЫТ, ПРОВЕРЕННЫЙ ВРЕМЕНЕМ -->
+               <div class="ca-accordion-item mb-24">
+                  <h2 class="ca-accordion-header" id="headingExp">
+                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#collapseExp" aria-expanded="false" aria-controls="collapseExp">
+                        ОПЫТ, ПРОВЕРЕННЫЙ ВРЕМЕНЕМ
+                     </button>
+                  </h2>
+                  <div id="collapseExp" class="accordion-collapse collapse" aria-labelledby="headingExp" data-bs-parent="#accordionExample">
+                     <div class="ca-accordion-body">
+                     <p>
+                        За годы работы мы создали отлаженную систему, которая предвидит риски и гарантирует результат. Мы не просто следуем маршруту — мы его создаём, опираясь на многолетний практический опыт.
+                     </p>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- 3. ГЛУБОКОЕ ЗНАНИЕ РЕГИОНА -->
+               <div class="ca-accordion-item mb-24">
+                   <h2 class="ca-accordion-header" id="headingLocal">
+                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                             data-bs-target="#collapseLocal" aria-expanded="false" aria-controls="collapseLocal">
+                       ГЛУБОКОЕ ЗНАНИЕ РЕГИОНА
+                     </button>
+                   </h2>
+                   <div id="collapseLocal" class="accordion-collapse collapse" aria-labelledby="headingLocal" data-bs-parent="#accordionExample">
+                     <div class="ca-accordion-body">
+                       <p>
+                         Мы досконально изучили все автозимники, перевалы и реки Якутии. Этот уникальный опыт позволяет нам выбирать оптимальные и самые безопасные маршруты, избегая простоев и непредвиденных ситуаций.
+                       </p>
+                     </div>
+                   </div>
+               </div>
+
+               <!-- 4. ЦИФРОВОЙ КОНТРОЛЬ И УДОБСТВО -->
+               <div class="ca-accordion-item mb-24">
+                 <h2 class="ca-accordion-header" id="headingTech">
+                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                           data-bs-target="#collapseTech" aria-expanded="false" aria-controls="collapseTech">
+                     ЦИФРОВОЙ КОНТРОЛЬ И УДОБСТВО
+                   </button>
+                 </h2>
+                 <div id="collapseTech" class="accordion-collapse collapse" aria-labelledby="headingTech" data-bs-parent="#accordionExample">
+                   <div class="ca-accordion-body">
+                     <p>
+                       Мы используем современные инструменты для управления автопарком и взаимодействия с клиентами. Наш сайт и внутренняя программа обеспечивают прозрачность процессов и удобный доступ к информации.
+                     </p>
+                   </div>
+                 </div>
+               </div>
+
+               <!-- 5. КОМПЛЕКСНЫЙ ПОДХОД -->
+               <div class="ca-accordion-item mb-24">
+                   <h2 class="ca-accordion-header" id="headingComplex">
+                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                             data-bs-target="#collapseComplex" aria-expanded="false" aria-controls="collapseComplex">
+                       КОМПЛЕКСНЫЙ ПОДХОД
+                     </button>
+                   </h2>
+                   <div id="collapseComplex" class="accordion-collapse collapse" aria-labelledby="headingComplex" data-bs-parent="#accordionExample">
+                     <div class="ca-accordion-body">
+                       <p>
+                         Мы предлагаем больше, чем просто перевозку. Аренда спецтехники, складские услуги, полное документальное сопровождение — мы готовы взять на себя весь комплекс логистических задач, экономя ваше время и ресурсы.
+                       </p>
+                     </div>
+                   </div>
+                 </div>
+
+               <!-- 6. СОБСТВЕННАЯ ИНФРАСТРУКТУРА -->
+            <div class="ca-accordion-item">
+               <h2 class="ca-accordion-header" id="headingBase">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                           data-bs-target="#collapseBase" aria-expanded="false" aria-controls="collapseBase">
+                     СОБСТВЕННАЯ ИНФРАСТРУКТУРА
+                  </button>
+                  </h2>
+               <div id="collapseBase" class="accordion-collapse collapse" aria-labelledby="headingBase" data-bs-parent="#accordionExample">
+                  <div class="ca-accordion-body">
+                     <p>
+                        Собственный парк современной техники, ремонтные и логистические базы в Якутске и Нижнем Бестяхе — наша независимость и гарантия оперативного решения любых задач. Мы не зависим от посредников, а значит, вы можете полностью положиться на нас.
+                     </p>
+                        </div>
+                     </div>
+                     </div>
+                  </div> <!-- /accordion -->
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+
+
+
+   <!-- faq-section-End -->
+   <!-- breadcrumb area start -->
+   <section id="contact" class="ca-breadcrumb-area cream-bg-3 p-relative z-index-1 fix">
+      <div class="ca-breadcrumb-shape p-absolute bre-sh-1">
+         <img src="{% static '/img/shape/breadcrumn-shape.png' %}" alt="">
+      </div>
+      <div class="ca-breadcrumb-shape p-absolute bre-sh-2">
+         <img src="{% static '/img/shape/ca-line-shape.png' %}" alt="">
+      </div>
+      <div class="container">
+         <div class="ca-breadcrumb-content text-center">
+            <h2 class="ca-breadcrumb-title fnw-600">Контакты </h2>
+         </div>
+      </div>
+   </section>
+   <!-- breadcrumb area end -->
+   <section class="ca-contact-inner pt-100 pb-70">
+      <div class="container">
+         <div class="row">
+            <!-- single box item -->
+            <div class="col-xl-4 col-md-6 mb-30">
+               <div class="ca-location-3">
+                  <div class="ca-location-icbox">
+                     <div class="ca-location-icbox-img">
+                        <span><img src="{% static '/img/icon/ca-map3.1.svg' %}" alt=""></span>
+                     </div>
+                     <div class="ca-location-icbox-text">
+                        <h4 class="ca-title fnw-600 theme-black-3 pb-16">Наш адрес</h4>
+                        <p>Офис ул. Орджоникидзе 36/1</p>
+                        <p>3 этаж, 309 кабинет. г. Якутск</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- single box item -->
+            <div class="col-xl-4 col-md-6 mb-30">
+               <div class="ca-location-3">
+                  <div class="ca-location-icbox">
+                     <div class="ca-location-icbox-img">
+                        <span><img src="{% static '/img/icon/ca-ph3.2.svg' %}" alt=""></span>
+                     </div>
+                     <div class="ca-location-icbox-text">
+                        <h4 class="ca-title fnw-600 theme-black-3 pb-16">Контакты</h4>
+                        <p>Телефон для связи</p>
+                        <a href="tel:+74112322223">+7(411)2-322-223 </a> <br>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- single box item -->
+            <div class="col-xl-4 col-md-6 mb-30">
+               <div class="ca-location-3">
+                  <div class="ca-location-icbox">
+                     <div class="ca-location-icbox-img">
+                        <span><img src="{% static '/img/icon/ca-envelop3.3.svg' %}" alt=""></span>
+                     </div>
+                     <div class="ca-location-icbox-text">
+                        <h4 class="ca-title fnw-600 theme-black-3 pb-16">Email</h4>
+                        <p>Почта для связи</p>
+                        <a href="mailto:">skamgroup@mail.ru</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- map area -->
+   <div class="ca-maps">
+      <iframe
+         src="https://yandex.ru/map-widget/v1/?um=constructor%3Aa330deb4b31477ac88f68bb3817f4309814557fcb0fa30ac4fedd0f266e12990&amp;source=constructor"
+         class="contact-page__google-map" allowfullscreen=""></iframe>
+   </div>
+   <!-- map area end -->
+   <!-- contact form start-->
+   <section id="send" class="ca-conatct-form1 pb-100">
+      <div class="container">
+         <div class="row">
+            <div class="ca-con-rep-form cream-bg-3 text-center">
+               <h4 class="ca-title fnw-600 theme-black-3 pb-16">Отправить сообщение</h4>
+               <p class="pb-32">Ваш адрес электронной почты не будет опубликован. Обязательные поля отмечены *.</p>
+               <div class="ca-cmt-from">
+                  <form action="#">
+                     <div class="row">
+                        <div class="col-lg-6 mb-20">
+                           <input type="text" placeholder="ФИО*">
+                        </div>
+                        <div class="col-lg-6 mb-20">
+                           <input type="email" placeholder="Email*">
+                        </div>
+                        <div class="col-lg-12 mb-20">
+                           <textarea name="message" id="message" placeholder="Сообщение*"></textarea>
+                        </div>
+                     </div>
+                     <div class="ca-blg-sen-btn text-start">
+                        <button type="submit" class="ca-btn-primary-3 theme-bg-3 text-white br-50"> Отправить <span><i
+                                 class="fa-solid fa-angle-right"></i></span></button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- contact form end -->
+</main>
+
+{% include 'partials/footer.html' %}
+
+<!-- scroll top -->
+{% comment %} <button id="topBtn2"><i class="fa-solid fa-arrow-up"></i></button> {% endcomment %}
+
+{% endblock main %}

@@ -1,0 +1,415 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+  Личный кабинет
+{% endblock %}
+
+{% block main %}
+  {% include 'partials/preloader.html' %}
+  {% include 'partials/header.html' %}
+
+  <!-- Увеличен верхний отступ, чтобы хедер не перекрывал контент -->
+  <section class="container" style="padding-top: 140px; padding-bottom: 100px;">
+    {% if user_type == 'driver' %}
+      <!-- ======================== БЛОК ДЛЯ ВОДИТЕЛЯ ======================== -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <div class="row align-items-center">
+            <!-- БЛОК С ФОТОГРАФИЕЙ -->
+            <div class="col-md-3 text-center mb-4 mb-md-0">
+              {% if profile.photo1 %}
+                <img src="{{ profile.photo1.url }}" class="img-fluid rounded-circle shadow" alt="Фото водителя" style="width: 150px; height: 150px; object-fit: cover;" />
+              {% else %}
+                <!-- Убедитесь, что у вас есть файл-заглушка по этому пути -->
+                <img src="{% static 'img/ag/avatar.jpg' %}" class="img-fluid rounded-circle shadow" alt="Нет фото" style="width: 150px; height: 150px; object-fit: cover;" />
+              {% endif %}
+            </div>
+
+            <!-- БЛОК С ИНФОРМАЦИЕЙ -->
+            <div class="col-md-9">
+              <div class="row">
+                <div class="col-lg-6">
+                  <h5 class="mb-3" style="color: #22356F;">Основная информация</h5>
+                  <p>
+                    <strong>ФИО:</strong> {{ profile.full_name }}
+                  </p>
+                  <p>
+                    <strong>Дата рождения:</strong> {{ profile.birth_date|date:'d.m.Y' }}
+                  </p>
+                  <p>
+                    <strong>Номер ВУ:</strong> {{ profile.driver_license }}
+                  </p>
+                  <p>
+                    <strong>СНИЛС:</strong> {{ profile.snils }}
+                  </p>
+                </div>
+                <div class="col-lg-6">
+                  <h5 class="mb-3" style="color: #22356F;">Статус и связь</h5>
+                  <p>
+                    <strong>Подрядчик:</strong> {{ profile.contractors.first.org_name|default:'Не привязан' }}
+                  </p>
+                  <p>
+                    <strong>Статус согласования СБ:</strong>
+                    {{ profile.get_status_display }}  {# покажет метку из TextChoices #}
+                    {% if profile.status == 'rejected' and profile.refusal_reason %}
+                    Причина отклонения: {{ profile.refusal_reason }}
+                    {% endif %}
+                  </p>
+                  <p>
+                    <strong>Телефон:</strong> {{ profile.phone_1 }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Паспортные данные и кнопки под общей информацией -->
+          <hr class="my-4" />
+          <div class="row">
+            <div class="col-12">
+              <h5 class="mb-3" style="color: #22356F;">Паспортные данные</h5>
+              <div class="row">
+                <div class="col-md-6">
+                  <p>
+                    <strong>Кем выдан:</strong> {{ profile.issued_by }}
+                  </p>
+                  <p>
+                    <strong>Дата выдачи:</strong> {{ profile.issue_date|date:'d.m.Y' }}
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <p>
+                    <strong>Серия и номер:</strong> {{ profile.series }} {{ profile.number }}
+                  </p>
+                  <p>
+                    <strong>Прописка:</strong> {{ profile.registration }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr class="my-4" />
+          {% if is_driver %}
+            <h3>Ваши фотографии</h3>  {# [14] #}
+            <div class="row mb-3">  {# [14] #}
+              {% for photo in profile.photos.all %}  {# related_name='photos' #}  {# [23] #}
+                <div class="col-3 mb-2">
+                  <img src="{{ photo.image.url }}" class="img-thumbnail" style="max-width:140px;" alt="">  {# [14] #}
+                  <div class="small text-muted">{{ photo.description }}</div>  {# [14] #}
+                  <div class="mt-1">
+                    <a href="{% url 'edit_driver_photo' photo.id %}" class="btn btn-sm btn-outline-primary">Редактировать</a>  {# [14] #}
+                  </div>
+                </div>
+                {% empty %}
+                  <div class="col">Нет фотографий</div>
+                {% endfor %}
+              </div>
+              <a href="{% url 'add_driver_photo' %}" class="btn btn-secondary">Добавить фото</a>
+          {% endif %}
+          <a href="{% url 'profile_edit' %}" class="btn btn-primary" style="background-color: #22356F; border:none;">Редактировать профиль</a>
+          <a href="{% url 'user_change_credentials' %}" class="btn btn-outline-secondary">Сменить логин/пароль</a>
+        </div>
+      </div>
+
+      <!-- Остальные блоки (Закрепленные ТС, Статистика, Таблица) остаются без изменений -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Закрепленные ТС</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for car in profile.cars.all %}
+            <li class="list-group-item">{{ car.marka.name }} {{ car.model.name }} (гос. номер: {{ car.number }})</li>
+          {% empty %}
+            <li class="list-group-item">За вами не закреплено ни одного транспортного средства.</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center flex-wrap">
+          <h5 class="mb-0">Статистика рейсов</h5>
+          <div>
+            <!-- ===== ФОРМА ФИЛЬТРА ПО СЕЗОНУ ДЛЯ ВОДИТЕЛЯ ===== -->
+            <form method="get" class="d-inline-flex align-items-center ms-auto me-3">
+                <label for="season-select" class="form-label me-2 mb-0">Сезон:</label>
+                <select name="season" id="season-select" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">Все сезоны</option>
+                    {% for s in seasons %}
+                        <option value="{{ s.id }}" {% if s.id == current_season %}selected{% endif %}>
+                            {{ s.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if current_season %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-sm btn-link text-secondary">Сбросить</a>
+                {% endif %}
+            </form>
+            <span class="badge bg-primary me-2">Завершенные рейсы: <strong>{{ total_completed_flights }}</strong></span>
+            <span class="badge bg-secondary me-2">Кол-во выданных ПЛ: <strong>{{ total_flights }}</strong></span>
+            <span class="badge bg-success me-2">Кол-во тонн: <strong>{{ total_tonn|floatformat:2 }}</strong></span>
+            <span class="badge bg-info">ГСМ: <strong>{{ total_gsm|floatformat:2 }} л</strong></span>
+            <a href="{% url 'export_excel' %}" class="btn btn-sm btn-success ms-2">Скачать Excel</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container shadow-sm">
+        <table class="table table-striped table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>№</th>
+              <th>Водитель</th>
+              <th>Второй водитель</th>
+              <th>подрядчик</th>
+              <th>Номер ПЛ</th>
+              <th>Дата выдачи ПЛ</th>
+              <th>Дата сдачи ПЛ</th>
+              <th>№ ТТН</th>
+              <th>Дата погр. груза</th>
+              <th>Дата выгрузки</th>
+              <th>Тонн</th>
+              <th>Груз</th>
+              <th>ГСМ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for flight in flights reversed %}
+              <tr>
+                <td>{{ forloop.revcounter }}</td>
+                <td>{{ flight.driver.full_name }}</td>
+                <td>
+                  {% if flight.driver2 %}{{ flight.driver2.full_name }}{% endif %}
+                </td>
+                <td>{{ flight.pod }}</td>
+                <td>{{ flight.numberPL }}</td>
+                <td>{{ flight.dataPOPL|date:'d.m.Y' }}</td>
+                <td>{{ flight.dataSDPL|date:'d.m.Y' }}</td>
+                <td>{{ flight.numberTN }}</td>
+                <td>{{ flight.dataPOG|date:'d.m.Y' }}</td>
+                <td>{{ flight.dataVYG|date:'d.m.Y' }}</td>
+                <td>{{ flight.tonn|default:'' }}</td>
+                <td>{{ flight.gruz }}</td>
+                <td>{{ flight.gsm|default:'' }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% elif user_type == 'contractor' %}
+      <!-- ======================= БЛОК ДЛЯ ПОДРЯДЧИКА ======================= -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h5 class="mb-3" style="color: #22356F;">Организация</h5>
+              <p>
+                <strong>Название:</strong> {{ profile.org_name }}
+              </p>
+              <p>
+                <strong>Генеральный директор:</strong> {{ profile.full_name }}
+              </p>
+              <p>
+                <strong>Дата рождения директора:</strong> {{ profile.birth_date|date:'d.m.Y' }}
+              </p>
+              <p>
+                <strong>СНИЛС:</strong> {{ profile.snils }}
+              </p>
+              <p>
+                <strong>Телефон:</strong> {{ profile.phone_1 }}
+              </p>
+              <p>
+                <strong>Email:</strong> {{ profile.email }}
+              </p>
+            </div>
+            <div class="col-md-6">
+              <h5 class="mb-3" style="color: #22356F;">Юридические данные</h5>
+              <p>
+                <strong>ИНН:</strong> {{ profile.inn }}
+              </p>
+              <p>
+                <strong>КПП:</strong> {{ profile.kpp }}
+              </p>
+              <p>
+                <strong>Банк:</strong> {{ profile.bank }}
+              </p>
+              <p>
+                <strong>Р/с:</strong> {{ profile.num_chet }}
+              </p>
+              <p>
+                <strong>БИК:</strong> {{ profile.num_bik }}
+              </p>
+              <p>
+                <strong>Корр. счет:</strong> {{ profile.num_corch }}
+              </p>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <h5 class="mb-3" style="color: #22356F;">Паспортные данные</h5>
+              <p>
+                <strong>Кем выдан:</strong> {{ profile.issued_by }}
+              </p>
+              <p>
+                <strong>Серия:</strong> {{ profile.series }}
+              </p>
+              <p>
+                <strong>Номер:</strong> {{ profile.number }}
+              </p>
+              <p>
+                <strong>Дата выдачи:</strong> {{ profile.issue_date|date:'d.m.Y' }}
+              </p>
+              <p>
+                <strong>Прописка:</strong> {{ profile.registration }}
+              </p>
+            </div>
+          </div>
+          <h3>Фотоальбом</h3>
+          <div class="row mb-3">
+            {% for photo in profile.photos.all %}
+              <div class="col-3 mb-2 position-relative">
+                <img src="{{ photo.image.url }}" class="img-thumbnail" style="max-width:140px;" alt="">
+                <div class="small text-muted">{{ photo.description }}</div>
+                
+                <div class="mt-1">
+                  <a href="{% url 'edit_podryad_photo' photo.id %}" class="btn btn-sm btn-outline-primary">Редактировать</a>
+                </div>
+              </div>
+            {% empty %}
+              <div class="col">Нет фотографий</div>
+            {% endfor %}
+          </div>
+          
+          <hr />
+          <a href="{% url 'podryad_profile_edit' %}" class="btn btn-primary" style="background-color: #22356F; border:none;">Редактировать профиль</a>
+          <a href="{% url 'contractor_change_credentials' %}" class="btn btn-outline-secondary">Сменить логин/пароль</a>
+          <a href="{% url 'add_podryad_photo' %}" class="btn btn-secondary">Добавить фото</a>
+          <a href="{% url 'car_add' %}" class="btn btn-success">Добавить ТС</a>
+        </div>
+      </div>
+      <!-- Водители и техника подрядчика -->
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+              <h5 class="mb-0">Водители компании</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+              {% for driver in contractor_drivers %}
+                <li class="list-group-item">{{ driver.full_name }} ({{ driver.phone_1 }})</li>
+              {% empty %}
+                <li class="list-group-item">Нет зарегистрированных водителей.</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+              <h5 class="mb-0">Техника компании</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+              {% for car in contractor_cars %}
+                <li class="list-group-item">{{ car.number }} ({{ car.marka.name }} {{ car.model.name }})</li>
+              {% empty %}
+                <li class="list-group-item">Нет зарегистрированной техники.</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center flex-wrap">
+          <h5 class="mb-0">Статистика по рейсам</h5>
+          <div>
+            <!-- ===== ФОРМА ФИЛЬТРА ПО СЕЗОНУ ===== -->
+            <form method="get" class="d-inline-flex align-items-center ms-auto me-3">
+                <label for="season-select" class="form-label me-2 mb-0">Сезон:</label>
+                <select name="season" id="season-select" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">Все сезоны</option>
+                    {% for s in seasons %}
+                        <option value="{{ s.id }}" {% if s.id == current_season %}selected{% endif %}>
+                            {{ s.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if current_season %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-sm btn-link text-secondary">Сбросить</a>
+                {% endif %}
+            </form>
+            <!-- ======================================= -->
+            <span class="badge bg-primary me-2">Завершенные рейсы: <strong>{{ total_completed_flights }}</strong></span>
+            <span class="badge bg-secondary me-2">Кол-во выданных ПЛ: <strong>{{ total_flights }}</strong></span>
+            <span class="badge bg-success me-2">Кол-во тонн: <strong>{{ total_tonn|floatformat:2 }}</strong></span>
+            <span class="badge bg-info">ГСМ: <strong>{{ total_gsm|floatformat:2 }} л</strong></span>
+            <a href="{% url 'export_excel' %}" class="btn btn-sm btn-success ms-2">Скачать Excel</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container shadow-sm">
+        <table class="table table-striped table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>№</th>
+              <th>Номер ПЛ</th>
+              <th>Водитель</th>
+              <th>Второй водитель</th>
+              <th>ТС</th>
+              <th>Маршрут</th>
+              <th>Дата погрузки</th>
+              <th>Дата сдачи ПЛ</th>
+              <th>№ ТТН</th>
+              <th>Дата погр. груза</th>
+              <th>Дата выгрузки</th>
+              <th>Тонн</th>
+              <th>Груз</th>
+              <th>ГСМ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for flight in flights reversed %}
+              <tr>
+                <td>{{ forloop.revcounter }}</td>
+                <td>{{ flight.numberPL }}</td>
+                <td>{{ flight.driver.full_name }}</td>
+                <td>
+                  {% if flight.driver2 %}{{ flight.driver2.full_name }}{% endif %}
+                </td>
+                <td>{{ flight.number.number }}</td>
+                <td>{{ flight.marsh.name }}</td>
+                <td>{{ flight.dataPOPL|date:'d.m.Y' }}</td>
+                <td>{{ flight.dataSDPL|date:'d.m.Y' }}</td>
+                <td>{{ flight.numberTN }}</td>
+                <td>{{ flight.dataPOG|date:'d.m.Y' }}</td>
+                <td>{{ flight.dataVYG|date:'d.m.Y' }}</td>
+                <td>{{ flight.tonn|default:'' }}</td>
+                <td>
+                  {% if flight.gruz %}{{ flight.gruz.name }}{% endif %}
+                </td>
+                <td>{{ flight.gsm|default:'' }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="alert alert-warning">Не удалось определить ваш профиль. Пожалуйста, обратитесь к администратору.</div>
+    {% endif %}
+  </section>
+
+  <!-- Стили для таблицы с прокруткой -->
+  <style>
+    .table-container {
+      max-height: 600px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+    }
+    .table-container thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+  </style>
+{% endblock %}

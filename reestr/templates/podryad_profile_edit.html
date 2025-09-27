@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Редактировать профиль подрядчика
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Находим все поля с классом 'datepicker-input'
+      document.querySelectorAll('.datepicker-input').forEach(function (element) {
+        new AirDatepicker(element, {
+          autoClose: true, // Автоматически закрывать после выбора даты
+          position: 'bottom right', // Позиция календаря
+          dateFormat: 'dd.MM.yyyy' // Формат даты
+        })
+      })
+    })
+  </script>
+{% endblock %}
+
+{% block main %}
+  {% include 'partials/preloader.html' %}
+  {% include 'partials/header.html' %}
+
+  <div class="container bg-light" style="padding-top: 140px; padding-bottom: 100px;">
+    <main>
+      <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="{% static 'img/ag/logo.png' %}" alt="Логотип" width="72" />
+        <h2 class="h3" style="color: #22356F;">Редактирование профиля подрядчика</h2>
+        <p class="lead text-muted">Пожалуйста, проверьте и при необходимости обновите данные вашей организации.</p>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+            <!-- Блок 1: Данные организации -->
+            <h4 class="mb-3">Данные организации</h4>
+            <div class="row g-3">
+              <div class="col-12">
+                <label for="{{ form.org_name.id_for_label }}" class="form-label">{{ form.org_name.label }}</label>
+                {{ form.org_name }} 
+              </div>
+              <div class="col-md-8">
+                <label for="{{ form.full_name.id_for_label }}" class="form-label">Генеральный директор</label>
+                {{ form.full_name }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.birth_date.id_for_label }}" class="form-label">{{ form.birth_date.label }}</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
+                      <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
+                      <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                    </svg>
+                  </span>
+                  {{ form.birth_date }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+                {{ form.email }}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.phone_1.id_for_label }}" class="form-label">{{ form.phone_1.label }}</label>
+                {{ form.phone_1 }}
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Блок 2: Юридические и банковские реквизиты -->
+            <h4 class="mb-3">Юридические и банковские реквизиты</h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="{{ form.inn.id_for_label }}" class="form-label">{{ form.inn.label }}</label>{{ form.inn }}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ form.kpp.id_for_label }}" class="form-label">{{ form.kpp.label }}</label>{{ form.kpp }}
+              </div>
+              <div class="col-12">
+                <label for="{{ form.bank.id_for_label }}" class="form-label">{{ form.bank.label }}</label>{{ form.bank }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.num_chet.id_for_label }}" class="form-label">Расчетный счет</label>{{ form.num_chet }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.num_bik.id_for_label }}" class="form-label">{{ form.num_bik.label }}</label>{{ form.num_bik }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.num_corch.id_for_label }}" class="form-label">Корр. счет</label>{{ form.num_corch }}
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Блок 3: Паспортные данные -->
+            <h4 class="mb-3">Паспортные данные директора</h4>
+            <div class="row g-3">
+              <div class="col-12">
+                <label for="{{ form.issued_by.id_for_label }}" class="form-label">{{ form.issued_by.label }}</label>{{ form.issued_by }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.series.id_for_label }}" class="form-label">{{ form.series.label }}</label>{{ form.series }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.number.id_for_label }}" class="form-label">{{ form.number.label }}</label>{{ form.number }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ form.issue_date.id_for_label }}" class="form-label">{{ form.issue_date.label }}</label><div class="input-group">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
+                      <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
+                      <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                    </svg>
+                  </span>
+                  {{ form.issue_date }}
+                </div>
+              </div>
+              <div class="col-12">
+                <label for="{{ form.registration.id_for_label }}" class="form-label">{{ form.registration.label }}</label>{{ form.registration }}
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Блок 4: Фотографии документов -->
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-lg">Отмена</a>
+              <button class="btn btn-primary btn-lg" type="submit" style="background-color: #22356F; border-color: #22356F;">Сохранить изменения</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- СТИЛИ ДЛЯ ВИДИМЫХ РАМОК У ПОЛЕЙ ВВОДА -->
+  <style>
+    .form-control {
+      /* Задаем видимую рамку по умолчанию */
+      border: 1px solid #ced4da;
+    }
+    
+    .form-control:focus {
+      /* При нажатии делаем рамку ярче и добавляем тень */
+      border-color: #22356f;
+      box-shadow: 0 0 0 0.25rem rgba(34, 53, 111, 0.15);
+    }
+  </style>
+{% endblock %}
